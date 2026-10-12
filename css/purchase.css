@@ -1,0 +1,1476 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(180deg, #eef2f7 0%, #d9dee7 100%);
+    color: #2e3a47;
+}
+
+.inventory-page {
+    max-width: 1400px;
+    margin: 24px auto;
+    padding: 0 18px 32px;
+}
+
+.voucher-header,
+.voucher-card-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.ims-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.ims-tabs .tab {
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    background: #f3f6fb;
+    color: #374151;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.ims-tabs .tab.active,
+.ims-tabs .tab:hover {
+    background: #2878a6;
+    color: #ffffff;
+}
+
+.breadcrumb-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.breadcrumb-path {
+    color: #63718d;
+    font-size: 14px;
+}
+
+.voucher-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.toolbar-btn,
+.page-btn,
+.action-btn,
+.nav-link,
+.top-btn {
+    border: none;
+    background: #ffffff;
+    color: #374151;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.22s ease;
+}
+
+.toolbar-btn:hover,
+.page-btn:hover,
+.action-btn:hover,
+.nav-link:hover,
+.top-btn:hover {
+    background: #eff5ff;
+    color: #2878a6;
+}
+
+.voucher-form-card,
+.voucher-table-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: 0 12px 24px rgba(31, 60, 94, 0.06);
+    margin-bottom: 18px;
+}
+
+.voucher-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.po-entry-grid .po-employee-field {
+    grid-column: 1;
+}
+
+.po-main-tab {
+    width: fit-content;
+    margin: -2px 0 18px;
+    border-bottom: 3px solid #2878a6;
+    color: #2878a6;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 0 8px 7px;
+}
+
+.po-entry-grid .po-narration-field {
+    grid-column: 2 / 4;
+}
+
+.po-entry-grid .po-narration-field textarea {
+    min-height: 108px;
+}
+
+.po-form-only {
+    display: none;
+}
+
+.po-form-active {
+    background: #ffffff;
+}
+
+.po-form-active > .top-strip {
+    display: none;
+}
+
+.po-form-active > .inventory-page {
+    max-width: none;
+    margin: 0;
+    padding: 0 18px 24px;
+}
+
+.po-form-active .voucher-header {
+    min-height: 54px;
+    border-bottom: 1px solid #d5d9dd;
+    margin: 0 -18px 0;
+    padding: 8px 12px;
+}
+
+.po-form-active .voucher-header .breadcrumb-title {
+    color: #477f9f;
+    font-size: 18px;
+    margin: 0;
+}
+
+.po-form-active .voucher-header .breadcrumb-path,
+.po-form-active .voucher-header #newOrderBtn,
+.po-form-active .voucher-header #openQuotationReceiveBtn,
+.po-form-active .voucher-header #backWorkflowBtn {
+    display: none;
+}
+
+.po-form-active .voucher-header .voucher-actions {
+    margin-left: auto;
+}
+
+.po-form-active .voucher-header .po-form-only {
+    display: inline-flex;
+    border: 1px solid #d1d5da;
+    border-radius: 3px;
+    padding: 7px 10px;
+}
+
+.po-form-active .voucher-form-card {
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0 -18px;
+    padding: 12px 18px 10px;
+}
+
+.po-form-active #poFormView > .voucher-form-card:first-child {
+    border-bottom: 1px solid #d5d9dd;
+}
+
+.po-form-active .po-entry-grid {
+    column-gap: 30px;
+    row-gap: 10px;
+}
+
+.po-form-active .field-group {
+    gap: 6px;
+}
+
+.po-form-active .field-group label {
+    color: #4a4a4a;
+    font-size: 14px;
+}
+
+.po-form-active .field-group input,
+.po-form-active .field-group select,
+.po-form-active .field-group textarea {
+    min-height: 46px;
+    border: 1px solid #c8c8c8;
+    border-radius: 3px;
+    background: #ffffff;
+    padding: 10px 14px;
+}
+
+.po-form-active .po-entry-grid .po-narration-field textarea {
+    min-height: 108px;
+}
+
+.po-form-active .po-main-tab {
+    border-bottom-width: 3px;
+    margin: 0 0 14px;
+    padding: 2px 8px 7px;
+}
+
+.po-form-active #vendorAccountDetails,
+.po-form-active #vendorAccountMessage {
+    margin: 0;
+}
+
+.po-form-active #poFormView > .voucher-form-card:nth-child(2) {
+    margin-top: 0;
+    padding-top: 10px;
+}
+
+.po-form-active #poFormView > .voucher-form-card:nth-child(2) .voucher-card-header {
+    display: none;
+}
+
+.po-form-active .voucher-table-wrapper {
+    max-height: 380px;
+    overflow: auto;
+}
+
+.po-form-active .voucher-table {
+    min-width: 1500px;
+    table-layout: fixed;
+}
+
+.po-form-active .voucher-table th,
+.po-form-active .voucher-table td {
+    height: 36px;
+    border: 1px solid #d7d7d7;
+    padding: 6px 8px;
+    color: #222;
+    font-size: 12px;
+}
+
+.po-form-active .voucher-table th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #477f9f;
+    color: #ffffff;
+}
+
+.po-form-active .voucher-table tbody tr:nth-child(even) {
+    background: #f7f8fa;
+}
+
+.po-form-active .voucher-table tbody tr:hover {
+    background: #eef4f7;
+}
+
+.po-form-active .voucher-table .ims-lines-input {
+    width: 100%;
+    min-width: 78px;
+    min-height: 30px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 4px;
+    text-align: right;
+}
+
+.po-empty-line td {
+    height: 36px;
+}
+
+.po-entry-net {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #d0d0d0;
+    margin: 10px 0 0;
+    padding: 12px 16px;
+    font-size: 15px;
+}
+
+.po-entry-net strong {
+    display: flex;
+    gap: 8px;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.po-print-preview {
+    display: none;
+}
+
+@page {
+    size: A4 portrait;
+    margin: 10mm;
+}
+
+body.po-printing > *:not(#poPrintView) {
+    display: none !important;
+}
+
+body.po-printing > #poPrintView,
+#poPrintView[hidden] {
+    display: none !important;
+}
+
+body.po-printing > #poPrintView {
+    display: block !important;
+}
+
+#poPrintView {
+    color: #111;
+    font-family: Arial, sans-serif;
+}
+
+.po-print-document {
+    position: relative;
+    border: 1.5px solid #111;
+    background: #fff;
+    min-height: 275mm;
+    padding: 0 2mm 4mm;
+}
+
+.po-print-heading {
+    margin: 2mm 0 4mm;
+    text-align: center;
+}
+
+.po-print-heading h1 {
+    font-size: 15px;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.po-print-top {
+    border: 1px solid #111;
+    display: grid;
+    grid-template-columns: 1fr 0.95fr;
+}
+
+.po-print-company,
+.po-print-order-details {
+    min-width: 0;
+    font-size: 9px;
+}
+
+.po-print-company {
+    border-right: 1px solid #111;
+    padding: 7px;
+}
+
+.po-print-company-name {
+    background: #bf9292;
+    border: 1px solid #111;
+    display: block;
+    color: #111;
+    font-size: 12px;
+    font-weight: 700;
+    margin: -7px -7px 6px;
+    padding: 4px;
+    text-align: center;
+}
+
+.po-print-company-ids {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin-top: 6px;
+}
+
+.po-print-address {
+    border-top: 1px solid #111;
+    display: grid;
+    grid-template-columns: 105px minmax(0, 1fr);
+    gap: 5px;
+    min-height: 28px;
+    margin: 6px -7px 0;
+    padding: 5px 7px;
+    overflow-wrap: anywhere;
+}
+
+.po-print-address strong {
+    font-size: 8px;
+}
+
+.po-print-address span {
+    min-width: 0;
+}
+
+.po-print-billing {
+    border-top: 0;
+    margin: 2px 0 6px;
+    padding: 0;
+}
+
+.po-print-shipping {
+    border-bottom: 0;
+    margin-bottom: -7px;
+}
+
+.po-print-order-details {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.po-print-meta {
+    border-bottom: 1px solid #111;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 5px;
+    min-height: 20px;
+    padding: 4px;
+}
+
+.po-print-meta:last-child {
+    border-bottom: 0;
+}
+
+.po-print-order-no {
+    background: #bf9292;
+}
+
+.po-print-payment {
+    min-height: 30px;
+}
+
+.po-print-supplier {
+    border: 1px solid #111;
+    border-top: 0;
+}
+
+.po-print-supplier h2 {
+    background: #bf9292;
+    border-bottom: 1px solid #111;
+    font-size: 11px;
+    margin: 0;
+    padding: 5px;
+    text-transform: uppercase;
+}
+
+.po-print-supplier-body {
+    display: grid;
+    grid-template-columns: 1fr 0.95fr;
+    gap: 12px;
+    min-height: 36mm;
+    padding: 5px 7px;
+}
+
+.po-print-supplier-body > div > div {
+    display: grid;
+    grid-template-columns: 90px minmax(0, 1fr);
+    gap: 5px;
+    margin-bottom: 5px;
+    font-size: 9px;
+    overflow-wrap: anywhere;
+}
+
+.po-print-table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin-top: 0;
+}
+
+.po-print-table th,
+.po-print-table td {
+    border: 1px solid #111;
+    padding: 4px 2px;
+    font-size: 7px;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+}
+
+.po-print-table th {
+    background: #bf9292 !important;
+    color: #111;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.po-print-table th:nth-child(1) { width: 3%; }
+.po-print-table th:nth-child(2) { width: 6%; }
+.po-print-table th:nth-child(3) { width: 6%; }
+.po-print-table th:nth-child(4) { width: 16%; }
+.po-print-table th:nth-child(5) { width: 4%; }
+.po-print-table th:nth-child(6) { width: 4%; }
+.po-print-table th:nth-child(7) { width: 6%; }
+.po-print-table th:nth-child(8) { width: 7%; }
+.po-print-table th:nth-child(9) { width: 5%; }
+.po-print-table th:nth-child(10) { width: 8%; }
+.po-print-table th:nth-child(11) { width: 4%; }
+.po-print-table th:nth-child(12) { width: 5%; }
+.po-print-table th:nth-child(13) { width: 5%; }
+.po-print-table th:nth-child(14) { width: 5%; }
+.po-print-table th:nth-child(15) { width: 7%; }
+.po-print-table th:nth-child(16) { width: 6.5%; }
+
+.po-print-table tfoot th {
+    font-size: 7px;
+}
+
+.po-print-table thead {
+    display: table-header-group;
+}
+
+.po-print-table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+.po-print-table .numeric {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.po-print-bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 42%;
+    gap: 10px;
+    margin: 12mm 2px 5mm;
+}
+
+.po-print-narration {
+    border: 1px solid #111;
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 5px;
+    min-height: 38mm;
+    padding: 7px;
+    font-size: 9px;
+    overflow-wrap: anywhere;
+}
+
+.po-print-totals {
+    border: 1px solid #111;
+    align-self: start;
+    padding: 5px;
+    font-size: 9px;
+}
+
+.po-print-totals > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 2px 0;
+}
+
+.po-print-total {
+    border-top: 1px solid #111;
+    font-weight: 700;
+    padding-top: 4px;
+}
+
+.po-print-words {
+    border: 1px solid #111;
+    min-height: 20mm;
+    margin: 0 2px;
+    padding: 7px;
+    font-size: 9px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.po-print-signatures {
+    align-items: flex-end;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: end;
+    margin: 25mm 8px 0;
+    font-size: 10px;
+}
+
+.po-print-signatures span {
+    min-width: 175px;
+    text-align: center;
+    padding-top: 5px;
+    grid-column: 2;
+}
+
+.po-print-signatures .po-print-generated {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin-top: 15mm;
+    font-size: 9px;
+}
+
+@media print {
+    body.po-printing {
+        background: #fff;
+        color: #111;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    body.po-printing > #poPrintView {
+        color: #111;
+        display: block !important;
+        font-family: Arial, sans-serif;
+        width: 100%;
+        padding: 0;
+    }
+
+    body.po-printing #poPrintView[hidden] {
+        display: block !important;
+    }
+
+    body.po-printing .po-print-document {
+        box-sizing: border-box;
+        min-height: 245mm;
+        padding: 2mm 2mm 4mm;
+    }
+
+    body.po-printing .po-print-heading {
+        margin: 0 0 2mm;
+    }
+
+    body.po-printing .po-print-heading h1 {
+        font-size: 17px;
+    }
+
+    body.po-printing .po-print-company,
+    body.po-printing .po-print-order-details {
+        font-size: 10px;
+    }
+
+    body.po-printing .po-print-company-name {
+        font-size: 13px;
+    }
+
+    body.po-printing .po-print-company-ids {
+        font-size: 10px;
+    }
+
+    body.po-printing .po-print-meta {
+        min-height: 16px;
+        padding: 2px 4px;
+        font-size: 10px;
+    }
+
+    body.po-printing .po-print-payment {
+        min-height: 22px;
+    }
+
+    body.po-printing .po-print-address {
+        min-height: 0;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        font-size: 10px;
+    }
+
+    body.po-printing .po-print-address strong {
+        font-size: 9px;
+    }
+
+    body.po-printing .po-print-company-ids {
+        margin-top: 3px;
+    }
+
+    body.po-printing .po-print-supplier-body {
+        min-height: 24mm;
+        padding: 4px 7px;
+    }
+
+    body.po-printing .po-print-supplier h2 {
+        font-size: 12px;
+    }
+
+    body.po-printing .po-print-supplier-body > div > div {
+        margin-bottom: 5px;
+        font-size: 10px;
+    }
+
+    body.po-printing .po-print-table th,
+    body.po-printing .po-print-table td {
+        padding: 3px 2px;
+        font-size: 9px;
+        line-height: 1.1;
+    }
+
+    body.po-printing .po-print-table tfoot th {
+        font-size: 9px;
+    }
+
+    body.po-printing .po-print-bottom {
+        margin: 5mm 2px 3mm;
+        align-items: stretch;
+    }
+
+    body.po-printing .po-print-narration {
+        min-height: 25mm;
+        font-size: 10px;
+    }
+
+    body.po-printing .po-print-totals {
+        font-size: 10px;
+        align-self: stretch;
+    }
+
+    body.po-printing .po-print-words {
+        min-height: 13mm;
+        font-size: 10px;
+    }
+
+    body.po-printing .po-print-signatures {
+        margin-top: 14mm;
+        font-size: 10px;
+    }
+
+    body.po-printing .po-print-signatures .po-print-generated {
+        position: static;
+        min-width: 0;
+        margin-top: 15mm;
+        text-align: center;
+    }
+
+    body.po-printing .po-print-bottom,
+    body.po-printing .po-print-words,
+    body.po-printing .po-print-signatures {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
+
+.field-group label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+}
+
+.field-group input,
+.field-group select,
+.field-group textarea {
+    border: 1px solid #d8dee5;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #2e3a47;
+    background: #f8fbff;
+}
+
+.field-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+#vendorAccountDetails {
+    padding: 14px 16px;
+    border: 1px solid #dbe6ed;
+    border-radius: 12px;
+    background: #f5f9fc;
+    color: #435268;
+    font-size: 13px;
+}
+
+#vendorAccountDetails strong {
+    color: #293b51;
+    font-size: 14px;
+}
+
+#vendorAccountDetails span {
+    line-height: 1.5;
+}
+
+#vendorAccountMessage {
+    margin: 0;
+    color: #738196;
+    font-size: 13px;
+}
+
+#vendorAccountMessage.error {
+    color: #b42318;
+    font-weight: 600;
+}
+
+#vendorAccountDetails[hidden],
+#vendorAccountMessage[hidden] {
+    display: none;
+}
+
+.voucher-table-wrapper {
+    overflow-x: auto;
+}
+
+.voucher-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.voucher-table th,
+.voucher-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #edf1f7;
+    text-align: left;
+    font-size: 14px;
+    color: #3a4b67;
+}
+
+.voucher-table th {
+    background: #f8fbff;
+    color: #2878a6;
+    font-weight: 700;
+}
+
+.voucher-table tbody tr:hover {
+    background: #f5f8ff;
+}
+
+/* Purchase Order List uses the same compact grid as the other voucher lists. */
+body .voucher-table-wrapper:has(#orderTableBody) {
+    height: min(94vh, 760px);
+    max-height: min(94vh, 760px);
+    overflow: auto;
+    border: 1px solid #c8c8c8;
+    border-radius: 0;
+}
+
+body .voucher-table-wrapper:has(#orderTableBody) .voucher-table {
+    min-width: 1050px;
+    table-layout: auto;
+}
+
+body .voucher-table-wrapper:has(#orderTableBody) .voucher-table th,
+body .voucher-table-wrapper:has(#orderTableBody) .voucher-table td {
+    height: 27px;
+    padding: 3px 7px;
+    border: 1px solid #c8c8c8;
+    color: #252525;
+    font-size: 14px;
+    line-height: 20px;
+    white-space: nowrap;
+}
+
+body .voucher-table-wrapper:has(#orderTableBody) .voucher-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: 40px;
+    padding: 5px 7px;
+    background: #477f9e;
+    color: #fff;
+    font-weight: 600;
+    text-transform: none;
+}
+
+body .voucher-table-wrapper:has(#orderTableBody) .voucher-table tbody tr:nth-child(even) {
+    background: #f4f6f8;
+}
+
+body .voucher-table-wrapper:has(#orderTableBody) tbody tr[data-open-order] {
+    cursor: pointer;
+}
+
+/* Keep PO list actions compact so they don't stretch voucher rows above QR rows. */
+body #allPoView .voucher-table .action-btn,
+body #pendingQrView .voucher-table .action-btn {
+    width: 28px;
+    min-width: 28px;
+    height: 20px;
+    min-height: 20px;
+    padding: 0;
+    border-radius: 4px;
+}
+
+@media (max-width: 980px) {
+    .voucher-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .po-entry-grid .po-employee-field {
+        grid-column: auto;
+    }
+
+    .po-entry-grid .po-narration-field {
+        grid-column: 1 / -1;
+    }
+
+    .po-form-active .po-entry-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.purchase-indent-shell {
+    display: flex;
+    min-height: calc(100vh - 72px);
+    background: linear-gradient(180deg, #dfeaf4 0%, #d5dfe9 100%);
+}
+
+.side-navigation {
+    width: 220px;
+    background: rgba(255, 255, 255, 0.12);
+    border-right: 1px solid rgba(69, 96, 121, 0.12);
+    padding: 18px 12px;
+}
+
+.nav-brand {
+    padding: 12px 16px 18px;
+}
+
+.nav-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    width: 100%;
+    border-radius: 12px;
+    background: rgba(42, 81, 111, 0.08);
+    color: #1f4969;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.side-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: #2d3e52;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-item i {
+    width: 16px;
+    color: #3f5d7b;
+}
+
+.nav-item.active {
+    background: rgba(67, 108, 141, 0.08);
+}
+
+.purchase-indent-page {
+    flex: 1;
+    padding: 18px 22px 22px;
+}
+
+.purchase-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.page-header-title-wrap h1 {
+    margin: 0;
+    font-size: 28px;
+    color: #20395a;
+    font-weight: 700;
+}
+
+.page-header-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.purchase-form-card {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(133, 164, 189, 0.45);
+    border-radius: 14px;
+    box-shadow: 0 12px 26px rgba(55, 85, 112, 0.08);
+    padding: 20px 18px 16px;
+}
+
+.purchase-form-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.top-grid {
+    grid-template-columns: 1.1fr 0.9fr 0.9fr;
+}
+
+.middle-grid {
+    grid-template-columns: 1.5fr 1fr;
+    margin-top: 12px;
+}
+
+.request-grid {
+    grid-template-columns: 1fr;
+    margin-top: 12px;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field-group label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #3f5670;
+}
+
+.field-group input,
+.field-group select {
+    width: 100%;
+    min-height: 42px;
+    border: 1px solid #d6dfe8;
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: #f6f9fc;
+    color: #2b3d52;
+    font-size: 14px;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+    outline: none;
+    border-color: #4f8bb8;
+    box-shadow: 0 0 0 3px rgba(79, 139, 184, 0.12);
+}
+
+.hidden-field {
+    display: none;
+}
+
+.purchase-table-shell {
+    margin-top: 18px;
+    border: 1px solid #c9cdd1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background: #fff;
+}
+
+.purchase-table {
+    width: 100%;
+    min-width: 1180px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.purchase-table th,
+.purchase-table td {
+    border: 1px solid #c9cdd1;
+    height: 50px;
+    padding: 4px 10px;
+    text-align: left;
+    font-size: 16px;
+    color: #333;
+}
+
+.purchase-table thead th {
+    height: 54px;
+    background: #3f7d9f;
+    color: #fff;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.purchase-table tbody tr:nth-child(even) td {
+    background: #f7f8fa;
+}
+
+.purchase-table tbody tr:hover td {
+    background: #eef4f8;
+}
+
+.purchase-table th:nth-child(1) { width: 2.7%; }
+.purchase-table th:nth-child(2) { width: 14%; }
+.purchase-table th:nth-child(3) { width: 20.7%; }
+.purchase-table th:nth-child(4) { width: 20.6%; }
+.purchase-table th:nth-child(5) { width: 14%; }
+.purchase-table th:nth-child(6) { width: 14%; }
+.purchase-table th:nth-child(7) { width: 14%; }
+
+.purchase-table th:first-child {
+    text-align: center;
+}
+
+.purchase-table td:first-child {
+    padding-right: 10px;
+    color: #777;
+    font-weight: 600;
+    text-align: right;
+}
+
+body:has(.purchase-indent-shell) .purchase-table td input,
+body:has(.purchase-indent-shell) .purchase-table td select {
+    box-sizing: border-box;
+    height: 34px;
+    padding: 5px 8px;
+    border: 1px solid #c9c9c9;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.purchase-table td select,
+.purchase-table td input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: 40px;
+    margin: 0;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    padding: 4px 6px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+}
+
+.purchase-table td select:focus,
+.purchase-table td input:focus {
+    border-color: #5689a6;
+    outline: 2px solid rgba(63, 125, 159, 0.18);
+    background: #fff;
+}
+
+.purchase-footer-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(129, 156, 180, 0.35);
+}
+
+.footer-left {
+    font-size: 18px;
+    color: #2d4768;
+}
+
+.footer-label {
+    font-weight: 600;
+}
+
+.footer-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.toolbar-btn {
+    border: 1px solid rgba(96, 126, 161, 0.45);
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    padding: 9px 12px;
+    color: #2f4155;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.toolbar-btn:hover {
+    background: rgba(82, 125, 163, 0.1);
+}
+
+.action-btn-inline {
+    min-width: 120px;
+}
+
+.ims-message {
+    min-height: 20px;
+    margin: 10px 0 0;
+    font-size: 13px;
+    color: #365a7d;
+}
+
+.hidden-panel {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .purchase-indent-shell {
+        flex-direction: column;
+    }
+
+    .side-navigation {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(69, 96, 121, 0.12);
+    }
+
+    .top-grid,
+    .middle-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .purchase-page-header,
+    .purchase-footer-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
+
+body:has(.purchase-indent-shell) {
+    min-width: 320px;
+    background: #fff;
+    color: #444;
+}
+
+body:has(.purchase-indent-shell) .side-navigation {
+    display: none;
+}
+
+body:has(.purchase-indent-shell) .purchase-indent-shell {
+    display: block;
+    min-height: 100vh;
+    background: #fff;
+}
+
+body:has(.purchase-indent-shell) .purchase-indent-page {
+    width: 100%;
+    padding: 0 6px 72px;
+}
+
+body:has(.purchase-indent-shell) .purchase-page-header {
+    min-height: 44px;
+    margin: 0;
+    padding: 0 4px 0 2px;
+    border-bottom: 1px solid #d1d1d1;
+}
+
+body:has(.purchase-indent-shell) .page-header-title-wrap h1 {
+    color: #477f9e;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+body:has(.purchase-indent-shell) .page-header-tools {
+    gap: 8px;
+}
+
+body:has(.purchase-indent-shell) .page-header-tools .toolbar-btn {
+    width: 28px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #777;
+    font-size: 16px;
+}
+
+body:has(.purchase-indent-shell) .page-header-tools a.toolbar-btn {
+    width: auto;
+    padding: 0 8px;
+    color: #477f9e;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+body:has(.purchase-indent-shell) .page-header-tools .toolbar-btn:hover {
+    background: #f2f6f8;
+    color: #477f9e;
+}
+
+body:has(.purchase-indent-shell) .purchase-form-card {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+body:has(.purchase-indent-shell) .purchase-form-card::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 300px;
+    border: 1px solid #ccc;
+    content: "";
+    pointer-events: none;
+}
+
+body:has(.purchase-indent-shell) .top-grid,
+body:has(.purchase-indent-shell) .middle-grid {
+    position: relative;
+    z-index: 1;
+    gap: 28px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+body:has(.purchase-indent-shell) .top-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding-top: 56px;
+}
+
+body:has(.purchase-indent-shell) .top-grid::before {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    left: 0;
+    height: 36px;
+    padding: 4px 7px;
+    border-bottom: 1px solid #d1d1d1;
+    color: #477f9e;
+    content: "Main";
+    font-size: 15px;
+}
+
+body:has(.purchase-indent-shell) .top-grid::after {
+    position: absolute;
+    top: 44px;
+    left: 7px;
+    width: 42px;
+    border-bottom: 2px solid #477f9e;
+    content: "";
+}
+
+body:has(.purchase-indent-shell) .middle-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 10px;
+    padding-bottom: 18px;
+}
+
+body:has(.purchase-indent-shell) .middle-grid .field-group:first-child {
+    grid-column: span 2;
+}
+
+body:has(.purchase-indent-shell) .field-group {
+    gap: 8px;
+}
+
+body:has(.purchase-indent-shell) .field-group label {
+    color: #4a4a4a;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+body:has(.purchase-indent-shell) .field-group input,
+body:has(.purchase-indent-shell) .field-group select {
+    min-height: 46px;
+    border: 1px solid #c9c9c9;
+    border-left: 2px solid #f06a76;
+    border-radius: 3px;
+    padding: 10px 14px;
+    background: #fff;
+    color: #555;
+    font-size: 14px;
+}
+
+body:has(.purchase-indent-shell) .field-group input:not(#piNarration),
+body:has(.purchase-indent-shell) .field-group select {
+    box-sizing: border-box;
+    height: 46px;
+    border-radius: 10px;
+}
+
+body:has(.purchase-indent-shell) .field-group input:focus,
+body:has(.purchase-indent-shell) .field-group select:focus {
+    border-color: #477f9e;
+    box-shadow: 0 0 0 1px rgba(71, 127, 158, 0.15);
+}
+
+body:has(.purchase-indent-shell) #piNarration {
+    height: 104px;
+}
+
+body:has(.purchase-indent-shell) #piRequestedBy {
+    height: 46px;
+}
+
+body:has(.purchase-indent-shell) .purchase-table-shell {
+    position: relative;
+    z-index: 1;
+    margin-top: 42px;
+    border: 1px solid #ccc;
+}
+
+body:has(.purchase-indent-shell) .purchase-table {
+    min-width: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+
+body:has(.purchase-indent-shell) .purchase-table th,
+body:has(.purchase-indent-shell) .purchase-table td {
+    height: 38px;
+    padding: 4px 10px;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+body:has(.purchase-indent-shell) .purchase-table thead th {
+    height: 40px;
+    background: #477f9e;
+    font-weight: 600;
+}
+
+body:has(.purchase-indent-shell) .purchase-table th:nth-child(n) {
+    width: auto;
+}
+
+body:has(.purchase-indent-shell) .purchase-footer-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    min-height: 58px;
+    margin: 0 -6px;
+    padding: 10px 16px;
+    border: 1px solid #d1d1d1;
+    background: #fff;
+}
+
+body:has(.purchase-indent-shell) .footer-left {
+    color: #444;
+    font-size: 16px;
+}
+
+@media (max-width: 700px) {
+    body:has(.purchase-indent-shell) .purchase-indent-page {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    body:has(.purchase-indent-shell) .top-grid,
+    body:has(.purchase-indent-shell) .middle-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    body:has(.purchase-indent-shell) .middle-grid .field-group:first-child {
+        grid-column: auto;
+    }
+
+    body:has(.purchase-indent-shell) .purchase-form-card::before {
+        height: 440px;
+    }
+
+    body:has(.purchase-indent-shell) .purchase-table-shell {
+        margin-top: 28px;
+    }
+
+    body:has(.purchase-indent-shell) .purchase-footer-bar {
+        position: static;
+        margin: 16px 0 0;
+    }
+}

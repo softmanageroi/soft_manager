@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/common-header.css">
+    <link rel="stylesheet" href="../css/skeuomorphic.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Dashboard</title>
+</head>
+<body>
+    <header class="top-strip">
+        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
+        <div class="search">
+            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
+            <ul id="searchResults" class="search-dropdown"></ul>
+        </div>
+        <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
+    </header>
+    <main class="dashboard-container">
+        <h2>Purchase Flow</h2>
+        <p class="dashboard-flow-caption">Purchase Indent → Request For Quotation → Quotation Receive → Purchase Order → Authorization → Material Receipt Note</p>
+        <div class="dashboard-grid">
+            <a class="dash-tile" href="item-master.html">
+                <div class="tile-icon"><i class="fa-solid fa-layer-group"></i></div>
+                <div class="tile-title">Master</div>
+                <div class="tile-sub">Manage item, account, department, and warehouse masters</div>
+            </a>
+            <a class="dash-tile" href="purchase-indent.html">
+                <div class="tile-icon"><i class="fa-solid fa-file-circle-plus"></i></div>
+                <div class="tile-title">Purchase Indent</div>
+                <div class="tile-sub">Start the purchase request and track indents</div>
+            </a>
+            <a class="dash-tile" href="request-for-quotation.html">
+                <div class="tile-icon"><i class="fa-solid fa-file-signature"></i></div>
+                <div class="tile-title">Request For Quotation</div>
+                <div class="tile-sub">Create RFQs from pending purchase indents</div>
+            </a>
+            <a class="dash-tile" href="quotation-receive.html">
+                <div class="tile-icon"><i class="fa-solid fa-file-circle-check"></i></div>
+                <div class="tile-title">Quotation Receive</div>
+                <div class="tile-sub">View received quotations or receive one from a pending RFQ</div>
+            </a>
+            <a class="dash-tile" href="purchase-order-creation.html?view=all">
+                <div class="tile-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                <div class="tile-title">Purchase Orders</div>
+                <div class="tile-sub">Create a PO from a pending received quotation</div>
+            </a>
+            <a class="dash-tile" href="material-receipt-note.html">
+                <div class="tile-icon"><i class="fa-solid fa-boxes-packing"></i></div>
+                <div class="tile-title">Material Receipt Note</div>
+                <div class="tile-sub">Receive quantities against authorized purchase orders</div>
+            </a>
+            <a class="dash-tile" href="inventory.html">
+                <div class="tile-icon"><i class="fa-solid fa-book"></i></div>
+                <div class="tile-title">Material Requisition</div>
+                <div class="tile-sub">Open requisition list</div>
+            </a>
+        </div>
+    </main>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

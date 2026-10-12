@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Material Authorize</title>
+    <link rel="stylesheet" href="../css/inventory.css" />
+    <link rel="stylesheet" href="../css/common-header.css" />
+    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body>
+    <header class="top-strip">
+        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
+        <div class="search">
+            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
+            <ul id="searchResults" class="search-dropdown"></ul>
+        </div>
+        <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
+    </header>
+    <div class="inventory-page">
+        <header class="voucher-header">
+            <div>
+                <div class="breadcrumb-title">Material Authorize</div>
+                <div class="breadcrumb-path">Transactions / Material Authorize</div>
+            </div>
+            <div class="voucher-actions">
+                <button id="authorizeSelectedBtn" class="toolbar-btn" title="Authorize selected"><i class="fa-solid fa-circle-check"></i></button>
+                <button id="refreshAuthorizeBtn" class="toolbar-btn" title="Refresh list"><i class="fa-solid fa-arrows-rotate"></i></button>
+                <button id="backToRequisitionBtn" class="toolbar-btn" title="Back to requisition"><i class="fa-solid fa-arrow-left"></i></button>
+            </div>
+        </header>
+
+        <section class="voucher-form-card">
+            <div class="field-group full-width">
+                <label for="authorizeSearch">Search Voucher</label>
+                <div class="search-group">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="authorizeSearch" type="search" placeholder="Search voucher number, warehouse, location..." />
+                </div>
+            </div>
+        </section>
+
+        <section class="voucher-table-card">
+            <div class="voucher-table-wrapper">
+                <table class="voucher-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAllAuthorize" /></th>
+                            <th>Voucher No.</th>
+                            <th>Date</th>
+                            <th>Warehouse</th>
+                            <th>Location</th>
+                            <th>Department</th>
+                            <th>Requested By</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="authorizeTableBody"></tbody>
+                </table>
+            </div>
+            <div class="voucher-footer">
+                <div class="voucher-total" id="authorizeCount">0 vouchers pending authorization</div>
+            </div>
+        </section>
+    </div>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js"></script>
+    <script src="../js/material-authorize.js"></script>
+    <script src="../js/voucher-toolbar.js"></script>
+</body>
+</html>

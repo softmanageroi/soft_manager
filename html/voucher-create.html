@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Material Requisition</title>
+    <link rel="stylesheet" href="../css/inventory.css" />
+    <link rel="stylesheet" href="../css/ims-flow.css" />
+    <link rel="stylesheet" href="../css/common-header.css" />
+    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body class="purchase-voucher-page material-requisition-page">
+    <header class="top-strip">
+        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
+        <div class="search">
+            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
+            <ul id="searchResults" class="search-dropdown"></ul>
+        </div>
+        <div class="top-actions">
+            <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
+            <a id="topUserLink" class="top-user" href="index.html" aria-label="Login">
+                <i class="fa-solid fa-user" aria-hidden="true"></i><span id="topUserLabel">Login</span>
+            </a>
+        </div>
+    </header>
+    <div class="inventory-page">
+        <header class="voucher-header">
+            <div>
+                <div class="breadcrumb-title">Material Requisition (Internal)</div>
+                <div class="breadcrumb-path">Document No. / Create Voucher</div>
+            </div>
+            <div class="voucher-actions">
+                <button id="newVoucherBtn" class="toolbar-btn has-label" title="New voucher"><span>New</span></button>
+                <button id="addItemBtn" class="toolbar-btn has-label" title="Add item"><span>Add</span></button>
+                <button id="deleteItemBtn" class="toolbar-btn has-label" title="Delete last item" aria-label="Delete last item"><span>Delete</span></button>
+                <button id="previousVoucherBtn" class="toolbar-btn" title="Previous">Previous</button>
+                <button id="nextVoucherBtn" class="toolbar-btn" title="Next">Next</button>
+                <button id="printVoucherBtn" class="toolbar-btn has-label" title="Print voucher"><span>Print</span></button>
+            </div>
+        </header>
+
+        <section class="voucher-form-card">
+            <div class="voucher-grid">
+                <div class="field-group">
+                    <label for="docNo">Document No.</label>
+                    <input id="docNo" type="text" readonly />
+                </div>
+                <div class="field-group">
+                    <label for="voucherDate">Date</label>
+                    <input id="voucherDate" type="date" />
+                </div>
+                <div class="field-group">
+                    <label for="warehouse">Warehouse</label>
+                    <select id="warehouse"></select>
+                </div>
+                <div class="field-group">
+                    <label for="department">Department</label>
+                    <select id="department">
+                        <option>MEP</option>
+                        <option>Civil</option>
+                        <option>Housekeeping</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="location">Location</label>
+                    <select id="location">
+                        <option>Umbrella Facility Management Services Pvt Ltd</option>
+                        <option>Site A</option>
+                        <option>Site B</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="requestedBy">Requested By</label>
+                    <select id="requestedBy"></select>
+                </div>
+            </div>
+
+            <div class="field-group full-width">
+                <label for="narration">Narration</label>
+                <textarea id="narration" rows="4" placeholder="Enter description..."></textarea>
+            </div>
+
+            <div class="voucher-grid">
+                <div class="field-group full-width">
+                    <label for="requestType">Request Type</label>
+                    <select id="requestType">
+                        <option>MEP Items</option>
+                        <option>Civil Items</option>
+                        <option>Stationery</option>
+                        <option>Housekeeping</option>
+                        <option>Security</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="voucher-table-card">
+            <div class="voucher-table-wrapper">
+                <table class="voucher-table">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Brand</th>
+                            <th>Item</th>
+                            <th>Description</th>
+                            <th>Units</th>
+                            <th>Quantity</th>
+                            <th>Stock In Hand</th>
+                        </tr>
+                    </thead>
+                    <tbody id="voucherItemsBody"></tbody>
+                </table>
+            </div>
+            <datalist id="materialRequisitionItemOptions"></datalist>
+            <div class="voucher-footer">
+                <div class="voucher-total">Net: ₹ 0.000</div>
+            </div>
+            <div class="voucher-actions voucher-bottom-actions">
+                <button id="saveVoucherBtn" class="toolbar-btn has-label" type="button" title="Save voucher"><span>Save</span></button>
+            </div>
+        </section>
+    </div>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js"></script>
+    <script src="../js/voucher-create.js"></script>
+    <script src="../js/voucher-toolbar.js"></script>
+</body>
+</html>

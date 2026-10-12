@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Request For Quotation</title>
+    <link rel="stylesheet" href="../css/inventory.css" />
+    <link rel="stylesheet" href="../css/ims-flow.css" />
+    <link rel="stylesheet" href="../css/common-header.css" />
+    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body class="purchase-voucher-page">
+    <header class="top-strip">
+        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
+        <div class="search">
+            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
+            <ul id="searchResults" class="search-dropdown"></ul>
+        </div>
+        <div class="top-actions">
+            <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
+            <a id="topUserLink" class="top-user" href="index.html" aria-label="Login">
+                <i class="fa-solid fa-user" aria-hidden="true"></i><span id="topUserLabel">Login</span>
+            </a>
+        </div>
+    </header>
+    <main class="inventory-page">
+        <header class="voucher-header">
+            <div>
+                <div class="breadcrumb-title">Request For Quotation</div>
+                <div class="breadcrumb-path">Purchases / Purchase Indent → RFQ</div>
+            </div>
+            <div class="voucher-actions">
+                <a class="toolbar-btn has-label" href="purchase-indent.html">Purchase Indent</a>
+                <a class="toolbar-btn has-label" href="quotation-receive.html">Quotation Receive</a>
+            </div>
+        </header>
+        <div class="ims-tabs" role="tablist">
+            <button id="tabAllRfq" class="tab active" type="button">All Vouchers</button>
+            <button id="tabPendingPI" class="tab" type="button">Pending Purchase Indent</button>
+        </div>
+        <section id="rfqAllView" class="inventory-card">
+            <div class="inventory-card-header"><h2>All Vouchers (<span id="rfqCount">0</span>)</h2></div>
+            <div class="voucher-table-wrapper">
+                <table class="voucher-table">
+                    <thead><tr><th>#</th><th>Date</th><th>RFQ No</th><th>PI No</th><th>Items</th><th>Link status</th></tr></thead>
+                    <tbody id="rfqAllBody"></tbody>
+                </table>
+            </div>
+        </section>
+        <section id="rfqPendingView" class="inventory-card" hidden>
+            <div class="inventory-card-header"><h2>Pending Purchase Indent</h2></div>
+            <div class="voucher-table-wrapper">
+                <table class="voucher-table">
+                    <thead><tr><th>#</th><th>Date</th><th>PI No</th><th>Items</th><th>Link status</th></tr></thead>
+                    <tbody id="pendingPiBody"></tbody>
+                </table>
+            </div>
+        </section>
+        <section id="rfqFormView" class="voucher-form-card" hidden>
+            <div class="voucher-card-header"><h2>Create RFQ</h2></div>
+            <div class="voucher-grid">
+                <div class="field-group"><label for="rfqVoucherNo">RFQ No</label><input id="rfqVoucherNo" readonly></div>
+                <div class="field-group"><label for="rfqDate">Date</label><input id="rfqDate" type="date"></div>
+                <div class="field-group"><label for="rfqPiNo">PI No</label><input id="rfqPiNo" readonly></div>
+            </div>
+            <div class="voucher-table-wrapper">
+                <table class="voucher-table">
+                    <thead><tr><th>Category</th><th>Brand</th><th>Item</th><th>Description</th><th>Unit</th><th>Stock in Hand</th><th>PI balance</th><th>RFQ qty</th></tr></thead>
+                    <tbody id="rfqLinesBody"></tbody>
+                </table>
+            </div>
+            <p id="rfqMessage" class="ims-message" role="status" aria-live="polite"></p>
+            <div class="voucher-actions">
+                <button id="rfqSaveBtn" class="toolbar-btn" type="button">Save</button>
+                <button id="rfqCancelBtn" class="toolbar-btn" type="button">Cancel</button>
+            </div>
+        </section>
+    </main>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js"></script>
+    <script src="../js/rfq.js"></script>
+    <script src="../js/voucher-toolbar.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Material Receipt Note</title>
+    <link rel="stylesheet" href="../css/purchase.css" />
+    <link rel="stylesheet" href="../css/ims-flow.css" />
+    <link rel="stylesheet" href="../css/common-header.css" />
+    <link rel="stylesheet" href="../css/material-receipt-note.css" />
+    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body class="purchase-voucher-page">
+    <header class="top-strip">
+        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
+        <div class="search">
+            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
+            <ul id="searchResults" class="search-dropdown"></ul>
+        </div>
+        <div class="top-actions">
+            <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
+            <a id="topUserLink" class="top-user" href="index.html" aria-label="Login"><i class="fa-solid fa-user" aria-hidden="true"></i><span id="topUserLabel">Login</span></a>
+        </div>
+    </header>
+    <main class="inventory-page">
+        <header class="voucher-header">
+            <div>
+                <div class="breadcrumb-title">Material Receipt Note (MRN)</div>
+                <div class="breadcrumb-path">Purchases / Purchase Order → Authorization → Material Receipt Note</div>
+            </div>
+            <div class="voucher-actions">
+                <a class="toolbar-btn" href="purchase-order-creation.html?view=all">Purchase Orders</a>
+                <a class="toolbar-btn" href="dashboard.html">Dashboard</a>
+            </div>
+        </header>
+
+        <div id="mrnListView">
+            <div class="ims-tabs" role="tablist" aria-label="Material receipt notes">
+                <button id="tabAllMrn" class="tab active" type="button" role="tab" aria-selected="true">All Vouchers</button>
+                <button id="tabPendingPo" class="tab" type="button" role="tab" aria-selected="false">Pending Purchase Order</button>
+            </div>
+            <section id="mrnAllView" class="voucher-table-card">
+                <div class="voucher-card-header"><h2>All Vouchers (<span id="mrnCount">0</span>)</h2></div>
+                <div class="voucher-table-wrapper">
+                    <table class="voucher-table">
+                        <thead><tr><th>#</th><th>MRN No.</th><th>MRN Date</th><th>PO No.</th><th>PO Date</th><th>Bill No.</th><th>Bill Date</th><th>Supplier</th><th>Warehouse</th><th>Received Qty</th><th>Status</th></tr></thead>
+                        <tbody id="mrnAllBody"></tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="mrnPendingPoView" class="voucher-table-card" hidden>
+                <div class="voucher-card-header"><h2>Pending Purchase Order</h2></div>
+                <div class="voucher-table-wrapper">
+                    <table class="voucher-table">
+                        <thead><tr><th>#</th><th>PO No.</th><th>PO Date</th><th>Bill No.</th><th>Bill Date</th><th>Supplier</th><th>Warehouse</th><th>PO Qty</th><th>Balance Qty</th><th>Authorization</th><th>Action</th></tr></thead>
+                        <tbody id="mrnPendingPoBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <section id="mrnAuthorizeView" class="voucher-form-card" hidden>
+            <div class="voucher-card-header"><h2>Authorize Purchase Order</h2></div>
+            <div class="voucher-grid mrn-meta-grid">
+                <div class="field-group"><label for="authorizePoNo">Purchase Order No.</label><input id="authorizePoNo" readonly></div>
+                <div class="field-group"><label for="authorizePoDate">Purchase Order Date</label><input id="authorizePoDate" readonly></div>
+                <div class="field-group"><label for="supplierBillNo">Bill Number</label><input id="supplierBillNo" type="text" required></div>
+                <div class="field-group"><label for="supplierBillDate">Bill Date</label><input id="supplierBillDate" type="date" required></div>
+                <div class="field-group"><label for="authorizeWarehouse">Warehouse</label><select id="authorizeWarehouse" required><option value="">Select warehouse</option></select></div>
+            </div>
+            <div class="voucher-card-header mrn-po-items-heading"><h2>Items in this Purchase Order</h2></div>
+            <div class="voucher-table-wrapper mrn-po-items-wrapper">
+                <table class="voucher-table mrn-lines-table">
+                    <thead><tr><th>#</th><th>Brand</th><th>Item Code</th><th>Description of Goods</th><th>Qty</th><th>UOM</th><th>Rate</th><th>Gross &#8377;</th><th>Discount</th><th>Taxable Amount</th><th>Quotation Ref. No.</th><th>GST %</th><th>CGST</th><th>SGST</th><th>IGST</th><th>GST Value</th><th>Net Amount</th></tr></thead>
+                    <tbody id="authorizePoItemsBody"></tbody>
+                </table>
+            </div>
+            <div class="mrn-po-grand-total"><strong>Purchase Order Total (including GST)</strong><span>&#8377; <span id="authorizePoItemsTotal">0.00</span></span></div>
+            <p id="mrnAuthorizeMessage" class="ims-message" role="status" aria-live="polite"></p>
+            <div class="voucher-actions mrn-form-actions">
+                <button id="savePoAuthorizationBtn" class="toolbar-btn" type="button">Save &amp; Authorize</button>
+                <button id="cancelPoAuthorizationBtn" class="toolbar-btn" type="button">Back to pending orders</button>
+            </div>
+        </section>
+
+        <section id="mrnFormView" class="voucher-form-card" hidden>
+            <div class="voucher-card-header"><h2 id="mrnFormTitle">Create Material Receipt Note</h2></div>
+            <div class="voucher-grid mrn-meta-grid">
+                <div class="field-group"><label for="mrnNo">MRN No.</label><input id="mrnNo" readonly></div>
+                <div class="field-group"><label for="mrnDate">Receipt Date</label><input id="mrnDate" type="date"></div>
+                <div class="field-group"><label for="mrnPoNo">Purchase Order No.</label><input id="mrnPoNo" readonly></div>
+                <div class="field-group"><label for="mrnPoDate">Purchase Order Date</label><input id="mrnPoDate" readonly></div>
+                <div class="field-group"><label for="mrnBillNo">Bill Number</label><input id="mrnBillNo" readonly></div>
+                <div class="field-group"><label for="mrnBillDate">Bill Date</label><input id="mrnBillDate" readonly></div>
+                <div class="field-group"><label for="mrnSupplier">Supplier</label><input id="mrnSupplier" readonly></div>
+                <div class="field-group"><label for="mrnWarehouse">Warehouse</label><input id="mrnWarehouse" readonly></div>
+            </div>
+            <div class="voucher-table-wrapper mrn-lines-wrapper">
+                <table class="voucher-table mrn-lines-table">
+                    <thead><tr><th>#</th><th>Item / Code</th><th>PO Qty</th><th>Received Earlier</th><th>Balance</th><th>Receiving Now</th><th>UOM</th><th>Rate</th></tr></thead>
+                    <tbody id="mrnLinesBody"></tbody>
+                </table>
+            </div>
+            <p id="mrnMessage" class="ims-message" role="status" aria-live="polite"></p>
+            <div class="voucher-actions mrn-form-actions">
+                <button id="saveMrnBtn" class="toolbar-btn" type="button">Save MRN</button>
+                <button id="cancelMrnBtn" class="toolbar-btn" type="button">Back to vouchers</button>
+            </div>
+        </section>
+    </main>
+    <div id="mrnItemContextMenu" class="mrn-context-menu" role="menu" hidden>
+        <button id="removeMrnItemBtn" type="button" role="menuitem"><i class="fa-solid fa-trash" aria-hidden="true"></i> Remove item from this MRN</button>
+    </div>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js"></script>
+    <script src="../js/material-receipt-note.js"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Ledger</title>
+    <link rel="stylesheet" href="../css/common-header.css" />
+    <link rel="stylesheet" href="../css/inventory.css" />
+    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <link rel="stylesheet" href="../css/stock-ledger.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body class="purchase-voucher-page stock-ledger-page">
+    <header class="top-strip">
+        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
+        <div class="search">
+            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search" />
+            <ul id="searchResults" class="search-dropdown"></ul>
+        </div>
+        <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
+    </header>
+
+    <main class="inventory-page stock-ledger-content">
+        <header class="inventory-breadcrumb">
+            <div>
+                <h1 class="breadcrumb-title">Stock Ledger</h1>
+                <p class="breadcrumb-path">Inventory / Stock Ledger</p>
+            </div>
+            <a class="top-btn" href="dashboard.html"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back</a>
+        </header>
+
+        <section class="stock-ledger-filter" aria-labelledby="ledgerFilterTitle">
+            <div class="stock-ledger-selection">
+                <div>
+                    <h2 id="ledgerFilterTitle">Choose an item</h2>
+                    <p>Item select karke OK dabayein, uski stock movement history dekhne ke liye.</p>
+                </div>
+                <form id="stockLedgerForm" class="stock-ledger-form">
+                    <label for="ledgerItemSearch">Search item</label>
+                    <input id="ledgerItemSearch" type="search" list="ledgerItemOptions" placeholder="Item name or code" autocomplete="off" required />
+                    <datalist id="ledgerItemOptions"></datalist>
+                    <div class="ledger-date-field">
+                        <label for="ledgerFromDate">From date</label>
+                        <input id="ledgerFromDate" type="date" disabled />
+                    </div>
+                    <div class="ledger-date-field">
+                        <label for="ledgerToDate">To date</label>
+                        <input id="ledgerToDate" type="date" disabled />
+                    </div>
+                    <button id="showLedgerBtn" class="primary-btn" type="submit">OK</button>
+                    <p id="ledgerMessage" class="ledger-message" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+
+        <section id="ledgerResult" class="stock-ledger-result" hidden>
+            <div class="stock-ledger-heading">
+                <div>
+                    <h2 id="selectedItemName"></h2>
+                    <p id="selectedItemMeta"></p>
+                </div>
+                <button id="printLedgerBtn" class="page-btn" type="button"><i class="fa-solid fa-print" aria-hidden="true"></i> Print</button>
+            </div>
+            <div class="ledger-summary" aria-label="Stock summary">
+                <article><span>Opening balance for selected range</span><strong id="openingBalance">0</strong></article>
+                <article><span>Total received</span><strong id="totalIn">0</strong></article>
+                <article><span>Total issued</span><strong id="totalOut">0</strong></article>
+                <article><span>Current stock</span><strong id="currentBalance">0</strong></article>
+            </div>
+            <div class="inventory-table-wrapper stock-ledger-table-wrap">
+                <table class="inventory-table stock-ledger-table">
+                    <thead>
+                        <tr><th>#</th><th>Date</th><th>Voucher No.</th><th>Activity</th><th>Warehouse / Location</th><th>In</th><th>Out</th><th>Balance</th></tr>
+                    </thead>
+                    <tbody id="ledgerRows"></tbody>
+                </table>
+                <p id="ledgerEmptyState" class="ledger-empty" hidden>No recorded stock movements for this item.</p>
+            </div>
+            <p class="ledger-note">IN is taken from saved Material Receipt Notes. OUT is taken from approved Material Requisitions. The default range starts on the item creation date and ends today.</p>
+        </section>
+    </main>
+
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js"></script>
+    <script src="../js/stock-ledger.js"></script>
+</body>
+</html>

@@ -1,0 +1,749 @@
+:root {
+  --skeuo-page: #d9c8b1;
+  --skeuo-surface: #eadbc5;
+  --skeuo-surface-light: #fbf3e6;
+  --skeuo-edge: #a38562;
+  --skeuo-ink: #382719;
+  --skeuo-blue: #805331;
+  --skeuo-blue-deep: #4c2e19;
+  --skeuo-shadow: rgba(62, 39, 20, 0.25);
+}
+
+html {
+  background: var(--skeuo-page);
+}
+
+body {
+  color: var(--skeuo-ink);
+  background-color: var(--skeuo-page);
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgba(255, 255, 255, 0.8), transparent 48%),
+    linear-gradient(145deg, #e8eceb 0%, #d6dee1 52%, #cbd5d9 100%);
+  background-attachment: fixed;
+}
+
+.top-strip {
+  background: linear-gradient(180deg, #6f9ab0 0%, #477c98 46%, #315c75 100%);
+  border-bottom: 1px solid #25495f;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55),
+              inset 0 -2px 0 rgba(16,38,52,.28),
+              0 4px 10px rgba(25,47,61,.25);
+}
+
+.brand,
+.brand i,
+.top-home,
+.top-user,
+.top-back {
+  text-shadow: 0 1px 1px rgba(20, 43, 56, .55);
+}
+
+.top-strip #searchBox,
+.search-group,
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  border: 1px solid #aab6bb;
+  border-top-color: #929fa5;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #dfe5e6 0%, #f7f9f8 22%, #f7f9f8 100%);
+  color: #263b49;
+  box-shadow: inset 0 2px 4px rgba(50, 67, 74, .16),
+              inset 0 1px 0 rgba(255,255,255,.9),
+              0 1px 0 rgba(255,255,255,.7);
+}
+
+.search-group input {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.top-strip #searchBox:focus {
+  border-color: #4f88a4;
+  outline: 2px solid rgba(67, 132, 164, .2);
+  outline-offset: 1px;
+  box-shadow: inset 0 2px 4px rgba(50,67,74,.12),
+              0 0 0 2px rgba(255,255,255,.55),
+              0 0 0 4px rgba(67,132,164,.16);
+}
+
+.voucher-header,
+.inventory-breadcrumb,
+.inventory-toolbar,
+.voucher-form-card,
+.voucher-table-card,
+.inventory-card,
+.filter-dialog,
+.dash-tile,
+.login-box {
+  border: 1px solid #c2cbcc;
+  background: linear-gradient(145deg, #fbfcfa 0%, #eef1ef 52%, #e5e9e8 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.96),
+              inset 1px 0 0 rgba(255,255,255,.52),
+              0 2px 3px rgba(255,255,255,.62),
+              0 7px 16px var(--skeuo-shadow);
+}
+
+.voucher-header,
+.inventory-breadcrumb {
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+
+.voucher-form-card,
+.voucher-table-card,
+.inventory-card {
+  border-radius: 14px;
+}
+
+.voucher-card-header,
+.inventory-card-header {
+  color: var(--skeuo-ink);
+}
+
+.breadcrumb-title,
+.voucher-card-header h2,
+.inventory-card-header h2 {
+  color: #2e5267;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.breadcrumb-path,
+.dashboard-flow-caption {
+  color: #5c7079;
+}
+
+button,
+.toolbar-btn,
+.page-btn,
+.action-btn,
+.nav-link,
+.top-btn,
+.tab,
+.top-user,
+.top-back,
+.logout-btn,
+.button,
+a.toolbar-btn {
+  border: 1px solid #9aaab1;
+  border-top-color: #c4cdd0;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #ffffff 0%, #e9eeed 48%, #d7dfdf 100%);
+  color: #304c5c;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.96),
+              inset 0 -1px 0 rgba(100,119,126,.13),
+              0 2px 3px rgba(36,54,62,.2);
+  text-shadow: 0 1px 0 rgba(255,255,255,.75);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+
+button:hover,
+.toolbar-btn:hover,
+.page-btn:hover,
+.action-btn:hover,
+.nav-link:hover,
+.top-btn:hover,
+.tab:hover,
+.button:hover,
+a.toolbar-btn:hover {
+  color: #163e54;
+  background: linear-gradient(180deg, #fff 0%, #e7f1f4 50%, #cbdfe7 100%);
+  border-color: #7299aa;
+  filter: saturate(1.08);
+}
+
+button:active,
+.toolbar-btn:active,
+.page-btn:active,
+.action-btn:active,
+.tab:active,
+.button:active,
+a.toolbar-btn:active {
+  transform: translateY(1px);
+  background: linear-gradient(180deg, #cbd5d7 0%, #e1e7e7 100%);
+  box-shadow: inset 0 2px 4px rgba(33,52,60,.22),
+              0 1px 0 rgba(255,255,255,.65);
+}
+
+.top-user,
+.top-back {
+  border-color: rgba(218,235,242,.68);
+  background: linear-gradient(180deg, rgba(255,255,255,.2), rgba(17,52,72,.18));
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(14,35,47,.7);
+}
+
+.top-user:hover,
+.top-back:hover {
+  color: #fff;
+  background: linear-gradient(180deg, rgba(255,255,255,.32), rgba(17,52,72,.12));
+}
+
+.toolbar-btn,
+.action-btn,
+.page-btn,
+.button,
+a.toolbar-btn {
+  min-height: 36px;
+}
+
+.tab.active,
+.ims-tabs .tab.active,
+.ims-tabs .active {
+  border-color: #254d64;
+  background: linear-gradient(180deg, #75a4bb 0%, #477f9a 45%, #315f78 100%);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(17,43,58,.72);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.42),
+              inset 0 -2px 0 rgba(17,43,58,.25),
+              0 2px 4px rgba(37,58,67,.24);
+}
+
+.voucher-table-wrapper {
+  border: 1px solid #aab8bc;
+  border-radius: 8px;
+  background: #e4e9e8;
+  box-shadow: inset 0 2px 5px rgba(42,58,65,.16),
+              0 1px 0 rgba(255,255,255,.8);
+}
+
+.voucher-table th,
+.inventory-table th {
+  background: linear-gradient(180deg, #7198aa 0%, #47768d 48%, #355c70 100%);
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(20,43,56,.65);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.34),
+              inset 0 -1px 0 rgba(18,43,57,.28);
+}
+
+.voucher-table td,
+.inventory-table td {
+  border-color: #ccd4d4;
+}
+
+.voucher-table tbody tr:nth-child(even),
+.inventory-table tbody tr:nth-child(even) {
+  background: #e7edec;
+}
+
+.voucher-table tbody tr:hover,
+.inventory-table tbody tr:hover {
+  background: #d9e8ec;
+}
+
+.dash-tile {
+  border-radius: 12px;
+  color: var(--skeuo-ink);
+  text-shadow: 0 1px 0 #fff;
+}
+
+.dash-tile .tile-icon {
+  border: 1px solid #b3c0c3;
+  background: linear-gradient(145deg, #fdfefd, #dce5e6);
+  box-shadow: inset 0 1px 0 #fff, 0 2px 3px rgba(40,58,65,.16);
+  color: #386b84;
+}
+
+.dash-tile .tile-sub {
+  color: #586b72;
+}
+
+.dash-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 #fff, 0 3px 5px rgba(255,255,255,.7),
+              0 10px 18px rgba(48,63,70,.25);
+}
+
+.top-strip .search-dropdown {
+  border: 1px solid #aab8bc;
+  background: linear-gradient(145deg, #fff, #edf1f0);
+  box-shadow: inset 0 1px 0 #fff, 0 8px 18px rgba(30,49,57,.25);
+}
+
+.top-strip .search-dropdown li a:hover {
+  background: linear-gradient(180deg, #eef6f7, #d7e6ea);
+}
+
+.login-box {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  width: min(410px, 96vw, max(38vw, 67vh));
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 24px 28px;
+  transform: translate(-50%, -50%);
+  color: #304b5b;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(255,255,255,.9) 0%, rgba(237,241,240,.88) 58%, rgba(223,230,229,.9) 100%);
+  box-shadow: inset 0 1px 0 #fff, inset 1px 0 0 rgba(255,255,255,.7),
+              0 3px 6px rgba(255,255,255,.6), 0 8px 18px rgba(22,42,51,.28);
+}
+
+.login-box h2 {
+  color: #2f5c73;
+  text-shadow: 0 1px 0 #fff;
+}
+
+body:has(.login-box) {
+  background-image: url("../images/login-wallpaper.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-box input {
+  height: 38px;
+  padding: 0 11px;
+  border-radius: 6px;
+}
+
+.login-box .button {
+  background: linear-gradient(180deg, #77a6bc 0%, #477f9a 48%, #315f78 100%);
+  border-color: #2c586e;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(17,43,58,.7);
+}
+
+@media (max-width: 700px) {
+  .voucher-header,
+  .inventory-breadcrumb,
+  .inventory-toolbar,
+  .voucher-form-card,
+  .voucher-table-card,
+  .inventory-card {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.94),
+                0 3px 8px rgba(48,63,70,.17);
+  }
+
+  .login-box {
+    padding: 16px 20px;
+  }
+
+  .login-box h2 {
+    margin: 8px 0 12px;
+    font-size: 25px;
+  }
+
+  .login-box input {
+    height: 34px;
+    margin: 8px auto;
+  }
+
+  .login-box .button {
+    padding: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Warm leather, wood, and brass palette to match the login wallpaper. */
+body {
+  color: #382719;
+  background-color: #d9c8b1;
+  background-image:
+    radial-gradient(ellipse at 15% 0%, rgba(255, 249, 235, .82), transparent 48%),
+    linear-gradient(145deg, #f0e4d2 0%, #ddc8aa 52%, #c9ad89 100%);
+}
+
+.top-strip {
+  background: linear-gradient(180deg, #846042 0%, #634329 48%, #422915 100%);
+  border-bottom-color: #332012;
+  box-shadow: inset 0 1px 0 rgba(255,230,183,.45),
+              inset 0 -2px 0 rgba(32,18,8,.35),
+              0 4px 10px rgba(45,28,14,.3);
+}
+
+.top-strip #searchBox,
+.search-group,
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  border-color: #b69a75;
+  border-top-color: #92744e;
+  background: linear-gradient(180deg, #dbc8ac 0%, #fbf5ea 24%, #f7eddd 100%);
+  color: #382719;
+  box-shadow: inset 0 2px 4px rgba(71,46,21,.16),
+              inset 0 1px 0 rgba(255,255,255,.9),
+              0 1px 0 rgba(255,255,255,.65);
+}
+
+.search-group input {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.top-strip #searchBox:focus {
+  border-color: #a77835;
+  outline-color: rgba(173,125,49,.24);
+  box-shadow: inset 0 2px 4px rgba(71,46,21,.12),
+              0 0 0 2px rgba(255,249,235,.65),
+              0 0 0 4px rgba(173,125,49,.2);
+}
+
+.voucher-header,
+.inventory-breadcrumb,
+.inventory-toolbar,
+.voucher-form-card,
+.voucher-table-card,
+.inventory-card,
+.filter-dialog,
+.dash-tile,
+.login-box {
+  border-color: #c7ae8a;
+  background: linear-gradient(145deg, #fff8eb 0%, #f0e2ca 54%, #e5d2b4 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.96),
+              inset 1px 0 0 rgba(255,255,255,.55),
+              0 2px 3px rgba(255,255,255,.6),
+              0 7px 16px rgba(62,39,20,.24);
+}
+
+.breadcrumb-title,
+.voucher-card-header h2,
+.inventory-card-header h2 {
+  color: #57381f;
+}
+
+.breadcrumb-path,
+.dashboard-flow-caption,
+.dash-tile .tile-sub {
+  color: #705a40;
+}
+
+button,
+.toolbar-btn,
+.page-btn,
+.action-btn,
+.nav-link,
+.top-btn,
+.tab,
+.logout-btn,
+.button,
+a.toolbar-btn {
+  border-color: #a88a64;
+  border-top-color: #c8ae88;
+  background: linear-gradient(180deg, #fff8eb 0%, #f0e2ca 48%, #dbc6a5 100%);
+  color: #4a301b;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.96),
+              inset 0 -1px 0 rgba(112,77,40,.15),
+              0 2px 3px rgba(62,39,20,.23);
+}
+
+button:hover,
+.toolbar-btn:hover,
+.page-btn:hover,
+.action-btn:hover,
+.nav-link:hover,
+.top-btn:hover,
+.tab:hover,
+.button:hover,
+a.toolbar-btn:hover {
+  color: #3d2512;
+  background: linear-gradient(180deg, #fff9ed 0%, #f4e6cc 48%, #d8b879 100%);
+  border-color: #a97c3d;
+}
+
+button:active,
+.toolbar-btn:active,
+.page-btn:active,
+.action-btn:active,
+.tab:active,
+.button:active,
+a.toolbar-btn:active {
+  background: linear-gradient(180deg, #c5a77c 0%, #e4d1b2 100%);
+  box-shadow: inset 0 2px 4px rgba(62,39,20,.25),
+              0 1px 0 rgba(255,255,255,.6);
+}
+
+.top-user,
+.top-back {
+  border-color: rgba(246,224,184,.7);
+  background: linear-gradient(180deg, rgba(255,241,209,.22), rgba(39,22,9,.24));
+}
+
+.top-user:hover,
+.top-back:hover {
+  background: linear-gradient(180deg, rgba(255,241,209,.34), rgba(39,22,9,.14));
+}
+
+.tab.active,
+.ims-tabs .tab.active,
+.ims-tabs .active {
+  border-color: #4d2e17;
+  background: linear-gradient(180deg, #a77b3f 0%, #78502c 48%, #4e301a 100%);
+  color: #fff7e8;
+  text-shadow: 0 1px 2px rgba(36,19,7,.75);
+  box-shadow: inset 0 1px 0 rgba(255,231,182,.42),
+              inset 0 -2px 0 rgba(35,19,8,.3),
+              0 2px 4px rgba(62,39,20,.26);
+}
+
+.voucher-table-wrapper {
+  border-color: #aa906d;
+  background: #e9dbc4;
+  box-shadow: inset 0 2px 5px rgba(71,46,21,.17),
+              0 1px 0 rgba(255,255,255,.78);
+}
+
+.voucher-table th,
+.inventory-table th {
+  background: linear-gradient(180deg, #87633f 0%, #664426 48%, #49301c 100%);
+  color: #fff6e6;
+  text-shadow: 0 1px 1px rgba(36,19,7,.7);
+  box-shadow: inset 0 1px 0 rgba(255,232,190,.34),
+              inset 0 -1px 0 rgba(35,19,8,.34);
+}
+
+.voucher-table td,
+.inventory-table td {
+  border-color: #d2c1a6;
+}
+
+.voucher-table tbody tr:nth-child(even),
+.inventory-table tbody tr:nth-child(even) {
+  background: #f0e5d2;
+}
+
+.voucher-table tbody tr:hover,
+.inventory-table tbody tr:hover {
+  background: #e7d4b4;
+}
+
+.dash-tile .tile-icon {
+  border-color: #c4a978;
+  background: linear-gradient(145deg, #fff8eb, #dfc9a6);
+  color: #77502c;
+}
+
+.top-strip .search-dropdown {
+  border-color: #b69a75;
+  background: linear-gradient(145deg, #fff8eb, #ead9bd);
+  box-shadow: inset 0 1px 0 #fff, 0 8px 18px rgba(48,29,13,.28);
+}
+
+.top-strip .search-dropdown li a:hover {
+  background: linear-gradient(180deg, #fff5df, #e8d1a9);
+}
+
+.login-box {
+  color: #49301c;
+  background: linear-gradient(145deg, rgba(255,249,237,.91) 0%, rgba(240,226,202,.89) 58%, rgba(224,205,174,.91) 100%);
+}
+
+.login-box h2 {
+  color: #654221;
+}
+
+.login-box .button {
+  background: linear-gradient(180deg, #a77b3f 0%, #78502c 48%, #4e301a 100%);
+  border-color: #4d2e17;
+  color: #fff7e8;
+  text-shadow: 0 1px 2px rgba(36,19,7,.75);
+}
+
+/* Screen surfaces use light brown; print styles retain their original white paper. */
+@media screen {
+  /* Shared tab bars for paired voucher views (All / Pending, etc.). */
+  .ims-tabs,
+  .inventory-tabs,
+  .master-tabs,
+  .form-tabs {
+    background: linear-gradient(180deg, #f8f1e6 0%, #f1e4d1 100%);
+    border-color: #d9c7aa;
+  }
+
+  body.purchase-voucher-page {
+    background: linear-gradient(145deg, #faf5ec 0%, #f3e8d7 54%, #ebddc7 100%);
+  }
+
+  body:has(.purchase-indent-shell),
+  body:has(.purchase-indent-shell) .purchase-indent-shell {
+    background: linear-gradient(145deg, #faf5ec 0%, #f3e8d7 54%, #ebddc7 100%);
+  }
+
+  .voucher-header,
+  .inventory-breadcrumb,
+  .inventory-toolbar,
+  .voucher-form-card,
+  .voucher-table-card,
+  .inventory-card,
+  .voucher-import-card,
+  .filter-dialog,
+  .dash-tile,
+  .purchase-form-card,
+  .purchase-page-header,
+  .purchase-table-shell,
+  .purchase-footer-bar,
+  .account-master-panel,
+  .department-master-panel,
+  .warehouse-form,
+  .category-panel,
+  .items-panel {
+    background: linear-gradient(145deg, #f8f1e6 0%, #f1e4d1 54%, #e9dac2 100%);
+  }
+
+  .po-form-active,
+  body.purchase-voucher-page.po-form-active,
+  .po-form-active .voucher-form-card {
+    background: linear-gradient(145deg, #f8f1e6 0%, #f1e4d1 54%, #e9dac2 100%);
+  }
+
+  .voucher-table-wrapper,
+  .purchase-table-shell,
+  body #piListView .voucher-table-wrapper,
+  body #rfqAllView .voucher-table-wrapper,
+  body #rfqPendingView .voucher-table-wrapper,
+  body #qrAllView .voucher-table-wrapper,
+  body #qrPendingView .voucher-table-wrapper,
+  body #allPoView .voucher-table-wrapper,
+  body #pendingQrView .voucher-table-wrapper {
+    background: #f2e7d7;
+  }
+
+  .search-group,
+  .filter-field select,
+  .form-row input,
+  .form-row select,
+  .form-row textarea,
+  .row-action,
+  .icon-btn {
+    background: linear-gradient(180deg, #fbf6ed 0%, #f2e7d7 100%);
+  }
+
+  body.purchase-voucher-page .field-group input,
+  body.purchase-voucher-page .field-group select,
+  body.purchase-voucher-page .field-group textarea,
+  body.purchase-voucher-page .filter-field input,
+  body.purchase-voucher-page .filter-field select,
+  body.purchase-voucher-page.po-form-active #poLinesBody .ims-lines-input,
+  body.purchase-voucher-page.po-form-active .field-group input,
+  body.purchase-voucher-page.po-form-active .field-group select,
+  body.purchase-voucher-page.po-form-active .field-group textarea,
+  body:has(.purchase-indent-shell) .field-group input,
+  body:has(.purchase-indent-shell) .field-group select,
+  body:has(.purchase-indent-shell) .purchase-table td input:focus,
+  body:has(.purchase-indent-shell) .purchase-table td select:focus {
+    background: linear-gradient(180deg, #fbf6ed 0%, #f2e7d7 100%);
+  }
+
+  body.purchase-voucher-page input:not([type="checkbox"]):not([type="radio"]),
+  body.purchase-voucher-page select,
+  body.purchase-voucher-page textarea,
+  body:has(.purchase-indent-shell) input:not([type="checkbox"]):not([type="radio"]),
+  body:has(.purchase-indent-shell) select,
+  body:has(.purchase-indent-shell) textarea {
+    background: linear-gradient(180deg, #fbf6ed 0%, #f2e7d7 100%);
+  }
+
+  body.purchase-voucher-page.material-requisition-page .voucher-header,
+  body.purchase-voucher-page.po-form-active #poFormView > .voucher-form-card,
+  body:has(.purchase-indent-shell) .purchase-form-card,
+  body:has(.purchase-indent-shell) .purchase-table-shell,
+  body:has(.purchase-indent-shell) .purchase-footer-bar,
+  body.purchase-voucher-page .qr-context-menu,
+  body.purchase-voucher-page .mrn-context-menu {
+    background: linear-gradient(145deg, #f8f1e6 0%, #f1e4d1 54%, #e9dac2 100%);
+  }
+
+  body.purchase-voucher-page .voucher-table-wrapper,
+  body.purchase-voucher-page .voucher-table .ims-lines-input,
+  body.purchase-voucher-page .po-entry-grid input,
+  body.purchase-voucher-page .po-entry-grid select,
+  body.purchase-voucher-page .po-entry-grid textarea {
+    background: linear-gradient(180deg, #fbf6ed 0%, #f2e7d7 100%);
+  }
+
+  body.purchase-voucher-page #mrnAllView .voucher-table-wrapper,
+  body.purchase-voucher-page #mrnPendingPoView .voucher-table-wrapper {
+    background: #f2e7d7;
+  }
+
+  #mrnAllView .voucher-table tbody tr:nth-child(even),
+  #mrnPendingPoView .voucher-table tbody tr:nth-child(even) {
+    background: #f3e9da;
+  }
+
+  .voucher-table tbody > tr,
+  .inventory-table tbody > tr,
+  .purchase-table tbody > tr {
+    background: #f3e9da !important;
+    transition: background-color .14s ease;
+  }
+
+  .voucher-table tbody > tr > td,
+  .inventory-table tbody > tr > td,
+  .purchase-table tbody > tr > td {
+    background: #f3e9da !important;
+    transition: background-color .14s ease;
+  }
+
+  .voucher-table tbody > tr:hover,
+  .inventory-table tbody > tr:hover,
+  .purchase-table tbody > tr:hover,
+  .voucher-table tbody > tr:hover > td,
+  .inventory-table tbody > tr:hover > td,
+  .purchase-table tbody > tr:hover > td {
+    background: #fff !important;
+  }
+
+  .purchase-table tbody tr:nth-child(even) {
+    background: #f3e9da !important;
+  }
+
+  .purchase-table tbody tr:hover {
+    background: #fff !important;
+  }
+
+  .login-box {
+    background: linear-gradient(145deg, rgba(242,220,185,.94) 0%, rgba(226,197,151,.94) 58%, rgba(213,178,124,.94) 100%);
+  }
+}
+
+.brand-with-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.purchase-indent-brand-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 8px;
+}
+
+.purchase-indent-brand-tools .toolbar-btn {
+  min-height: 34px;
+  padding: 6px 12px;
+  text-decoration: none;
+}
+
+@media (max-width: 1050px) {
+  .brand-with-actions {
+    max-width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    row-gap: 7px;
+  }
+
+  .purchase-indent-brand-tools {
+    margin-left: 0;
+  }
+}

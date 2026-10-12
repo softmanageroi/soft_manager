@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Purchase Workflow</title>
+    <link rel="stylesheet" href="../css/purchase.css" />
+    <link rel="stylesheet" href="../css/common-header.css" />
+    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body>
+    <header class="top-strip">
+        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
+        <div class="search">
+            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
+            <ul id="searchResults" class="search-dropdown"></ul>
+        </div>
+        <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
+    </header>
+    <div class="inventory-page">
+        <header class="voucher-header">
+            <div>
+                <div class="breadcrumb-title">Purchase Workflow</div>
+                <div class="breadcrumb-path">Purchase Indent → RFQ → Purchase Order → Authorization → MRN</div>
+            </div>
+            <div class="voucher-actions">
+                <button id="newWorkflowBtn" class="toolbar-btn" title="New workflow"><i class="fa-regular fa-file"></i></button>
+                <button id="saveWorkflowBtn" class="toolbar-btn" title="Save workflow"><i class="fa-solid fa-floppy-disk"></i></button>
+                <button id="createPOBtn" class="toolbar-btn" title="Create purchase order" onclick="window.location.href='purchase-order-creation.html?view=new'"><i class="fa-solid fa-cart-shopping"></i></button>
+                <button id="openRFQListBtn" class="toolbar-btn" title="Open RFQ list" onclick="window.location.href='request-for-quotation.html'">RFQ List</button>
+                <button id="openQuotationReceiveBtn" class="toolbar-btn" title="Open Quotation Receive" onclick="window.location.href='quotation-receive.html'">Quotation Receive</button>
+                <button class="toolbar-btn" title="Open Material Receipt Note" onclick="window.location.href='material-receipt-note.html'">MRN</button>
+            </div>
+        </header>
+
+        <section class="voucher-form-card">
+            <div class="voucher-grid">
+                <div class="field-group">
+                    <label for="workflowId">Workflow ID</label>
+                    <input id="workflowId" type="text" readonly />
+                </div>
+                <div class="field-group">
+                    <label for="indentNo">Indent No.</label>
+                    <input id="indentNo" type="text" readonly />
+                </div>
+                <div class="field-group">
+                    <label for="indentDate">Indent Date</label>
+                    <input id="indentDate" type="date" />
+                </div>
+                <div class="field-group">
+                    <label for="requestedBy">Requested By</label>
+                    <select id="requestedBy"></select>
+                </div>
+                <div class="field-group full-width">
+                    <label for="description">Description</label>
+                    <textarea id="description" rows="3" placeholder="Enter indent description"></textarea>
+                </div>
+                <div class="field-group">
+                    <label for="rfqNo">RFQ No.</label>
+                    <input id="rfqNo" type="text" placeholder="Enter RFQ number" />
+                </div>
+                <div class="field-group">
+                    <label for="rfqDate">RFQ Date</label>
+                    <input id="rfqDate" type="date" />
+                </div>
+                <div class="field-group">
+                    <label for="rfqStatus">RFQ Status</label>
+                    <select id="rfqStatus">
+                        <option value="">Select status</option>
+                        <option value="Issued">Issued</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Received">Received</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="quotationNo">Quotation No.</label>
+                    <input id="quotationNo" type="text" placeholder="Enter quotation number" />
+                </div>
+                <div class="field-group">
+                    <label for="quotationDate">Quotation Receive Date</label>
+                    <input id="quotationDate" type="date" />
+                </div>
+                <div class="field-group">
+                    <label for="quotationAmount">Quotation Amount</label>
+                    <input id="quotationAmount" type="number" min="0" step="0.01" placeholder="0.00" />
+                </div>
+                <div class="field-group">
+                    <label for="poNo">Purchase Order No.</label>
+                    <input id="poNo" type="text" readonly />
+                </div>
+                <div class="field-group">
+                    <label for="poStatus">PO Status</label>
+                    <input id="poStatus" type="text" readonly />
+                </div>
+            </div>
+        </section>
+
+        <section class="voucher-table-card">
+            <div class="voucher-table-wrapper">
+                <table class="voucher-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Indent No.</th>
+                            <th>Requested By</th>
+                            <th>RFQ No.</th>
+                            <th>Quotation No.</th>
+                            <th>PO No.</th>
+                            <th>Workflow Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="workflowTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js"></script>
+    <script src="../js/purchase-workflow.js"></script>
+    <script src="../js/voucher-toolbar.js"></script>
+</body>
+</html>

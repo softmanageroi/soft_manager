@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Purchase Indent</title>
+    <link rel="stylesheet" href="../css/purchase.css" />
+    <link rel="stylesheet" href="../css/ims-flow.css" />
+    <link rel="stylesheet" href="../css/common-header.css" />
+    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body>
+    <header class="top-strip">
+        <div class="brand brand-with-actions"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager
+            <div class="purchase-indent-brand-tools" aria-label="Purchase indent actions">
+                <button id="piNewBtn" class="toolbar-btn" type="button" title="New Purchase Indent">New</button>
+                <a class="toolbar-btn has-label" href="request-for-quotation.html">RFQ</a>
+            </div>
+        </div>
+        <div class="search">
+            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
+            <ul id="searchResults" class="search-dropdown"></ul>
+        </div>
+        <div class="top-actions">
+            <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
+            <a id="topUserLink" class="top-user" href="index.html" aria-label="Login">
+                <i class="fa-solid fa-user" aria-hidden="true"></i><span id="topUserLabel">Login</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="purchase-indent-shell">
+        <aside class="side-navigation">
+            <nav class="side-menu" aria-label="Sidebar navigation">
+                <button class="nav-item" type="button"><i class="fa-solid fa-house"></i><span>Home</span></button>
+                <button class="nav-item" type="button"><i class="fa-solid fa-wallet"></i><span>Financial Transactions</span></button>
+                <button class="nav-item active" type="button"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Transactions</span></button>
+                <button class="nav-item" type="button"><i class="fa-solid fa-gear"></i><span>Settings</span></button>
+            </nav>
+        </aside>
+
+        <main class="purchase-indent-page">
+            <header class="purchase-page-header">
+                <div class="page-header-title-wrap">
+                    <h1>Purchase Indent</h1>
+                </div>
+            </header>
+
+            <section id="piListView" class="voucher-table-card">
+                <div class="voucher-card-header"><h2>All Vouchers (<span id="piCount">0</span>)</h2></div>
+                <div class="voucher-table-wrapper">
+                    <table class="voucher-table">
+                        <thead><tr><th>#</th><th>Date</th><th>Voucher No</th><th>Items</th><th>Link status</th></tr></thead>
+                        <tbody id="piListBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="piFormView" class="purchase-form-card" hidden>
+                <div class="purchase-form-grid top-grid">
+                    <div class="field-group field-inline">
+                        <label for="piVoucherNo">Document No.</label>
+                        <input id="piVoucherNo" readonly value="PIU/26-27/0135" />
+                    </div>
+                    <div class="field-group field-inline">
+                        <label for="piDate">Date</label>
+                        <input id="piDate" type="date" value="2026-10-10" />
+                    </div>
+                    <div class="field-group field-inline">
+                        <label for="piLocation">Location</label>
+                        <select id="piLocation">
+                            <option>Office</option>
+                            <option>Warehouse</option>
+                            <option>Plant</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="purchase-form-grid middle-grid">
+                    <div class="field-group field-inline">
+                        <label for="piNarration">Narration</label>
+                        <input id="piNarration" type="text" placeholder="Enter narration" />
+                    </div>
+                    <div class="field-group field-inline">
+                        <label for="piRequestedBy">Requested By</label>
+                        <select id="piRequestedBy"></select>
+                    </div>
+                </div>
+
+                <div class="purchase-table-shell">
+                    <table class="purchase-table">
+                        <thead>
+                            <tr>
+                                <th class="col-number">#</th>
+                                <th>Brand</th>
+                                <th>Item</th>
+                                <th>Description</th>
+                                <th>Units</th>
+                                <th>Quantity</th>
+                                <th>Stock In Hand</th>
+                            </tr>
+                        </thead>
+                        <tbody id="piLinesBody"></tbody>
+                    </table>
+                </div>
+                <datalist id="piItemOptions"></datalist>
+
+                <div class="purchase-footer-bar">
+                    <div class="footer-left"><span class="footer-label">Net:</span> <strong>₹ 0.000</strong></div>
+                    <div class="footer-actions">
+                        <button id="piSaveBtn" class="toolbar-btn" type="button">Save</button>
+                        <button id="piCancelBtn" class="toolbar-btn" type="button">Cancel</button>
+                    </div>
+                </div>
+                <p id="piMessage" class="ims-message" role="status" aria-live="polite"></p>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js"></script>
+    <script src="../js/purchase-indent.js"></script>
+    <script src="../js/voucher-toolbar.js"></script>
+</body>
+</html>

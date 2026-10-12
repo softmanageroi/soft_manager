@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Purchase Order Creation</title>
+    <link rel="stylesheet" href="../css/purchase.css" />
+    <link rel="stylesheet" href="../css/ims-flow.css" />
+    <link rel="stylesheet" href="../css/common-header.css" />
+    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body class="purchase-voucher-page">
+    <header class="top-strip">
+        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
+        <div class="search">
+            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
+            <ul id="searchResults" class="search-dropdown"></ul>
+        </div>
+        <div class="top-actions">
+            <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
+            <a id="topUserLink" class="top-user" href="index.html" aria-label="Login">
+                <i class="fa-solid fa-user" aria-hidden="true"></i><span id="topUserLabel">Login</span>
+            </a>
+        </div>
+    </header>
+    <div class="inventory-page">
+        <header class="voucher-header">
+            <div>
+                <div class="breadcrumb-title">Purchase Order</div>
+                <div class="breadcrumb-path">Purchases / Quotation Receive → Purchase Order → Material Receipt Note</div>
+            </div>
+            <div class="voucher-actions">
+                <button id="openQuotationReceiveBtn" class="toolbar-btn" type="button" title="Open Quotation Receive">Quotation Receive</button>
+                <a class="toolbar-btn" href="material-receipt-note.html" title="Open Material Receipt Note">MRN</a>
+            </div>
+        </header>
+
+        <div class="ims-tabs po-tabs-ribbon" role="tablist" aria-label="Purchase orders">
+            <div class="po-ribbon-tabs">
+                <button id="tabAllPo" class="tab active" type="button" role="tab" aria-selected="true">All Vouchers</button>
+                <button id="tabPendingQr" class="tab" type="button" role="tab" aria-selected="false">Pending Quotation</button>
+            </div>
+            <div class="po-list-filters" role="search" aria-label="Filter purchase orders">
+                <button id="togglePoFiltersBtn" class="po-ribbon-icon" type="button" title="Open filters" aria-label="Open filters" aria-expanded="false" aria-controls="poFilterPanel">
+                    <i class="fa-solid fa-filter" aria-hidden="true"></i>
+                </button>
+                <div id="poFilterPanel" class="po-filter-panel" hidden>
+                    <label class="po-filter-field" title="Filter by PO number">
+                        <i class="fa-solid fa-hashtag" aria-hidden="true"></i>
+                        <input id="poFilterNumber" type="search" placeholder="PO No." aria-label="Filter by PO number">
+                    </label>
+                    <label class="po-filter-field" title="Filter by item">
+                        <i class="fa-solid fa-box" aria-hidden="true"></i>
+                        <input id="poFilterItem" type="search" placeholder="Item" aria-label="Filter by item name">
+                    </label>
+                    <label class="po-filter-field" title="Filter by vendor name">
+                        <i class="fa-solid fa-user" aria-hidden="true"></i>
+                        <input id="poFilterVendor" type="search" placeholder="Vendor" aria-label="Filter by vendor name">
+                    </label>
+                </div>
+                <button id="printPoListBtn" class="po-ribbon-icon" type="button" title="Print visible vouchers" aria-label="Print visible vouchers">
+                    <i class="fa-solid fa-print" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+        <section id="allPoView" class="voucher-table-card">
+            <div class="voucher-card-header"><h2>All Vouchers (<span id="poCount">0</span>)</h2></div>
+            <div class="voucher-table-wrapper">
+                <table class="voucher-table">
+                    <thead>
+                        <tr><th>#</th><th>PO No.</th><th>PO Date</th><th>Supplier</th><th>Quotation</th><th>Total Amount</th><th>Order Status</th><th>Authorization</th><th>Items</th><th>Action</th></tr>
+                    </thead>
+                    <tbody id="allPoBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="pendingQrView" class="voucher-table-card" hidden>
+            <div class="voucher-card-header"><h2>Pending Quotation</h2></div>
+            <div class="voucher-table-wrapper">
+                <table class="voucher-table">
+                    <thead>
+                        <tr><th>#</th><th>Date</th><th>QR No.</th><th>Supplier</th><th>Total</th><th>Items</th></tr>
+                    </thead>
+                    <tbody id="pendingQrBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="poFormView" hidden>
+        <section class="voucher-form-card">
+            <div class="po-main-tab" role="tab" aria-selected="true">Main</div>
+            <div class="voucher-grid po-entry-grid">
+                <input id="orderId" type="hidden" />
+                <select id="poStatus" hidden aria-hidden="true">
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Partially Received">Partially Received</option>
+                </select>
+                <input id="totalAmount" type="hidden" value="0" />
+                <div class="field-group">
+                    <label for="poNo">Document No.</label>
+                    <input id="poNo" type="text" readonly />
+                </div>
+                <div class="field-group">
+                    <label for="poDate">Date</label>
+                    <input id="poDate" type="date" />
+                </div>
+                <div class="field-group">
+                    <label for="supplier">Vendor Account</label>
+                    <input id="supplier" type="text" list="supplierAccounts" placeholder="Select or enter supplier" autocomplete="organization" />
+                    <datalist id="supplierAccounts"></datalist>
+                </div>
+                <div class="field-group">
+                    <label for="poPaymentTerms">Payment Terms</label>
+                    <input id="poPaymentTerms" type="text" placeholder="Payment terms" />
+                </div>
+                <div class="field-group">
+                    <label for="poLocation">Location</label>
+                    <input id="poLocation" type="text" placeholder="Location" />
+                </div>
+                <div class="field-group">
+                    <label for="poWarehouse">Warehouse</label>
+                    <select id="poWarehouse"></select>
+                </div>
+                <div class="field-group">
+                    <label for="poWarehouseGstin">Warehouse GSTIN</label>
+                    <input id="poWarehouseGstin" type="text" />
+                </div>
+                <div class="field-group">
+                    <label for="poWarehousePan">Warehouse PAN</label>
+                    <input id="poWarehousePan" type="text" />
+                </div>
+                <div class="field-group full-width">
+                    <label for="poBillingAddress">Billing Address</label>
+                    <textarea id="poBillingAddress" rows="2"></textarea>
+                </div>
+                <div class="field-group full-width">
+                    <label for="poWarehouseAddress">Shipping Address</label>
+                    <textarea id="poWarehouseAddress" rows="2"></textarea>
+                </div>
+                <div class="field-group po-employee-field">
+                    <label for="poEmployee">Employee</label>
+                    <select id="poEmployee"></select>
+                </div>
+                <div class="field-group">
+                    <label for="poRequestedBy">Requested By</label>
+                    <select id="poRequestedBy"></select>
+                </div>
+                <div class="field-group po-narration-field">
+                    <label for="orderNotes">Narration</label>
+                    <textarea id="orderNotes" rows="3" placeholder="Enter narration"></textarea>
+                </div>
+                <div class="field-group">
+                    <label for="workflowSelect">Quotation Ref</label>
+                    <select id="workflowSelect"></select>
+                </div>
+                <div class="field-group">
+                    <label for="poQuotationDate">Quotation Date</label>
+                    <input id="poQuotationDate" type="date" />
+                </div>
+                <div class="field-group">
+                    <label for="poSupplierRefNo">Supplier Ref No.</label>
+                    <input id="poSupplierRefNo" type="text" />
+                </div>
+                <div class="field-group">
+                    <label for="poSupplierRefDate">Supplier Ref Date</label>
+                    <input id="poSupplierRefDate" type="date" />
+                </div>
+                <div class="field-group">
+                    <label for="poPlaceOfSupply">Place of Supply</label>
+                    <input id="poPlaceOfSupply" type="text" placeholder="State" />
+                </div>
+                <div class="field-group">
+                    <label for="poIsIgst">Is IGST</label>
+                    <select id="poIsIgst"><option value="No">No</option><option value="Yes">Yes</option></select>
+                </div>
+                <div class="field-group">
+                    <label for="poReqNo">Req No.</label>
+                    <input id="poReqNo" type="text" />
+                </div>
+                <div class="field-group">
+                    <label for="poRequestType">Request Type</label>
+                    <select id="poRequestType">
+                        <option value="Civil Items">Civil Items</option>
+                        <option value="Electrical Items">Electrical Items</option>
+                        <option value="General Items">General Items</option>
+                        <option value="Services">Services</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label for="poStoreMobile">Store Mobile No.</label>
+                    <input id="poStoreMobile" type="tel" />
+                </div>
+                <div class="field-group">
+                    <label for="poItcEligible">ITC Eligible</label>
+                    <select id="poItcEligible"><option value="NA">NA</option><option value="Yes">Yes</option><option value="No">No</option></select>
+                </div>
+                <div id="vendorAccountDetails" class="field-group full-width" hidden aria-live="polite"></div>
+                <p id="vendorAccountMessage" class="field-group full-width" role="status" hidden></p>
+            </div>
+        </section>
+        <section class="voucher-form-card">
+            <div class="voucher-card-header"><h2>Order Items</h2></div>
+            <div class="voucher-table-wrapper">
+                <table class="voucher-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Category</th>
+                            <th>Brand</th>
+                            <th>Item</th>
+                            <th>Description</th>
+                            <th>Units</th>
+                            <th>Quantity</th>
+                            <th>L-Quotation Received</th>
+                            <th>Rate</th>
+                            <th>Gross</th>
+                            <th>Discount</th>
+                            <th>Freight Charges</th>
+                            <th>GST %</th>
+                            <th>CGST</th>
+                            <th>SGST</th>
+                            <th>IGST</th>
+                            <th>Taxable Value</th>
+                        </tr>
+                    </thead>
+                    <tbody id="poLinesBody"></tbody>
+                </table>
+            </div>
+            <div class="po-entry-net"><span>Net :</span><strong>₹ <span id="poNetDisplay">0.00</span></strong></div>
+            <p id="poMessage" class="ims-message" role="status" aria-live="polite"></p>
+            <div class="voucher-actions">
+                <button id="saveOrderBtn" class="toolbar-btn" type="button">Save</button>
+                <button id="cancelOrderBtn" class="toolbar-btn" type="button">Cancel</button>
+            </div>
+        </section>
+        </section>
+    </div>
+    <section id="poPrintView" class="po-print-preview" aria-label="Purchase order print preview" hidden></section>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js"></script>
+    <script src="../js/purchase-order.js"></script>
+    <script src="../js/voucher-toolbar.js"></script>
+</body>
+</html>

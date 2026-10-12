@@ -1,0 +1,980 @@
+.ims-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.ims-tabs .active {
+    background: #2878a6;
+    color: #ffffff;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.ims-message.error {
+    color: #b42318;
+}
+
+.ims-lines-input {
+    width: 90px;
+    padding: 8px;
+}
+
+.qr-total-field {
+    max-width: 260px;
+    margin: 18px 0;
+}
+
+body.purchase-voucher-page {
+    min-width: 320px;
+    background: #f3f6fa;
+}
+
+body.purchase-voucher-page .inventory-page {
+    max-width: none;
+    margin: 0;
+    padding: 0 6px 72px;
+}
+
+body.purchase-voucher-page .voucher-header {
+    min-height: 44px;
+    margin: 0 -6px 12px;
+    padding: 4px 10px;
+    border-bottom: 1px solid #d1d1d1;
+    border-radius: 0 0 6px 6px;
+    box-shadow: none;
+}
+
+body.purchase-voucher-page .breadcrumb-title {
+    margin: 0;
+    color: #477f9e;
+    font-size: 18px;
+}
+
+body.purchase-voucher-page .breadcrumb-path {
+    display: none;
+}
+
+body.purchase-voucher-page .ims-tabs {
+    gap: 0;
+    margin: 0 -6px 12px;
+    border-bottom: 1px solid #d1d1d1;
+}
+
+body.purchase-voucher-page .ims-tabs .tab {
+    padding: 10px 12px;
+    border-radius: 999px;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: #555;
+}
+
+body.purchase-voucher-page .ims-tabs .tab.active,
+body.purchase-voucher-page .ims-tabs .tab:hover {
+    border-bottom-color: #477f9e;
+    background: transparent;
+    color: #477f9e;
+}
+
+body.purchase-voucher-page .inventory-card,
+body.purchase-voucher-page .voucher-table-card,
+body.purchase-voucher-page .voucher-form-card {
+    margin: 0;
+    padding: 10px 8px;
+    border: 1px solid #d1d1d1;
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+body.purchase-voucher-page .inventory-card-header,
+body.purchase-voucher-page .voucher-card-header {
+    margin-bottom: 8px;
+}
+
+body.purchase-voucher-page .inventory-card-header h2,
+body.purchase-voucher-page .voucher-card-header h2 {
+    color: #477f9e;
+    font-size: 16px;
+}
+
+body.purchase-voucher-page .voucher-table-wrapper {
+    overflow: auto;
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+}
+
+body.purchase-voucher-page .voucher-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+body:has(.purchase-indent-shell) .voucher-table {
+    width: 100%;
+    min-width: 760px;
+    table-layout: fixed;
+}
+
+body:has(.purchase-indent-shell) .voucher-table th,
+body:has(.purchase-indent-shell) .voucher-table td {
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+body.purchase-voucher-page .voucher-table th,
+body.purchase-voucher-page .voucher-table td {
+    height: 38px;
+    padding: 7px 8px;
+    border: 1px solid #d1d1d1;
+    color: #444;
+    font-size: 13px;
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+body.purchase-voucher-page .voucher-table th {
+    background: #477f9e;
+    color: #fff;
+    font-weight: 600;
+    text-transform: none;
+}
+
+body.purchase-voucher-page .voucher-table:has(#qrLinesBody) {
+    min-width: 1300px;
+}
+
+body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) {
+    min-width: 1100px;
+}
+
+body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) th:first-child,
+body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) td:first-child {
+    width: 56px;
+    white-space: nowrap;
+}
+
+body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) th:nth-child(2),
+body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) td:nth-child(2) {
+    width: 112px;
+}
+
+body.purchase-voucher-page .voucher-table tbody tr:nth-child(even) {
+    background: #f7f8fa;
+}
+
+body.purchase-voucher-page .voucher-table tbody tr:hover {
+    background: #eef4f7;
+}
+
+body .voucher-table tbody tr[data-open-pi],
+body .voucher-table tbody tr[data-open-rfq],
+body #qrPendingView .voucher-table tbody tr[data-open-pending-rfq],
+body .voucher-table tbody tr[data-open-pending-qr],
+body .voucher-table tbody tr[data-open-qr],
+body .voucher-table tbody tr[data-open-po-row],
+body.material-requisition-page .inventory-table tbody tr[data-doc-no] {
+    cursor: pointer;
+}
+
+body.purchase-voucher-page .voucher-form-card {
+    padding: 12px 10px;
+}
+
+body.purchase-voucher-page .voucher-form-card > .voucher-card-header {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #d1d1d1;
+}
+
+body.purchase-voucher-page .voucher-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 28px;
+    padding: 8px 10px 18px;
+}
+
+body.purchase-voucher-page .field-group {
+    gap: 8px;
+}
+
+body.purchase-voucher-page .field-group label {
+    color: #4a4a4a;
+    font-weight: 700;
+}
+
+body.purchase-voucher-page .field-group input,
+body.purchase-voucher-page .field-group select,
+body.purchase-voucher-page .field-group textarea {
+    box-sizing: border-box;
+    height: 46px;
+    min-height: 46px;
+    padding: 10px 14px;
+    border: 1px solid #c9c9c9;
+    border-left: 2px solid #f06a76;
+    border-radius: 10px;
+    background: #fff;
+    color: #555;
+}
+
+body.purchase-voucher-page .field-group textarea:not(#orderNotes):not(#narration) {
+    height: 46px;
+}
+
+body.purchase-voucher-page #orderNotes,
+body.purchase-voucher-page #narration,
+body.purchase-voucher-page .po-narration-field textarea {
+    height: auto;
+    min-height: 104px;
+    border-radius: 14px;
+}
+
+body.purchase-voucher-page .voucher-table .ims-lines-input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 38px;
+    min-height: 38px;
+    padding: 6px 10px;
+    border: 1px solid #c9c9c9;
+    border-radius: 10px;
+}
+
+body.purchase-voucher-page.po-form-active #poLinesBody .ims-lines-input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 34px;
+    min-height: 34px;
+    margin: 0;
+    padding: 5px 8px;
+    border: 1px solid #c9c9c9;
+    border-radius: 8px;
+    background: #fff;
+    text-align: center;
+}
+
+body.purchase-voucher-page #voucherItemsBody input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 38px;
+    min-height: 38px;
+    padding: 6px 10px;
+    border: 1px solid #c9c9c9;
+    border-radius: 10px;
+}
+
+body.purchase-voucher-page .filter-field input,
+body.purchase-voucher-page .filter-field select {
+    box-sizing: border-box;
+    height: 46px;
+    min-height: 46px;
+    border-radius: 10px;
+}
+
+body.purchase-voucher-page .voucher-actions {
+    justify-content: flex-end;
+    padding: 10px 4px 2px;
+    border-top: 1px solid #d1d1d1;
+}
+
+body.material-requisition-page .shared-voucher-action[data-shared-voucher-action="save"] {
+    display: none;
+}
+
+body.purchase-voucher-page .shared-voucher-toolbar,
+body:has(.purchase-indent-shell) .shared-voucher-toolbar {
+    display: none;
+}
+
+body.purchase-voucher-page .voucher-header .voucher-actions,
+body.purchase-voucher-page .page-header-tools {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+body.purchase-voucher-page .voucher-header .voucher-actions i,
+body.purchase-voucher-page .page-header-tools i,
+body.purchase-voucher-page .voucher-actions button i,
+body.purchase-voucher-page .voucher-form-card > .voucher-actions i,
+body:has(.purchase-indent-shell) .page-header-tools i,
+body:has(.purchase-indent-shell) .voucher-actions i {
+    display: none;
+}
+
+body.purchase-voucher-page .voucher-actions button,
+body.purchase-voucher-page .voucher-header .voucher-actions a,
+body:has(.purchase-indent-shell) .page-header-tools .toolbar-btn {
+    min-height: 38px;
+    padding: 8px 13px;
+}
+
+body.material-requisition-page .voucher-bottom-actions {
+    justify-content: flex-end;
+    padding: 12px 0 0;
+    border-top: 1px solid #d1d1d1;
+}
+
+body.purchase-voucher-page .toolbar-btn,
+body.purchase-voucher-page .action-btn,
+body.purchase-voucher-page .ims-tabs .tab {
+    min-height: 42px;
+    border-radius: 10px;
+}
+
+body.purchase-voucher-page .inventory-tabs .tab {
+    min-height: 42px;
+    border-radius: 10px;
+}
+
+body.purchase-voucher-page.material-requisition-page .inventory-breadcrumb,
+body.purchase-voucher-page.material-requisition-page .inventory-card {
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+body.purchase-voucher-page.material-requisition-page .inventory-table {
+    width: 100%;
+    min-width: 1680px;
+    table-layout: fixed;
+}
+
+body.purchase-voucher-page.material-requisition-page .inventory-table th,
+body.purchase-voucher-page.material-requisition-page .inventory-table td {
+    text-align: center;
+    vertical-align: middle;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    border: 1px solid #d1d1d1;
+    padding: 7px 8px;
+    height: 38px;
+    color: #444;
+    font-size: 13px;
+}
+
+body.purchase-voucher-page.material-requisition-page .inventory-table th {
+    height: 40px;
+    padding: 7px 8px;
+    color: #fff;
+    background: #477f9e;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+body.purchase-voucher-page.material-requisition-page .inventory-table tbody tr:nth-child(even) {
+    background: #f4f6f8;
+}
+
+body.purchase-voucher-page.material-requisition-page .inventory-table tbody tr:hover {
+    background: #e8f1f6;
+}
+
+body.purchase-voucher-page.material-requisition-page .inventory-table .page-btn {
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+body.purchase-voucher-page.material-requisition-page .inventory-toolbar {
+    align-items: flex-start;
+}
+
+body.purchase-voucher-page.material-requisition-page .voucher-header {
+    background: #fff;
+}
+
+body.purchase-voucher-page.material-requisition-page .voucher-table-wrapper {
+    height: auto;
+    max-height: 360px;
+    overflow: auto;
+}
+
+/* Keep voucher entry tables compact; five item rows fit before internal scrolling. */
+body.purchase-voucher-page .voucher-table-wrapper:has(#voucherItemsBody),
+body.purchase-voucher-page .voucher-table-wrapper:has(#piLinesBody),
+body.purchase-voucher-page .voucher-table-wrapper:has(#rfqLinesBody),
+body.purchase-voucher-page .voucher-table-wrapper:has(#qrLinesBody),
+body.purchase-voucher-page .voucher-table-wrapper:has(#poLinesBody),
+body.purchase-voucher-page .voucher-table-wrapper:has(#mrnLinesBody),
+body.purchase-voucher-page .voucher-table-wrapper:has(#authorizePoItemsBody) {
+    height: auto;
+    max-height: 360px;
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+body:has(#piLinesBody) .purchase-table-shell:has(#piLinesBody) {
+    height: auto;
+    max-height: 360px;
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+body.purchase-voucher-page .voucher-table-wrapper:has(#voucherItemsBody) thead,
+body.purchase-voucher-page .voucher-table-wrapper:has(#piLinesBody) thead,
+body.purchase-voucher-page .voucher-table-wrapper:has(#rfqLinesBody) thead,
+body.purchase-voucher-page .voucher-table-wrapper:has(#qrLinesBody) thead,
+body.purchase-voucher-page .voucher-table-wrapper:has(#poLinesBody) thead,
+body.purchase-voucher-page .voucher-table-wrapper:has(#mrnLinesBody) thead,
+body.purchase-voucher-page .voucher-table-wrapper:has(#authorizePoItemsBody) thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+body:has(#piLinesBody) .purchase-table-shell:has(#piLinesBody) thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+/* Shared compact voucher-list presentation. Entry forms are intentionally excluded. */
+body #piListView .voucher-table-wrapper,
+body #rfqAllView .voucher-table-wrapper,
+body #rfqPendingView .voucher-table-wrapper,
+body #qrAllView .voucher-table-wrapper,
+body #qrPendingView .voucher-table-wrapper,
+body #allPoView .voucher-table-wrapper,
+body #pendingQrView .voucher-table-wrapper {
+    height: min(94vh, 760px);
+    max-height: min(94vh, 760px);
+    overflow: auto;
+    border: 1px solid #c8c8c8;
+    border-radius: 0;
+    background: #fff;
+}
+
+body #piListView .voucher-table,
+body #rfqAllView .voucher-table,
+body #rfqPendingView .voucher-table,
+body #qrAllView .voucher-table,
+body #qrPendingView .voucher-table,
+body #allPoView .voucher-table,
+body #pendingQrView .voucher-table {
+    width: 100%;
+    min-width: 1050px;
+    table-layout: auto;
+}
+
+body #piListView .voucher-table th,
+body #piListView .voucher-table td,
+body #rfqAllView .voucher-table th,
+body #rfqAllView .voucher-table td,
+body #rfqPendingView .voucher-table th,
+body #rfqPendingView .voucher-table td,
+body #qrAllView .voucher-table th,
+body #qrAllView .voucher-table td,
+body #qrPendingView .voucher-table th,
+body #qrPendingView .voucher-table td,
+body #allPoView .voucher-table th,
+body #allPoView .voucher-table td,
+body #pendingQrView .voucher-table th,
+body #pendingQrView .voucher-table td {
+    height: 38px;
+    padding: 7px 8px;
+    border: 1px solid #d1d1d1;
+    color: #444;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+body #piListView .voucher-table th,
+body #rfqAllView .voucher-table th,
+body #rfqPendingView .voucher-table th,
+body #qrAllView .voucher-table th,
+body #qrPendingView .voucher-table th,
+body #allPoView .voucher-table th,
+body #pendingQrView .voucher-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: 40px;
+    padding: 5px 7px;
+    background: #477f9e;
+    color: #fff;
+    font-weight: 600;
+    text-transform: none;
+}
+
+body #piListView .voucher-table tbody tr:nth-child(even),
+body #rfqAllView .voucher-table tbody tr:nth-child(even),
+body #rfqPendingView .voucher-table tbody tr:nth-child(even),
+body #qrAllView .voucher-table tbody tr:nth-child(even),
+body #qrPendingView .voucher-table tbody tr:nth-child(even),
+body #allPoView .voucher-table tbody tr:nth-child(even),
+body #pendingQrView .voucher-table tbody tr:nth-child(even) {
+    background: #f4f6f8;
+}
+
+body #piListView .voucher-table tbody tr[data-open-pi],
+body #rfqAllView .voucher-table tbody tr[data-open-rfq],
+body #qrAllView .voucher-table tbody tr[data-open-qr],
+body #allPoView .voucher-table tbody tr[data-open-po-row] {
+    cursor: pointer;
+}
+
+.qr-context-menu {
+    position: fixed;
+    z-index: 10000;
+    min-width: 240px;
+    padding: 4px;
+    border: 1px solid #c8c8c8;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgb(0 0 0 / 18%);
+}
+
+.qr-context-menu[hidden] {
+    display: none;
+}
+
+.qr-context-menu button {
+    display: flex;
+    width: 100%;
+    min-height: 34px;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 3px;
+    background: transparent;
+    color: #a12622;
+    text-align: left;
+    cursor: pointer;
+}
+
+.qr-context-menu button:hover {
+    background: #fff0ef;
+}
+
+#qrFormView .voucher-table tbody tr[data-qr-line-index],
+#qrFormView .voucher-table tbody tr[data-qr-extra-row] {
+    cursor: context-menu;
+}
+
+body.purchase-voucher-page.material-requisition-page #narration {
+    width: 100%;
+}
+
+body.purchase-voucher-page.po-form-active > .top-strip {
+    display: grid;
+}
+
+body.purchase-voucher-page.po-form-active > .inventory-page {
+    max-width: none;
+    margin: 0;
+    padding: 0 6px 72px;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-header {
+    min-height: 44px;
+    margin: 0 -6px 12px;
+    padding: 4px 10px;
+    border-radius: 0 0 6px 6px;
+    box-shadow: none;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-header .breadcrumb-path,
+body.purchase-voucher-page.po-form-active .voucher-header #newOrderBtn,
+body.purchase-voucher-page.po-form-active .voucher-header #openQuotationReceiveBtn,
+body.purchase-voucher-page.po-form-active .voucher-header #backWorkflowBtn {
+    display: none;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-form-card {
+    margin: 0;
+    padding: 12px 10px;
+    border: 1px solid #d1d1d1;
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+body.purchase-voucher-page.po-form-active .po-entry-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 28px;
+}
+
+body.purchase-voucher-page.po-form-active .po-entry-grid .po-employee-field {
+    grid-column: auto;
+}
+
+body.purchase-voucher-page.po-form-active .po-entry-grid .po-narration-field {
+    grid-column: span 2;
+}
+
+body.purchase-voucher-page.po-form-active .po-entry-grid .po-narration-field textarea {
+    min-height: 104px;
+}
+
+body.purchase-voucher-page.po-form-active .po-main-tab {
+    margin: 0 0 12px;
+    border-bottom-color: #477f9e;
+    color: #477f9e;
+}
+
+/* Keep Purchase Order entry styling consistent with the Quotation Receive form. */
+body.purchase-voucher-page.po-form-active #poFormView > .voucher-form-card {
+    margin-bottom: 10px;
+    padding: 12px 10px;
+    border: 1px solid #d1d1d1;
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+body.purchase-voucher-page.po-form-active #poFormView > .voucher-form-card:first-child {
+    border-bottom: 1px solid #d1d1d1;
+}
+
+body.purchase-voucher-page.po-form-active .field-group input,
+body.purchase-voucher-page.po-form-active .field-group select,
+body.purchase-voucher-page.po-form-active .field-group textarea {
+    height: 46px;
+    min-height: 46px;
+    padding: 10px 14px;
+    border: 1px solid #c9c9c9;
+    border-left: 2px solid #f06a76;
+    border-radius: 10px;
+    background: #fff;
+}
+
+body.purchase-voucher-page.po-form-active .po-entry-grid .po-narration-field textarea,
+body.purchase-voucher-page.po-form-active .po-entry-grid #poWarehouseAddress {
+    height: auto;
+    min-height: 104px;
+    border-radius: 14px;
+}
+
+body.purchase-voucher-page.po-form-active #poFormView > .voucher-form-card:nth-child(2) .voucher-card-header {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-table-wrapper:has(#poLinesBody) {
+    max-height: 360px;
+    overflow: auto;
+    border: 1px solid #d1d1d1;
+    border-radius: 5px;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) {
+    width: 100%;
+    min-width: 1300px;
+    table-layout: fixed;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) th,
+body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) td {
+    height: 38px;
+    padding: 7px 8px;
+    border: 1px solid #d1d1d1;
+    font-size: 13px;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) th {
+    background: #477f9e;
+    color: #fff;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) .ims-lines-input {
+    height: 38px;
+    min-height: 38px;
+    padding: 6px 10px;
+    border: 1px solid #c9c9c9;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Keep item grids across procurement vouchers visually consistent with Material Requisition. */
+body.purchase-voucher-page .voucher-form-card .voucher-table,
+body.purchase-voucher-page .voucher-table-card:has(#voucherItemsBody) .voucher-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+body.purchase-voucher-page .voucher-form-card .voucher-table th,
+body.purchase-voucher-page .voucher-form-card .voucher-table td,
+body.purchase-voucher-page .voucher-table-card:has(#voucherItemsBody) .voucher-table th,
+body.purchase-voucher-page .voucher-table-card:has(#voucherItemsBody) .voucher-table td {
+    height: 38px;
+    padding: 7px 8px;
+    border: 1px solid #d1d1d1;
+    color: #444;
+    font-size: 13px;
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+body.purchase-voucher-page .voucher-form-card .voucher-table th,
+body.purchase-voucher-page .voucher-table-card:has(#voucherItemsBody) .voucher-table th {
+    height: 40px;
+    background: #477f9e;
+    color: #fff;
+    font-weight: 600;
+    text-transform: none;
+}
+
+body.purchase-voucher-page .voucher-form-card .voucher-table tbody tr:nth-child(even),
+body.purchase-voucher-page .voucher-table-card:has(#voucherItemsBody) .voucher-table tbody tr:nth-child(even) {
+    background: #f7f8fa;
+}
+
+body.purchase-voucher-page .voucher-form-card .voucher-table tbody tr:hover,
+body.purchase-voucher-page .voucher-table-card:has(#voucherItemsBody) .voucher-table tbody tr:hover {
+    background: #eef4f7;
+}
+
+body.purchase-voucher-page .voucher-form-card .voucher-table .ims-lines-input,
+body.purchase-voucher-page .voucher-table-card:has(#voucherItemsBody) #voucherItemsBody input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 38px;
+    min-height: 38px;
+    margin: 0;
+    padding: 6px 10px;
+    border: 1px solid #c9c9c9;
+    border-radius: 10px;
+    background: #fff;
+}
+
+body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) th:first-child,
+body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) td:first-child {
+    width: 56px;
+    white-space: nowrap;
+}
+
+body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) th:nth-child(2),
+body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) td:nth-child(2) {
+    width: 112px;
+}
+
+body:has(#piLinesBody) .purchase-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+body:has(#piLinesBody) .purchase-table th,
+body:has(#piLinesBody) .purchase-table td {
+    height: 38px;
+    padding: 7px 8px;
+    border: 1px solid #d1d1d1;
+    color: #444;
+    font-size: 13px;
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+body:has(#piLinesBody) .purchase-table thead th {
+    height: 40px;
+    background: #477f9e;
+    color: #fff;
+    font-weight: 600;
+}
+
+body:has(#piLinesBody) .purchase-table td input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 38px;
+    min-height: 38px;
+    border: 1px solid #c9c9c9;
+    border-radius: 10px;
+    background: #fff;
+}
+
+body.purchase-voucher-page .po-tabs-ribbon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 58px;
+    padding: 7px 8px;
+    border: 1px solid #c8c8c8;
+    border-radius: 6px;
+    background: #fff;
+}
+
+body.purchase-voucher-page .po-ribbon-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+body.purchase-voucher-page .po-list-filters {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0;
+    padding: 3px;
+    border: 1px solid #c8c8c8;
+    border-radius: 8px;
+    background: #fff;
+}
+
+body.purchase-voucher-page .po-filter-panel {
+    display: flex;
+    align-items: center;
+    border-left: 1px solid #d1d1d1;
+}
+
+body.purchase-voucher-page .po-filter-panel[hidden] {
+    display: none !important;
+}
+
+body.purchase-voucher-page:has(#pendingQrView:not([hidden])) .po-list-filters,
+body.purchase-voucher-page.po-form-active .po-list-filters {
+    display: none;
+}
+
+body.purchase-voucher-page .po-filter-field {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 150px;
+    padding: 0 9px;
+    color: #477f9e;
+}
+
+body.purchase-voucher-page .po-filter-field + .po-filter-field {
+    border-left: 1px solid #d1d1d1;
+}
+
+body.purchase-voucher-page .po-filter-field i {
+    font-size: 13px;
+}
+
+body.purchase-voucher-page .po-list-filters input {
+    box-sizing: border-box;
+    width: 118px;
+    min-width: 0;
+    height: 34px;
+    padding: 6px 2px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #444;
+    font: inherit;
+    font-size: 13px;
+}
+
+body.purchase-voucher-page .po-ribbon-icon {
+    display: inline-flex;
+    width: 36px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2px;
+    border: 0;
+    border-left: 1px solid #d1d1d1;
+    border-radius: 0 5px 5px 0;
+    background: #fff;
+    color: #477f9e;
+    cursor: pointer;
+}
+
+body.purchase-voucher-page .po-ribbon-icon:hover,
+body.purchase-voucher-page .po-ribbon-icon:focus-visible {
+    background: #eef4f7;
+    color: #315f7b;
+    outline: 0;
+}
+
+@media (max-width: 760px) {
+    body.purchase-voucher-page .po-tabs-ribbon {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    body.purchase-voucher-page .po-list-filters {
+        width: 100%;
+    }
+
+    body.purchase-voucher-page .po-filter-panel {
+        flex: 1 1 100%;
+        flex-wrap: wrap;
+    }
+
+    body.purchase-voucher-page .po-filter-field {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    body.purchase-voucher-page .po-list-filters input {
+        width: 100%;
+    }
+
+    body.purchase-voucher-page .po-list-filters {
+        flex-wrap: wrap;
+    }
+}
+
+@media print {
+    @page { size: landscape; margin: 12mm; }
+
+    body.po-list-print-all > *:not(.inventory-page),
+    body.po-list-print-pending > *:not(.inventory-page) {
+        display: none !important;
+    }
+
+    body.po-list-print-all .inventory-page > *:not(#allPoView),
+    body.po-list-print-pending .inventory-page > *:not(#pendingQrView) {
+        display: none !important;
+    }
+
+    body.po-list-print-all #allPoView,
+    body.po-list-print-pending #pendingQrView {
+        display: block !important;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        box-shadow: none;
+    }
+
+    body.po-list-print-all .voucher-table-wrapper,
+    body.po-list-print-pending .voucher-table-wrapper {
+        height: auto;
+        max-height: none;
+        overflow: visible;
+    }
+
+    body.po-list-print-all .voucher-table,
+    body.po-list-print-pending .voucher-table {
+        width: 100%;
+        min-width: 0;
+        font-size: 9pt;
+    }
+
+    body.po-list-print-all .po-list-filters,
+    body.po-list-print-pending .po-list-filters {
+        display: none !important;
+    }
+}
+
+@media (max-width: 700px) {
+    body.purchase-voucher-page .voucher-grid,
+    body.purchase-voucher-page.po-form-active .po-entry-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    body.purchase-voucher-page.po-form-active .po-entry-grid .po-narration-field {
+        grid-column: auto;
+    }
+
+    body.purchase-voucher-page .voucher-table {
+        min-width: 760px;
+    }
+}

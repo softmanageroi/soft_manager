@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Purchase Order List</title>
+    <link rel="stylesheet" href="../css/purchase.css" />
+    <link rel="stylesheet" href="../css/common-header.css" />
+    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+<body>
+    <header class="top-strip">
+        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
+        <div class="search">
+            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
+            <ul id="searchResults" class="search-dropdown"></ul>
+        </div>
+        <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
+    </header>
+    <div class="inventory-page">
+        <header class="voucher-header">
+            <div>
+                <div class="breadcrumb-title">Purchase Order List</div>
+                <div class="breadcrumb-path">View all purchase orders and open linked workflows</div>
+            </div>
+            <div class="voucher-actions">
+                <button id="newOrderBtn" class="toolbar-btn" title="New PO" onclick="window.location.href='purchase-order-creation.html?view=new'"><i class="fa-solid fa-plus"></i></button>
+                <button id="refreshOrdersBtn" class="toolbar-btn" title="Refresh list"><i class="fa-solid fa-arrows-rotate"></i></button>
+                <button id="backWorkflowBtn" class="toolbar-btn" title="Back to Workflow" onclick="window.location.href='purchase-workflow.html'"><i class="fa-solid fa-arrow-left"></i></button>
+                <button id="openQuotationReceiveFromPOList" class="toolbar-btn" title="Open Quotation Receive" onclick="window.location.href='quotation-receive.html'">Quotation Receive</button>
+            </div>
+        </header>
+
+        <section class="voucher-table-card">
+            <div class="voucher-table-wrapper">
+                <table class="voucher-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>PO No.</th>
+                            <th>PO Date</th>
+                            <th>Supplier</th>
+                            <th>Quotation</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                            <th>Items</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js"></script>
+    <script src="../js/purchase-order-list.js"></script>
+    <script src="../js/voucher-toolbar.js"></script>
+</body>
+</html>
