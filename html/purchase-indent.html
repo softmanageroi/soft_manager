@@ -12,12 +12,7 @@
 </head>
 <body>
     <header class="top-strip">
-        <div class="brand brand-with-actions"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager
-            <div class="purchase-indent-brand-tools" aria-label="Purchase indent actions">
-                <button id="piNewBtn" class="toolbar-btn" type="button" title="New Purchase Indent">New</button>
-                <a class="toolbar-btn has-label" href="request-for-quotation.html">RFQ</a>
-            </div>
-        </div>
+        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
         <div class="search">
             <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
             <ul id="searchResults" class="search-dropdown"></ul>
@@ -45,13 +40,17 @@
                 <div class="page-header-title-wrap">
                     <h1>Purchase Indent</h1>
                 </div>
+                <div class="page-header-tools" aria-label="Purchase indent actions">
+                    <button id="piNewBtn" class="toolbar-btn has-label" type="button" title="New Purchase Indent"><i class="fa-solid fa-plus" aria-hidden="true"></i><span>New</span></button>
+                    <a class="toolbar-btn has-label" href="request-for-quotation.html">RFQ</a>
+                </div>
             </header>
 
             <section id="piListView" class="voucher-table-card">
                 <div class="voucher-card-header"><h2>All Vouchers (<span id="piCount">0</span>)</h2></div>
                 <div class="voucher-table-wrapper">
                     <table class="voucher-table">
-                        <thead><tr><th>#</th><th>Date</th><th>Voucher No</th><th>Items</th><th>Link status</th></tr></thead>
+                        <thead><tr><th>#</th><th>Date</th><th>Voucher No</th><th>Items</th><th>Link status</th><th>Action</th></tr></thead>
                         <tbody id="piListBody"></tbody>
                     </table>
                 </div>

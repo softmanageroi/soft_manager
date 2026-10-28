@@ -24,8 +24,9 @@ body {
 .login-box {
     color: rgb(255, 255, 255);
     border: rgb(66, 66, 66) 2px solid;
-    height: 250px;
+    min-height: 250px;
     width: 350px;
+    box-sizing: border-box;
     margin: 20px;
     margin-left: 60px;
     padding: 20px;
@@ -34,7 +35,11 @@ body {
     background:white;
     text-align:center;
     border-radius: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);}
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+.login-box[hidden] {
+    display: none;
+}
 .button {
     background: rgb(103, 212, 226);
     border: 3px solid #807d7d;
@@ -56,4 +61,16 @@ input {
     border-radius: 5%;
     border: 2px solid #999898;
     height: 30px;
+}
+#loginMessage {
+    margin: 12px 0 0;
+    color: #8a1c1c;
+    font-size: 14px;
+}
+@media (max-width: 600px) {
+    .login-box {
+        width: min(350px, calc(100vw - 32px));
+        right: 16px;
+        margin: 0;
+    }
 }

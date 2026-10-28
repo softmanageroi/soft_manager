@@ -1,0 +1,16 @@
+{
+  "name": "soft_manager",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local inventory management app with MySQL-ready backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "setup": "node server.js --setup"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.4.2"
+  }
+}

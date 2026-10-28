@@ -376,7 +376,7 @@ body.po-printing > #poPrintView {
 }
 
 .po-print-company-name {
-    background: #bf9292;
+    background: #edf3f8;
     border: 1px solid #111;
     display: block;
     color: #111;
@@ -443,7 +443,7 @@ body.po-printing > #poPrintView {
 }
 
 .po-print-order-no {
-    background: #bf9292;
+    background: #edf3f8;
 }
 
 .po-print-payment {
@@ -456,7 +456,7 @@ body.po-printing > #poPrintView {
 }
 
 .po-print-supplier h2 {
-    background: #bf9292;
+    background: #edf3f8;
     border-bottom: 1px solid #111;
     font-size: 11px;
     margin: 0;
@@ -498,16 +498,16 @@ body.po-printing > #poPrintView {
 }
 
 .po-print-table th {
-    background: #bf9292 !important;
+    background: #edf3f8 !important;
     color: #111;
     text-align: center;
     vertical-align: middle;
 }
 
-.po-print-table th:nth-child(1) { width: 3%; }
-.po-print-table th:nth-child(2) { width: 6%; }
-.po-print-table th:nth-child(3) { width: 6%; }
-.po-print-table th:nth-child(4) { width: 16%; }
+.po-print-table th:nth-child(1) { width: 2.5%; }
+.po-print-table th:nth-child(2) { width: 5%; }
+.po-print-table th:nth-child(3) { width: 5%; }
+.po-print-table th:nth-child(4) { width: 14%; }
 .po-print-table th:nth-child(5) { width: 4%; }
 .po-print-table th:nth-child(6) { width: 4%; }
 .po-print-table th:nth-child(7) { width: 6%; }
@@ -515,11 +515,11 @@ body.po-printing > #poPrintView {
 .po-print-table th:nth-child(9) { width: 5%; }
 .po-print-table th:nth-child(10) { width: 8%; }
 .po-print-table th:nth-child(11) { width: 4%; }
-.po-print-table th:nth-child(12) { width: 5%; }
-.po-print-table th:nth-child(13) { width: 5%; }
-.po-print-table th:nth-child(14) { width: 5%; }
-.po-print-table th:nth-child(15) { width: 7%; }
-.po-print-table th:nth-child(16) { width: 6.5%; }
+.po-print-table th:nth-child(12) { width: 6%; }
+.po-print-table th:nth-child(13) { width: 6%; }
+.po-print-table th:nth-child(14) { width: 6%; }
+.po-print-table th:nth-child(15) { width: 8%; }
+.po-print-table th:nth-child(16) { width: 9.5%; }
 
 .po-print-table tfoot th {
     font-size: 7px;
@@ -701,6 +701,11 @@ body.po-printing > #poPrintView {
         padding: 3px 2px;
         font-size: 9px;
         line-height: 1.1;
+    }
+
+    body.po-printing .po-print-table td.numeric {
+        font-size: 8px;
+        font-variant-numeric: tabular-nums;
     }
 
     body.po-printing .po-print-table tfoot th {

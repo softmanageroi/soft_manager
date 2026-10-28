@@ -31,7 +31,8 @@
                 <div class="breadcrumb-path">Document No. / Create Voucher</div>
             </div>
             <div class="voucher-actions">
-                <button id="newVoucherBtn" class="toolbar-btn has-label" title="New voucher"><span>New</span></button>
+                <button id="newVoucherBtn" class="toolbar-btn has-label" title="New voucher"><i class="fa-solid fa-plus" aria-hidden="true"></i><span>New</span></button>
+                <a id="returnToIssueList" class="toolbar-btn has-label" href="material-issue-list.html?view=all"><span>Vouchers</span></a>
                 <button id="addItemBtn" class="toolbar-btn has-label" title="Add item"><span>Add</span></button>
                 <button id="deleteItemBtn" class="toolbar-btn has-label" title="Delete last item" aria-label="Delete last item"><span>Delete</span></button>
                 <button id="previousVoucherBtn" class="toolbar-btn" title="Previous">Previous</button>
@@ -115,6 +116,7 @@
             <datalist id="materialRequisitionItemOptions"></datalist>
             <div class="voucher-footer">
                 <div class="voucher-total">Net: ₹ 0.000</div>
+                <p id="voucherStatus" class="ims-message" role="status" aria-live="polite"></p>
             </div>
             <div class="voucher-actions voucher-bottom-actions">
                 <button id="saveVoucherBtn" class="toolbar-btn has-label" type="button" title="Save voucher"><span>Save</span></button>

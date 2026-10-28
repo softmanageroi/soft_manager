@@ -45,19 +45,41 @@
                 <button id="togglePoFiltersBtn" class="po-ribbon-icon" type="button" title="Open filters" aria-label="Open filters" aria-expanded="false" aria-controls="poFilterPanel">
                     <i class="fa-solid fa-filter" aria-hidden="true"></i>
                 </button>
-                <div id="poFilterPanel" class="po-filter-panel" hidden>
-                    <label class="po-filter-field" title="Filter by PO number">
-                        <i class="fa-solid fa-hashtag" aria-hidden="true"></i>
-                        <input id="poFilterNumber" type="search" placeholder="PO No." aria-label="Filter by PO number">
-                    </label>
-                    <label class="po-filter-field" title="Filter by item">
-                        <i class="fa-solid fa-box" aria-hidden="true"></i>
-                        <input id="poFilterItem" type="search" placeholder="Item" aria-label="Filter by item name">
-                    </label>
-                    <label class="po-filter-field" title="Filter by vendor name">
-                        <i class="fa-solid fa-user" aria-hidden="true"></i>
-                        <input id="poFilterVendor" type="search" placeholder="Vendor" aria-label="Filter by vendor name">
-                    </label>
+                <div id="poFilterPanel" class="po-filter-panel filter-modal" hidden>
+                    <div class="filter-dialog" role="dialog" aria-modal="true" aria-labelledby="poFilterTitle">
+                        <div class="filter-dialog-header">
+                            <div>
+                                <div id="poFilterTitle" class="filter-title">Filter</div>
+                                <div class="filter-subtitle">Default Filter</div>
+                            </div>
+                            <button id="closePoFilterBtn" class="filter-close-btn" type="button" title="Close filter" aria-label="Close filter">
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="filter-divider"></div>
+                        <div class="filter-dialog-body">
+                            <div class="filter-row">
+                                <label class="filter-field wide" for="poFilterNumber">
+                                    <span>PO No.</span>
+                                    <input id="poFilterNumber" type="search" placeholder="Enter PO number" aria-label="Filter by PO number">
+                                </label>
+                                <label class="filter-field wide" for="poFilterItem">
+                                    <span>Item</span>
+                                    <input id="poFilterItem" type="search" placeholder="Enter item" aria-label="Filter by item name">
+                                </label>
+                            </div>
+                            <div class="filter-row">
+                                <label class="filter-field wide" for="poFilterVendor">
+                                    <span>Vendor</span>
+                                    <input id="poFilterVendor" type="search" placeholder="Enter vendor" aria-label="Filter by vendor name">
+                                </label>
+                            </div>
+                            <div class="filter-actions">
+                                <button id="applyPoFilterBtn" class="page-btn" type="button">Ok</button>
+                                <button id="closePoFilterActionBtn" class="page-btn" type="button">Close</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <button id="printPoListBtn" class="po-ribbon-icon" type="button" title="Print visible vouchers" aria-label="Print visible vouchers">
                     <i class="fa-solid fa-print" aria-hidden="true"></i>
@@ -82,7 +104,7 @@
             <div class="voucher-table-wrapper">
                 <table class="voucher-table">
                     <thead>
-                        <tr><th>#</th><th>Date</th><th>QR No.</th><th>Supplier</th><th>Total</th><th>Items</th></tr>
+                        <tr><th>#</th><th>Date</th><th>QR No.</th><th>Supplier</th><th>Total</th><th>Items</th><th>Action</th></tr>
                     </thead>
                     <tbody id="pendingQrBody"></tbody>
                 </table>

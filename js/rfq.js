@@ -33,17 +33,19 @@ document.addEventListener('DOMContentLoaded', function () {
   function render() {
     const vouchers = IMS.rfqAll().slice().reverse();
     el.rfqAllBody.innerHTML = vouchers.length ? vouchers.map((rfq, index) => `
-      <tr data-open-rfq="${esc(rfq.id)}" title="Double-click to open this voucher"><td>${vouchers.length - index}</td><td>${esc(IMS.fmtDate(rfq.date))}</td>
+      <tr data-open-rfq="${esc(rfq.id)}"><td>${vouchers.length - index}</td><td>${esc(IMS.fmtDate(rfq.date))}</td>
       <td>${esc(rfq.no)}</td><td>${esc(rfq.piNo)}</td>
-      <td>${Number((rfq.lines || []).length)}</td><td>${esc(rfq.linkStatus || IMS.rfqStatus(rfq))}</td></tr>
+      <td>${Number((rfq.lines || []).length)}</td><td>${esc(rfq.linkStatus || IMS.rfqStatus(rfq))}</td>
+      <td><button class="action-btn has-label" type="button" data-open-rfq-button="${esc(rfq.id)}">Open</button></td></tr>
     `).join('') : '<tr><td colspan="7">No RFQ vouchers yet.</td></tr>';
     el.rfqCount.textContent = String(vouchers.length);
 
     const pending = IMS.piAll().filter((pi) => piStatus(pi) !== 'Closed');
     el.pendingPiBody.innerHTML = pending.length ? pending.map((pi, index) => `
-      <tr data-open-pi="${esc(pi.id)}" title="Double-click to create an RFQ"><td>${index + 1}</td><td>${esc(IMS.fmtDate(pi.date))}</td><td>${esc(pi.no)}</td>
-      <td>${Number((pi.lines || []).length)}</td><td>${esc(piStatus(pi))}</td></tr>
-    `).join('') : '<tr><td colspan="5">No pending purchase indents.</td></tr>';
+      <tr data-open-pi="${esc(pi.id)}"><td>${index + 1}</td><td>${esc(IMS.fmtDate(pi.date))}</td><td>${esc(pi.no)}</td>
+      <td>${Number((pi.lines || []).length)}</td><td>${esc(piStatus(pi))}</td>
+      <td><button class="action-btn has-label" type="button" data-create-rfq-from-pi="${esc(pi.id)}">Create RFQ</button></td></tr>
+    `).join('') : '<tr><td colspan="6">No pending purchase indents.</td></tr>';
   }
 
   function openForm(piId, savedRfq = null) {
@@ -87,6 +89,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   el.tabAllRfq.addEventListener('click', () => showTab('all'));
   el.tabPendingPI.addEventListener('click', () => showTab('pending'));
+  el.rfqAllBody.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-open-rfq-button]');
+    if (!button) return;
+    const rfq = IMS.rfqAll().find((entry) => String(entry.id) === button.dataset.openRfqButton);
+    if (rfq) openForm(rfq.piId, rfq);
+  });
+  el.pendingPiBody.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-create-rfq-from-pi]');
+    if (button) openForm(button.dataset.createRfqFromPi);
+  });
   el.pendingPiBody.addEventListener('dblclick', (event) => {
     const row = event.target.closest('[data-open-pi]');
     if (!row) return;

@@ -144,27 +144,26 @@ document.addEventListener('DOMContentLoaded', function () {
   const warehouseFilter = document.getElementById('filterWarehouse');
   [...new Set(readVouchers().map((voucher) => String(voucher.warehouse || '').trim()).filter(Boolean))]
     .forEach((warehouse) => warehouseFilter?.insertAdjacentHTML('beforeend', `<option value="${escapeHtml(warehouse.toLowerCase())}">${escapeHtml(warehouse)}</option>`));
-  const closeFilter = () => filterPanel?.classList.add('hidden');
-  openFilterButton?.addEventListener('click', () => filterPanel?.classList.remove('hidden'));
+  const closeFilter = () => {
+    filterPanel?.classList.add('hidden');
+    openFilterButton?.setAttribute('aria-expanded', 'false');
+    document.querySelector('[data-shared-voucher-action="filter"]')?.setAttribute('aria-expanded', 'false');
+  };
+  openFilterButton?.setAttribute('aria-expanded', 'false');
+  openFilterButton?.addEventListener('click', () => {
+    filterPanel?.classList.remove('hidden');
+    openFilterButton?.setAttribute('aria-expanded', 'true');
+    document.querySelector('[data-shared-voucher-action="filter"]')?.setAttribute('aria-expanded', 'true');
+  });
   document.getElementById('closeFilterBtn')?.addEventListener('click', closeFilter);
-  document.getElementById('clearFilterBtn')?.addEventListener('click', () => {
-    ['filterDateFrom', 'filterDateTo', 'filterBrand', 'filterItem'].forEach((id) => {
-      const field = document.getElementById(id);
-      if (field) field.value = '';
-    });
-    ['filterWarehouse', 'filterLocation'].forEach((id) => {
-      const field = document.getElementById(id);
-      if (field) field.value = '';
-    });
-    document.getElementById('inventorySearch').value = '';
-    searchQuery = '';
-    currentPage = 1;
-    renderVouchers();
-    closeFilter();
+  document.getElementById('clearFilterBtn')?.addEventListener('click', closeFilter);
+  filterPanel?.addEventListener('click', (event) => {
+    if (event.target === filterPanel) closeFilter();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !filterPanel?.classList.contains('hidden')) closeFilter();
   });
   document.getElementById('applyFilterBtn')?.addEventListener('click', () => {
-    const from = document.getElementById('filterDateFrom')?.value || '';
-    const to = document.getElementById('filterDateTo')?.value || '';
     const selectedFilterText = (id) => {
       const field = document.getElementById(id);
       if (!field?.value) return '';
@@ -177,11 +176,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const brand = (document.getElementById('filterBrand')?.value || '').trim().toLowerCase();
     const item = (document.getElementById('filterItem')?.value || '').trim().toLowerCase();
     const filtered = readVouchers().filter((voucher) => {
-      const voucherDate = String(voucher.date || '');
       const itemText = (voucher.items || []).map((entry) => `${entry.brand || ''} ${entry.item || ''}`).join(' ').toLowerCase();
-      return (!from || voucherDate >= from)
-        && (!to || voucherDate <= to)
-        && (!warehouse || String(voucher.warehouse || '').toLowerCase() === warehouse)
+      return (!warehouse || String(voucher.warehouse || '').toLowerCase() === warehouse)
         && (!location || String(voucher.location || '').toLowerCase() === location)
         && (!brand || itemText.includes(brand))
         && (!item || itemText.includes(item));

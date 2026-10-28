@@ -46,10 +46,42 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const topUserLink = document.getElementById('topUserLink');
   const topUserLabel = document.getElementById('topUserLabel');
-  const loggedInUser = localStorage.getItem('loggedInUser') || 'username';
   if (!topUserLink || !topUserLabel) return;
 
-  topUserLabel.textContent = `Login ID: ${loggedInUser}`;
-  topUserLink.title = `Logged in as ${loggedInUser}`;
-  topUserLink.setAttribute('aria-label', `Logged in as ${loggedInUser}. Select to switch user.`);
+  topUserLabel.textContent = 'Checking session…';
+  fetch('/api/auth/session', { credentials: 'same-origin' })
+    .then(async (response) => {
+      if (response.status === 401) {
+        window.location.replace('/html/index.html');
+        return null;
+      }
+      if (!response.ok) throw new Error(`Session check failed (${response.status}).`);
+      return response.json();
+    })
+    .then((session) => {
+      if (!session) return;
+      topUserLabel.textContent = `Logout (${session.username})`;
+      topUserLink.title = `Sign out ${session.username}`;
+      topUserLink.setAttribute('aria-label', `Sign out ${session.username}`);
+    })
+    .catch((error) => {
+      console.error('Could not verify the current login session.', error);
+      topUserLabel.textContent = 'Session unavailable';
+      topUserLink.title = 'Could not verify the current login session';
+    });
+
+  topUserLink.addEventListener('click', async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'same-origin'
+      });
+      if (!response.ok) throw new Error(`Sign out failed (${response.status}).`);
+      window.location.assign('/html/index.html');
+    } catch (error) {
+      console.error('Could not sign out.', error);
+      window.alert('Could not sign out. Please check the server connection and try again.');
+    }
+  });
 });

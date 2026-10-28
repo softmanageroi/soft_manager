@@ -21,12 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderList() {
     const vouchers = IMS.piAll().slice().reverse();
     elements.piListBody.innerHTML = vouchers.length ? vouchers.map((pi, index) => `
-      <tr data-open-pi="${esc(pi.id)}" title="Double-click to open this voucher">
+      <tr data-open-pi="${esc(pi.id)}">
         <td>${vouchers.length - index}</td>
         <td>${esc(IMS.fmtDate(pi.date))}</td>
         <td>${esc(pi.no)}</td>
         <td>${Number((pi.lines || []).length)}</td>
         <td>${esc(pi.linkStatus || IMS.piStatus(pi))}</td>
+        <td><button class="action-btn has-label" type="button" data-open-pi-button="${esc(pi.id)}">Open</button></td>
       </tr>`).join('') : '<tr><td colspan="6">No purchase indent vouchers yet.</td></tr>';
     elements.piCount.textContent = String(vouchers.length);
   }
@@ -148,6 +149,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   elements.piNewBtn.addEventListener('click', openForm);
   elements.piCancelBtn.addEventListener('click', closeForm);
+  elements.piListBody.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-open-pi-button]');
+    if (button) openSavedIndent(button.dataset.openPiButton);
+  });
   elements.piListBody.addEventListener('dblclick', (event) => {
     if (event.target.closest('button')) return;
     const row = event.target.closest('[data-open-pi]');

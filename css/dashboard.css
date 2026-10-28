@@ -90,7 +90,6 @@
     display: none;
     max-height:200px;
     overflow-y:auto;
-    display: none;
 }
 .search-dropdown.show{
     display:block;

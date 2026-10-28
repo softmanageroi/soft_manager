@@ -121,6 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <td>${esc(order.authorizationStatus || 'Pending Authorization')}</td>
         <td>${Number((order.lines || []).length)}</td>
         <td>
+          <button class="action-btn has-label" type="button" data-open-po="${esc(order.id)}">Open</button>
           <button class="action-btn" type="button" data-print-po="${esc(order.id)}" aria-label="Print purchase order ${esc(order.no)}"><i class="fa-solid fa-print" aria-hidden="true"></i></button>
         </td>
       </tr>`).join('') : `<tr><td colspan="10">${allOrders.length ? 'No vouchers match these filters.' : 'No purchase order vouchers yet.'}</td></tr>`;
@@ -128,14 +129,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const quotations = pendingQuotations().slice().reverse();
     pendingQrBody.innerHTML = quotations.length ? quotations.map((quotation, index) => `
-      <tr data-open-pending-qr="${esc(quotation.id)}" title="Double-click to open this quotation">
+      <tr data-open-pending-qr="${esc(quotation.id)}">
         <td>${index + 1}</td>
         <td>${esc(IMS.fmtDate(quotation.date))}</td>
         <td>${esc(quotation.no)}</td>
         <td>${esc(quotation.supplier)}</td>
         <td>${(Number(quotation.total) || 0).toFixed(2)}</td>
         <td>${Number((quotation.lines || []).length)}</td>
-      </tr>`).join('') : '<tr><td colspan="6">No pending quotations.</td></tr>';
+        <td><button class="action-btn has-label" type="button" data-create-po-from-quotation="${esc(quotation.id)}">Create PO</button></td>
+      </tr>`).join('') : '<tr><td colspan="7">No pending quotations.</td></tr>';
   }
 
   [poFilterItem, poFilterNumber, poFilterVendor].forEach((control) => {
@@ -149,13 +151,25 @@ document.addEventListener('DOMContentLoaded', function () {
     togglePoFiltersBtn.setAttribute('aria-expanded', String(isOpen));
     togglePoFiltersBtn.setAttribute('title', isOpen ? 'Close filters' : 'Open filters');
     togglePoFiltersBtn.setAttribute('aria-label', isOpen ? 'Close filters' : 'Open filters');
+    document.querySelector('[data-shared-voucher-action="filter"]')?.setAttribute('aria-expanded', String(isOpen));
   }
 
   togglePoFiltersBtn?.addEventListener('click', () => {
     setPoFiltersOpen(poFilterPanel.hidden);
   });
+  document.getElementById('closePoFilterBtn')?.addEventListener('click', () => setPoFiltersOpen(false));
+  document.getElementById('applyPoFilterBtn')?.addEventListener('click', () => setPoFiltersOpen(false));
+  document.getElementById('closePoFilterActionBtn')?.addEventListener('click', () => setPoFiltersOpen(false));
+  poFilterPanel?.addEventListener('click', (event) => {
+    if (event.target === poFilterPanel) setPoFiltersOpen(false);
+  });
   document.addEventListener('pointerdown', (event) => {
-    if (!event.target.closest('.po-list-filters')) setPoFiltersOpen(false);
+    if (!event.target.closest('.po-filter-panel') && !event.target.closest('#togglePoFiltersBtn')) {
+      setPoFiltersOpen(false);
+    }
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !poFilterPanel?.hidden) setPoFiltersOpen(false);
   });
 
   printPoListBtn?.addEventListener('click', () => {
@@ -395,13 +409,13 @@ document.addEventListener('DOMContentLoaded', function () {
         <td>${esc(line.name)} (${esc(line.code)})</td>
         <td>${esc(line.description)}</td>
         <td>${esc(line.unit)}</td>
-        <td><input class="ims-lines-input" type="number" min="0" max="${Number(line.qty) || 0}" step="any" value="${Number(line.qty) || 0}" data-po-qty="${index}" aria-label="Purchase order quantity for ${esc(line.name)}"></td>
+        <td><input class="ims-lines-input" type="text" inputmode="decimal" value="${Number(line.qty) || 0}" data-po-qty="${index}" aria-label="Purchase order quantity for ${esc(line.name)}"></td>
         <td>${esc(quotation?.no)}</td>
         <td data-po-rate="${index}">${(Number(line.rate) || 0).toFixed(2)}</td>
         <td data-po-gross="${index}">0.00</td>
-        <td><input class="ims-lines-input" type="number" min="0" step="any" value="0" data-po-discount="${index}" aria-label="Discount for ${esc(line.name)}"></td>
-        <td><input class="ims-lines-input" type="number" min="0" step="any" value="0" data-po-freight="${index}" aria-label="Freight charges for ${esc(line.name)}"></td>
-        <td><input class="ims-lines-input" type="number" min="0" max="100" step="any" value="${Number(line.gstRate ?? IMS.items().find((item) => String(item.code) === String(line.code))?.gst) || 0}" data-po-gst-rate="${index}" aria-label="GST percentage for ${esc(line.name)}"></td>
+        <td><input class="ims-lines-input" type="text" inputmode="decimal" value="0" data-po-discount="${index}" aria-label="Discount for ${esc(line.name)}"></td>
+        <td><input class="ims-lines-input" type="text" inputmode="decimal" value="0" data-po-freight="${index}" aria-label="Freight charges for ${esc(line.name)}"></td>
+        <td><input class="ims-lines-input" type="text" inputmode="decimal" value="${Number(line.gstRate ?? IMS.items().find((item) => String(item.code) === String(line.code))?.gst) || 0}" data-po-gst-rate="${index}" aria-label="GST percentage for ${esc(line.name)}"></td>
         <td><input class="ims-lines-input" type="number" min="0" step="0.01" value="0" data-po-cgst="${index}" aria-label="CGST for ${esc(line.name)}" readonly></td>
         <td><input class="ims-lines-input" type="number" min="0" step="0.01" value="0" data-po-sgst="${index}" aria-label="SGST for ${esc(line.name)}" readonly></td>
         <td><input class="ims-lines-input" type="number" min="0" step="0.01" value="0" data-po-igst="${index}" aria-label="IGST for ${esc(line.name)}" readonly></td>
@@ -687,6 +701,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const row = event.target.closest('[data-open-pending-qr]');
     if (row) openForm(row.dataset.openPendingQr);
   });
+  pendingQrBody.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-create-po-from-quotation]');
+    if (button) openForm(button.dataset.createPoFromQuotation);
+  });
   allPoBody.addEventListener('click', (event) => {
     const openButton = event.target.closest('[data-open-po]');
     if (openButton) {
@@ -713,6 +731,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const qtyInput = event.target.closest('[data-po-qty]');
     if (qtyInput) updateLineGst(Number(qtyInput.dataset.poQty));
     updateTotal();
+  });
+  linesBody.addEventListener('focusin', (event) => {
+    const input = event.target.closest('input[inputmode="decimal"]:not([readonly])');
+    if (input) input.select();
+  });
+  linesBody.addEventListener('click', (event) => {
+    const input = event.target.closest('input[inputmode="decimal"]:not([readonly])');
+    if (input) input.select();
   });
   supplierInput.addEventListener('input', () => updateVendorDetails());
   supplierInput.addEventListener('change', () => updateVendorDetails(true));

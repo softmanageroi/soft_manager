@@ -1,12 +1,12 @@
 :root {
-  --skeuo-page: #d9c8b1;
-  --skeuo-surface: #eadbc5;
-  --skeuo-surface-light: #fbf3e6;
-  --skeuo-edge: #a38562;
-  --skeuo-ink: #382719;
-  --skeuo-blue: #805331;
-  --skeuo-blue-deep: #4c2e19;
-  --skeuo-shadow: rgba(62, 39, 20, 0.25);
+  --skeuo-page: #f5f7fa;
+  --skeuo-surface: #ffffff;
+  --skeuo-surface-light: #f8fafc;
+  --skeuo-edge: #dfe7ee;
+  --skeuo-ink: #1f2937;
+  --skeuo-blue: #2563eb;
+  --skeuo-blue-deep: #0f172a;
+  --skeuo-shadow: rgba(15, 23, 42, 0.08);
 }
 
 html {
@@ -16,18 +16,15 @@ html {
 body {
   color: var(--skeuo-ink);
   background-color: var(--skeuo-page);
-  background-image:
-    radial-gradient(ellipse at 15% 0%, rgba(255, 255, 255, 0.8), transparent 48%),
-    linear-gradient(145deg, #e8eceb 0%, #d6dee1 52%, #cbd5d9 100%);
+  background-image: linear-gradient(180deg, #f9fbfc 0%, #edf2f6 100%);
   background-attachment: fixed;
 }
 
 .top-strip {
-  background: linear-gradient(180deg, #6f9ab0 0%, #477c98 46%, #315c75 100%);
-  border-bottom: 1px solid #25495f;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.55),
-              inset 0 -2px 0 rgba(16,38,52,.28),
-              0 4px 10px rgba(25,47,61,.25);
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 52%, #edf2f6 100%);
+  border-bottom: 1px solid #d9e1e8;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9),
+              0 4px 12px rgba(15,23,42,.06);
 }
 
 .brand,
@@ -350,21 +347,18 @@ body:has(.login-box) {
   }
 }
 
-/* Warm leather, wood, and brass palette to match the login wallpaper. */
+/* Clean white & stone palette with refined borders, no brown theme. */
 body {
-  color: #382719;
-  background-color: #d9c8b1;
-  background-image:
-    radial-gradient(ellipse at 15% 0%, rgba(255, 249, 235, .82), transparent 48%),
-    linear-gradient(145deg, #f0e4d2 0%, #ddc8aa 52%, #c9ad89 100%);
+  color: #1f2937;
+  background-color: #f3f6f9;
+  background-image: linear-gradient(180deg, #f9fbfc 0%, #edf2f6 100%);
 }
 
 .top-strip {
-  background: linear-gradient(180deg, #846042 0%, #634329 48%, #422915 100%);
-  border-bottom-color: #332012;
-  box-shadow: inset 0 1px 0 rgba(255,230,183,.45),
-              inset 0 -2px 0 rgba(32,18,8,.35),
-              0 4px 10px rgba(45,28,14,.3);
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 52%, #edf2f6 100%);
+  border-bottom-color: #d9e1e8;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9),
+              0 4px 12px rgba(15,23,42,.06);
 }
 
 .top-strip #searchBox,
@@ -372,13 +366,12 @@ body {
 input:not([type="checkbox"]):not([type="radio"]),
 select,
 textarea {
-  border-color: #b69a75;
-  border-top-color: #92744e;
-  background: linear-gradient(180deg, #dbc8ac 0%, #fbf5ea 24%, #f7eddd 100%);
-  color: #382719;
-  box-shadow: inset 0 2px 4px rgba(71,46,21,.16),
-              inset 0 1px 0 rgba(255,255,255,.9),
-              0 1px 0 rgba(255,255,255,.65);
+  border-color: #d4dce5;
+  border-top-color: #c5ced8;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafb 100%);
+  color: #1f2937;
+  box-shadow: inset 0 1px 2px rgba(148,163,184,.08),
+              0 1px 0 rgba(255,255,255,.9);
 }
 
 .search-group input {
@@ -391,11 +384,11 @@ input:focus,
 select:focus,
 textarea:focus,
 .top-strip #searchBox:focus {
-  border-color: #a77835;
-  outline-color: rgba(173,125,49,.24);
-  box-shadow: inset 0 2px 4px rgba(71,46,21,.12),
-              0 0 0 2px rgba(255,249,235,.65),
-              0 0 0 4px rgba(173,125,49,.2);
+  border-color: #94a3b8;
+  outline-color: rgba(148,163,184,.22);
+  box-shadow: inset 0 1px 2px rgba(148,163,184,.08),
+              0 0 0 2px rgba(255,255,255,.9),
+              0 0 0 4px rgba(148,163,184,.12);
 }
 
 .voucher-header,
@@ -407,24 +400,22 @@ textarea:focus,
 .filter-dialog,
 .dash-tile,
 .login-box {
-  border-color: #c7ae8a;
-  background: linear-gradient(145deg, #fff8eb 0%, #f0e2ca 54%, #e5d2b4 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.96),
-              inset 1px 0 0 rgba(255,255,255,.55),
-              0 2px 3px rgba(255,255,255,.6),
-              0 7px 16px rgba(62,39,20,.24);
+  border-color: #dfe7ee;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 1px 0 rgba(255,255,255,.9),
+              0 8px 18px rgba(15,23,42,.04);
 }
 
 .breadcrumb-title,
 .voucher-card-header h2,
 .inventory-card-header h2 {
-  color: #57381f;
+  color: #243447;
 }
 
 .breadcrumb-path,
 .dashboard-flow-caption,
 .dash-tile .tile-sub {
-  color: #705a40;
+  color: #5f6f81;
 }
 
 button,
@@ -437,13 +428,12 @@ button,
 .logout-btn,
 .button,
 a.toolbar-btn {
-  border-color: #a88a64;
-  border-top-color: #c8ae88;
-  background: linear-gradient(180deg, #fff8eb 0%, #f0e2ca 48%, #dbc6a5 100%);
-  color: #4a301b;
+  border-color: #d0d8e2;
+  border-top-color: #edf2f6;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 48%, #edf2f6 100%);
+  color: #243447;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.96),
-              inset 0 -1px 0 rgba(112,77,40,.15),
-              0 2px 3px rgba(62,39,20,.23);
+              0 2px 3px rgba(15,23,42,.04);
 }
 
 button:hover,
@@ -455,9 +445,9 @@ button:hover,
 .tab:hover,
 .button:hover,
 a.toolbar-btn:hover {
-  color: #3d2512;
-  background: linear-gradient(180deg, #fff9ed 0%, #f4e6cc 48%, #d8b879 100%);
-  border-color: #a97c3d;
+  color: #0f172a;
+  background: linear-gradient(180deg, #ffffff 0%, #eef4fb 50%, #e7edf4 100%);
+  border-color: #b7c5d4;
 }
 
 button:active,
@@ -467,115 +457,109 @@ button:active,
 .tab:active,
 .button:active,
 a.toolbar-btn:active {
-  background: linear-gradient(180deg, #c5a77c 0%, #e4d1b2 100%);
-  box-shadow: inset 0 2px 4px rgba(62,39,20,.25),
-              0 1px 0 rgba(255,255,255,.6);
+  background: linear-gradient(180deg, #edf2f6 0%, #e5ebf2 100%);
+  box-shadow: inset 0 2px 4px rgba(15,23,42,.08),
+              0 1px 0 rgba(255,255,255,.8);
 }
 
 .top-user,
 .top-back {
-  border-color: rgba(246,224,184,.7);
-  background: linear-gradient(180deg, rgba(255,241,209,.22), rgba(39,22,9,.24));
+  border-color: rgba(148,163,184,.35);
+  background: linear-gradient(180deg, rgba(255,255,255,.45), rgba(148,163,184,.12));
+  color: #243447;
 }
 
 .top-user:hover,
 .top-back:hover {
-  background: linear-gradient(180deg, rgba(255,241,209,.34), rgba(39,22,9,.14));
+  background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(148,163,184,.18));
 }
 
 .tab.active,
 .ims-tabs .tab.active,
 .ims-tabs .active {
-  border-color: #4d2e17;
-  background: linear-gradient(180deg, #a77b3f 0%, #78502c 48%, #4e301a 100%);
-  color: #fff7e8;
-  text-shadow: 0 1px 2px rgba(36,19,7,.75);
-  box-shadow: inset 0 1px 0 rgba(255,231,182,.42),
-              inset 0 -2px 0 rgba(35,19,8,.3),
-              0 2px 4px rgba(62,39,20,.26);
+  border-color: #94a3b8;
+  background: linear-gradient(180deg, #f8fafc 0%, #eaf0f5 48%, #dfeaf3 100%);
+  color: #1f2937;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9),
+              0 2px 4px rgba(148,163,184,.12);
 }
 
 .voucher-table-wrapper {
-  border-color: #aa906d;
-  background: #e9dbc4;
-  box-shadow: inset 0 2px 5px rgba(71,46,21,.17),
-              0 1px 0 rgba(255,255,255,.78);
+  border-color: #d8e1ea;
+  background: #ffffff;
+  box-shadow: 0 1px 0 rgba(255,255,255,.8), 0 8px 16px rgba(15,23,42,.03);
 }
 
 .voucher-table th,
 .inventory-table th {
-  background: linear-gradient(180deg, #87633f 0%, #664426 48%, #49301c 100%);
-  color: #fff6e6;
-  text-shadow: 0 1px 1px rgba(36,19,7,.7);
-  box-shadow: inset 0 1px 0 rgba(255,232,190,.34),
-              inset 0 -1px 0 rgba(35,19,8,.34);
+  background: linear-gradient(180deg, #edf3f8 0%, #e3ebf2 48%, #dfeaf3 100%);
+  color: #243447;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9),
+              inset 0 -1px 0 rgba(148,163,184,.18);
 }
 
 .voucher-table td,
 .inventory-table td {
-  border-color: #d2c1a6;
+  border-color: #e4ebf2;
 }
 
 .voucher-table tbody tr:nth-child(even),
 .inventory-table tbody tr:nth-child(even) {
-  background: #f0e5d2;
+  background: #f8fafc;
 }
 
 .voucher-table tbody tr:hover,
 .inventory-table tbody tr:hover {
-  background: #e7d4b4;
+  background: #eef6ff;
 }
 
 .dash-tile .tile-icon {
-  border-color: #c4a978;
-  background: linear-gradient(145deg, #fff8eb, #dfc9a6);
-  color: #77502c;
+  border-color: #d3dce7;
+  background: linear-gradient(180deg, #ffffff 0%, #edf3f8 100%);
+  color: #3b4a5a;
 }
 
 .top-strip .search-dropdown {
-  border-color: #b69a75;
-  background: linear-gradient(145deg, #fff8eb, #ead9bd);
-  box-shadow: inset 0 1px 0 #fff, 0 8px 18px rgba(48,29,13,.28);
+  border-color: #d7dee7;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f8fb 100%);
+  box-shadow: 0 8px 20px rgba(15,23,42,.08);
 }
 
 .top-strip .search-dropdown li a:hover {
-  background: linear-gradient(180deg, #fff5df, #e8d1a9);
+  background: linear-gradient(180deg, #f3f8fc 0%, #ebf2f8 100%);
 }
 
 .login-box {
-  color: #49301c;
-  background: linear-gradient(145deg, rgba(255,249,237,.91) 0%, rgba(240,226,202,.89) 58%, rgba(224,205,174,.91) 100%);
+  color: #243447;
+  background: linear-gradient(180deg, rgba(255,255,255,.96) 0%, rgba(246,249,252,.96) 100%);
 }
 
 .login-box h2 {
-  color: #654221;
+  color: #243447;
 }
 
 .login-box .button {
-  background: linear-gradient(180deg, #a77b3f 0%, #78502c 48%, #4e301a 100%);
-  border-color: #4d2e17;
-  color: #fff7e8;
-  text-shadow: 0 1px 2px rgba(36,19,7,.75);
+  background: linear-gradient(180deg, #1f6feb 0%, #1d4ed8 100%);
+  border-color: #1d4ed8;
+  color: #ffffff;
 }
 
-/* Screen surfaces use light brown; print styles retain their original white paper. */
 @media screen {
-  /* Shared tab bars for paired voucher views (All / Pending, etc.). */
   .ims-tabs,
   .inventory-tabs,
   .master-tabs,
   .form-tabs {
-    background: linear-gradient(180deg, #f8f1e6 0%, #f1e4d1 100%);
-    border-color: #d9c7aa;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
+    border-color: #dfeaf3;
   }
 
   body.purchase-voucher-page {
-    background: linear-gradient(145deg, #faf5ec 0%, #f3e8d7 54%, #ebddc7 100%);
+    background: linear-gradient(180deg, #f9fbfc 0%, #eef3f8 100%);
   }
 
   body:has(.purchase-indent-shell),
   body:has(.purchase-indent-shell) .purchase-indent-shell {
-    background: linear-gradient(145deg, #faf5ec 0%, #f3e8d7 54%, #ebddc7 100%);
+    background: linear-gradient(180deg, #f9fbfc 0%, #eef3f8 100%);
   }
 
   .voucher-header,
@@ -596,13 +580,13 @@ a.toolbar-btn:active {
   .warehouse-form,
   .category-panel,
   .items-panel {
-    background: linear-gradient(145deg, #f8f1e6 0%, #f1e4d1 54%, #e9dac2 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   }
 
   .po-form-active,
   body.purchase-voucher-page.po-form-active,
   .po-form-active .voucher-form-card {
-    background: linear-gradient(145deg, #f8f1e6 0%, #f1e4d1 54%, #e9dac2 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   }
 
   .voucher-table-wrapper,
@@ -614,7 +598,7 @@ a.toolbar-btn:active {
   body #qrPendingView .voucher-table-wrapper,
   body #allPoView .voucher-table-wrapper,
   body #pendingQrView .voucher-table-wrapper {
-    background: #f2e7d7;
+    background: #ffffff;
   }
 
   .search-group,
@@ -624,7 +608,7 @@ a.toolbar-btn:active {
   .form-row textarea,
   .row-action,
   .icon-btn {
-    background: linear-gradient(180deg, #fbf6ed 0%, #f2e7d7 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   }
 
   body.purchase-voucher-page .field-group input,
@@ -640,7 +624,7 @@ a.toolbar-btn:active {
   body:has(.purchase-indent-shell) .field-group select,
   body:has(.purchase-indent-shell) .purchase-table td input:focus,
   body:has(.purchase-indent-shell) .purchase-table td select:focus {
-    background: linear-gradient(180deg, #fbf6ed 0%, #f2e7d7 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   }
 
   body.purchase-voucher-page input:not([type="checkbox"]):not([type="radio"]),
@@ -649,7 +633,7 @@ a.toolbar-btn:active {
   body:has(.purchase-indent-shell) input:not([type="checkbox"]):not([type="radio"]),
   body:has(.purchase-indent-shell) select,
   body:has(.purchase-indent-shell) textarea {
-    background: linear-gradient(180deg, #fbf6ed 0%, #f2e7d7 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   }
 
   body.purchase-voucher-page.material-requisition-page .voucher-header,
@@ -659,7 +643,7 @@ a.toolbar-btn:active {
   body:has(.purchase-indent-shell) .purchase-footer-bar,
   body.purchase-voucher-page .qr-context-menu,
   body.purchase-voucher-page .mrn-context-menu {
-    background: linear-gradient(145deg, #f8f1e6 0%, #f1e4d1 54%, #e9dac2 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   }
 
   body.purchase-voucher-page .voucher-table-wrapper,
@@ -667,30 +651,30 @@ a.toolbar-btn:active {
   body.purchase-voucher-page .po-entry-grid input,
   body.purchase-voucher-page .po-entry-grid select,
   body.purchase-voucher-page .po-entry-grid textarea {
-    background: linear-gradient(180deg, #fbf6ed 0%, #f2e7d7 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   }
 
   body.purchase-voucher-page #mrnAllView .voucher-table-wrapper,
   body.purchase-voucher-page #mrnPendingPoView .voucher-table-wrapper {
-    background: #f2e7d7;
+    background: #ffffff;
   }
 
   #mrnAllView .voucher-table tbody tr:nth-child(even),
   #mrnPendingPoView .voucher-table tbody tr:nth-child(even) {
-    background: #f3e9da;
+    background: #f8fafc;
   }
 
   .voucher-table tbody > tr,
   .inventory-table tbody > tr,
   .purchase-table tbody > tr {
-    background: #f3e9da !important;
+    background: #f8fafc !important;
     transition: background-color .14s ease;
   }
 
   .voucher-table tbody > tr > td,
   .inventory-table tbody > tr > td,
   .purchase-table tbody > tr > td {
-    background: #f3e9da !important;
+    background: #f8fafc !important;
     transition: background-color .14s ease;
   }
 
@@ -700,19 +684,19 @@ a.toolbar-btn:active {
   .voucher-table tbody > tr:hover > td,
   .inventory-table tbody > tr:hover > td,
   .purchase-table tbody > tr:hover > td {
-    background: #fff !important;
+    background: #ffffff !important;
   }
 
   .purchase-table tbody tr:nth-child(even) {
-    background: #f3e9da !important;
+    background: #f8fafc !important;
   }
 
   .purchase-table tbody tr:hover {
-    background: #fff !important;
+    background: #ffffff !important;
   }
 
   .login-box {
-    background: linear-gradient(145deg, rgba(242,220,185,.94) 0%, rgba(226,197,151,.94) 58%, rgba(213,178,124,.94) 100%);
+    background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(248,250,252,.98) 100%);
   }
 }
 

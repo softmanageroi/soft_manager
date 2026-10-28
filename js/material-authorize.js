@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     tableBody.innerHTML = pendingRecords.map((row, index) => `
       <tr data-open-doc="${String(row.docNo).replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" title="Double-click to open this voucher">
-        <td><input type="checkbox" aria-label="Select voucher ${row.docNo}" /></td>
+        <td><input type="checkbox" class="voucher-select" value="${String(row.docNo).replace(/&/g, '&amp;').replace(/"/g, '&quot;')}" aria-label="Select voucher ${row.docNo}" /></td>
         <td>${row.docNo}</td>
         <td>${row.date}</td>
         <td>${row.warehouse}</td>

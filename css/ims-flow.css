@@ -153,15 +153,9 @@ body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) {
     min-width: 1100px;
 }
 
-body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) th:first-child,
-body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) td:first-child {
-    width: 56px;
-    white-space: nowrap;
-}
-
-body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) th:nth-child(2),
-body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) td:nth-child(2) {
-    width: 112px;
+body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) th,
+body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) td {
+    width: calc(100% / 7);
 }
 
 body.purchase-voucher-page .voucher-table tbody tr:nth-child(even) {
@@ -253,7 +247,7 @@ body.purchase-voucher-page.po-form-active #poLinesBody .ims-lines-input {
     padding: 5px 8px;
     border: 1px solid #c9c9c9;
     border-radius: 8px;
-    background: #fff;
+    background: linear-gradient(180deg, #dfe5e6 0%, #f7f9f8 22%, #f7f9f8 100%);
     text-align: center;
 }
 
@@ -275,18 +269,13 @@ body.purchase-voucher-page .filter-field select {
     border-radius: 10px;
 }
 
-body.purchase-voucher-page .voucher-actions {
+body.purchase-voucher-page .voucher-form-card > .voucher-actions {
     justify-content: flex-end;
     padding: 10px 4px 2px;
     border-top: 1px solid #d1d1d1;
 }
 
 body.material-requisition-page .shared-voucher-action[data-shared-voucher-action="save"] {
-    display: none;
-}
-
-body.purchase-voucher-page .shared-voucher-toolbar,
-body:has(.purchase-indent-shell) .shared-voucher-toolbar {
     display: none;
 }
 
@@ -299,26 +288,39 @@ body.purchase-voucher-page .page-header-tools {
     flex-wrap: wrap;
 }
 
-body.purchase-voucher-page .voucher-header .voucher-actions i,
-body.purchase-voucher-page .page-header-tools i,
-body.purchase-voucher-page .voucher-actions button i,
+body.purchase-voucher-page .voucher-header .voucher-actions > button > i,
+body.purchase-voucher-page .voucher-header .voucher-actions > a > i,
+body.purchase-voucher-page .page-header-tools > .toolbar-btn > i,
+body.purchase-voucher-page .voucher-actions > button > i,
 body.purchase-voucher-page .voucher-form-card > .voucher-actions i,
-body:has(.purchase-indent-shell) .page-header-tools i,
-body:has(.purchase-indent-shell) .voucher-actions i {
+body:has(.purchase-indent-shell) .voucher-actions > button > i,
+body:has(.purchase-indent-shell) .page-header-tools > .toolbar-btn > i {
     display: none;
 }
 
-body.purchase-voucher-page .voucher-actions button,
-body.purchase-voucher-page .voucher-header .voucher-actions a,
-body:has(.purchase-indent-shell) .page-header-tools .toolbar-btn {
-    min-height: 38px;
-    padding: 8px 13px;
+body.purchase-voucher-page .voucher-actions button:has(> i:only-child),
+body.purchase-voucher-page .voucher-header .voucher-actions a:has(> i:only-child),
+body:has(.purchase-indent-shell) .page-header-tools .toolbar-btn:has(> i:only-child) {
+    width: 42px;
+    height: 42px;
+    min-height: 42px;
+    padding: 0;
+}
+
+body:has(.purchase-indent-shell) .page-header-tools .toolbar-btn.has-label {
+    width: auto;
+    min-width: 42px;
+    padding: 0 12px;
 }
 
 body.material-requisition-page .voucher-bottom-actions {
     justify-content: flex-end;
     padding: 12px 0 0;
     border-top: 1px solid #d1d1d1;
+}
+
+body.material-requisition-page .voucher-bottom-actions #authorizeVoucherBtn[hidden] {
+    display: none;
 }
 
 body.purchase-voucher-page .toolbar-btn,
@@ -748,17 +750,6 @@ body.purchase-voucher-page .voucher-table-card:has(#voucherItemsBody) #voucherIt
     background: #fff;
 }
 
-body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) th:first-child,
-body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) td:first-child {
-    width: 56px;
-    white-space: nowrap;
-}
-
-body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) th:nth-child(2),
-body.purchase-voucher-page .voucher-table:has(#voucherItemsBody) td:nth-child(2) {
-    width: 112px;
-}
-
 body:has(#piLinesBody) .purchase-table {
     width: 100%;
     min-width: 0;
@@ -792,7 +783,7 @@ body:has(#piLinesBody) .purchase-table td input {
     min-height: 38px;
     border: 1px solid #c9c9c9;
     border-radius: 10px;
-    background: #fff;
+    background: linear-gradient(180deg, #dfe5e6 0%, #f7f9f8 22%, #f7f9f8 100%);
 }
 
 body.purchase-voucher-page .po-tabs-ribbon {

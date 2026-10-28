@@ -1,7 +1,7 @@
 .stock-ledger-content {
     max-width: none;
     padding: 18px 22px 40px;
-    color: #49321d;
+    color: #243447;
 }
 
 .stock-ledger-content .inventory-breadcrumb {
@@ -14,7 +14,7 @@
 .stock-ledger-content .breadcrumb-title {
     position: relative;
     padding-left: 16px;
-    color: #5b381b;
+    color: #243447;
     letter-spacing: .01em;
 }
 
@@ -25,7 +25,7 @@
     left: 0;
     width: 5px;
     border-radius: 5px;
-    background: linear-gradient(180deg, #c79b5b, #81552a);
+    background: linear-gradient(180deg, #dfeaf3, #b9cde0);
     content: "";
 }
 
@@ -33,12 +33,12 @@
 .stock-ledger-result {
     margin: 14px 0;
     padding: 20px;
-    border: 1px solid #d4bd99;
+    border: 1px solid #dfe7ee;
     border-radius: 17px;
     background:
-        radial-gradient(ellipse at 7% 0%, rgba(255,255,255,.7), transparent 46%),
-        linear-gradient(145deg, #f8f1e6 0%, #f1e4d1 54%, #e9dac2 100%);
-    box-shadow: 0 7px 18px rgba(83, 54, 27, .13), inset 0 1px 0 rgba(255,255,255,.86);
+        radial-gradient(ellipse at 7% 0%, rgba(255,255,255,.9), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow: 0 7px 18px rgba(15, 23, 42, .04), inset 0 1px 0 rgba(255,255,255,.9);
 }
 
 .stock-ledger-filter {
@@ -65,13 +65,13 @@
 }
 
 .ledger-department-field label {
-    color: #59432a;
+    color: #243447;
     font-weight: 700;
 }
 
 .ledger-department-field h3 {
     margin: 0;
-    color: #59432a;
+    color: #243447;
     font-size: 1rem;
 }
 
@@ -79,7 +79,7 @@
     display: grid;
     gap: 2px;
     padding: 8px 0;
-    border-top: 1px solid rgba(128, 94, 56, .24);
+    border-top: 1px solid rgba(71, 122, 152, .24);
 }
 
 .ledger-department-item {
@@ -91,7 +91,7 @@
     border: 0;
     border-radius: 6px;
     background: transparent;
-    color: #49321d;
+    color: #243447;
     font: inherit;
     text-align: left;
     cursor: pointer;
@@ -99,14 +99,14 @@
 
 .ledger-department-item::before {
     content: "•";
-    color: #59432a;
+    color: #477a98;
     font-size: 1.25rem;
     line-height: 1;
 }
 
 .ledger-department-item:hover,
 .ledger-department-item[aria-selected="true"] {
-    background: rgba(199, 155, 91, .22);
+    background: rgba(71, 122, 152, .12);
 }
 
 .ledger-department-items {
@@ -116,13 +116,13 @@
     max-height: 430px;
     margin: 8px 0 0 8px;
     padding: 0 0 0 18px;
-    border-left: 1px solid rgba(128, 94, 56, .24);
+    border-left: 1px solid rgba(71, 122, 152, .24);
     overflow: auto;
 }
 
 .ledger-department-items h3 {
     margin: 0 0 10px;
-    color: #59432a;
+    color: #243447;
     font-size: 1rem;
 }
 
@@ -137,18 +137,18 @@
     gap: 3px;
     min-height: 62px;
     padding: 10px 12px;
-    border: 1px solid #d4bd99;
+    border: 1px solid #cbd5e1;
     border-radius: 8px;
-    background: rgba(255, 250, 242, .68);
-    color: #49321d;
+    background: linear-gradient(180deg, #dfe5e6 0%, #f7f9f8 22%, #f7f9f8 100%);
+    color: #243447;
     font: inherit;
     text-align: left;
     cursor: pointer;
 }
 
 .ledger-item-button:hover {
-    background: #fffaf2;
-    box-shadow: 0 2px 6px rgba(83, 54, 27, .12);
+    background: #eef5fa;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, .08);
 }
 
 .ledger-item-button strong {
@@ -158,18 +158,18 @@
 }
 
 .ledger-item-button small {
-    color: #74634e;
+    color: #64748b;
 }
 
 .ledger-items-empty {
     margin: 0;
-    color: #74634e;
+    color: #64748b;
 }
 
 .stock-ledger-filter h2,
 .stock-ledger-heading h2 {
     margin: 0 0 5px;
-    color: #654221;
+    color: #243447;
 }
 
 .stock-ledger-filter h2 { font-size: 1.45rem; }
@@ -177,7 +177,7 @@
 .stock-ledger-filter p,
 .stock-ledger-heading p {
     margin: 0;
-    color: #6e6254;
+    color: #5f6f81;
 }
 
 .stock-ledger-form {
@@ -195,18 +195,18 @@
 }
 
 .stock-ledger-form label {
-    color: #59432a;
+    color: #243447;
     font-weight: 700;
 }
 
 .stock-ledger-form input {
     min-height: 42px;
     padding: 9px 12px;
-    border: 1px solid #cbb693;
+    border: 1px solid #cbd5e1;
     border-radius: 9px;
-    background: #fffaf2;
-    color: #382a1c;
-    box-shadow: inset 0 2px 4px rgba(64, 43, 22, .1);
+    background: linear-gradient(180deg, #dfe5e6 0%, #f7f9f8 22%, #f7f9f8 100%);
+    color: #243447;
+    box-shadow: inset 0 2px 4px rgba(15, 23, 42, .08);
 }
 
 .ledger-date-option,
@@ -226,12 +226,12 @@
     min-height: 42px;
     box-sizing: border-box;
     padding: 9px 36px 9px 12px;
-    border: 1px solid #cbb693;
+    border: 1px solid #cbd5e1;
     border-radius: 9px;
-    background: #fffaf2;
-    color: #382a1c;
+    background: linear-gradient(180deg, #dfe5e6 0%, #f7f9f8 22%, #f7f9f8 100%);
+    color: #243447;
     font: inherit;
-    box-shadow: inset 0 2px 4px rgba(64, 43, 22, .1);
+    box-shadow: inset 0 2px 4px rgba(15, 23, 42, .08);
 }
 
 .ledger-date-field input {
@@ -241,7 +241,7 @@
 }
 
 .ledger-date-field label {
-    color: #59432a;
+    color: #243447;
     font-weight: 700;
 }
 
@@ -275,27 +275,27 @@
     padding: 14px;
     position: relative;
     overflow: hidden;
-    border: 1px solid #d8c5a6;
+    border: 1px solid #dfe7ee;
     border-radius: 10px;
-    background: linear-gradient(180deg, #fbf6ed 0%, #f2e7d7 100%);
-    box-shadow: inset 0 1px 0 #fff, 0 2px 5px rgba(83, 54, 27, .09);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 2px 5px rgba(15, 23, 42, .04);
 }
 
 .ledger-summary article::before {
     position: absolute;
     inset: 0 auto 0 0;
     width: 4px;
-    background: linear-gradient(180deg, #c79b5b, #81552a);
+    background: linear-gradient(180deg, #dfeaf3, #b9cde0);
     content: "";
 }
 
 .ledger-summary span {
-    color: #69543b;
+    color: #5f6f81;
     font-size: .9rem;
 }
 
 .ledger-summary strong {
-    color: #49321d;
+    color: #243447;
     font-size: 1.25rem;
 }
 
@@ -309,20 +309,20 @@
 }
 
 .stock-ledger-table th {
-    background: linear-gradient(180deg, #85603a 0%, #694725 52%, #50351e 100%);
-    color: #fff7e8;
-    text-shadow: 0 1px 1px rgba(38, 22, 8, .55);
+    background: linear-gradient(180deg, #edf3f8 0%, #e3ebf2 48%, #dfeaf3 100%);
+    color: #243447;
+    text-shadow: none;
 }
 
 .ledger-empty {
     padding: 24px;
-    color: #69543b;
+    color: #64748b;
     text-align: center;
 }
 
 .ledger-note {
     margin: 12px 2px 0;
-    color: #74634e;
+    color: #64748b;
     font-size: .88rem;
 }
 
@@ -333,7 +333,7 @@
     .stock-ledger-selection, .ledger-department-field, .ledger-department-items { grid-column: 1; grid-row: auto; }
     .stock-ledger-selection { padding: 0; }
     .ledger-department-field { padding: 8px 0 0; }
-    .ledger-department-items { margin: 22px 0 0; padding: 16px 0 0; border-top: 1px solid rgba(128, 94, 56, .24); border-left: 0; max-height: none; }
+    .ledger-department-items { margin: 22px 0 0; padding: 16px 0 0; border-top: 1px solid rgba(71, 122, 152, .24); border-left: 0; max-height: none; }
     .stock-ledger-form { grid-template-columns: 1fr; }
     .stock-ledger-form > label, .stock-ledger-form > input, .stock-ledger-form .ledger-date-range, .stock-ledger-form .ledger-message { grid-column: 1 / -1; }
     .stock-ledger-form .primary-btn { grid-column: 1 / -1; }

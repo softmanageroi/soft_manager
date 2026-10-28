@@ -101,18 +101,20 @@ document.addEventListener('DOMContentLoaded', function () {
   function render() {
     const vouchers = IMS.qrAll().slice().reverse();
     el.qrAllBody.innerHTML = vouchers.length ? vouchers.map((qr, index) => `
-      <tr data-open-qr="${esc(qr.id)}" title="Double-click to open this voucher"><td>${vouchers.length - index}</td><td>${esc(IMS.fmtDate(qr.date))}</td>
+      <tr data-open-qr="${esc(qr.id)}"><td>${vouchers.length - index}</td><td>${esc(IMS.fmtDate(qr.date))}</td>
       <td>${esc(qr.no)}</td><td>${esc(qr.rfqNo)}</td><td>${esc(qr.supplier)}</td>
       <td>${(Number(qr.total) || 0).toFixed(2)}</td><td>${esc(qr.linkStatus || 'Pending')}</td>
+      <td><button class="action-btn has-label" type="button" data-open-qr-button="${esc(qr.id)}">Open</button></td>
       </tr>
     `).join('') : '<tr><td colspan="8">No quotation receive vouchers yet.</td></tr>';
     el.qrCount.textContent = String(vouchers.length);
 
     const pending = IMS.rfqAll().filter((rfq) => rfqStatus(rfq) !== 'Closed');
     el.pendingRfqBody.innerHTML = pending.length ? pending.map((rfq, index) => `
-      <tr data-open-pending-rfq="${esc(rfq.id)}" title="Double-click to receive quotation"><td>${index + 1}</td><td>${esc(IMS.fmtDate(rfq.date))}</td><td>${esc(rfq.no)}</td>
-      <td>${(rfq.lines || []).filter((line) => Math.max(0, Number(line.qty) - Number(line.consumed || 0)) > 0).length}</td><td>${esc(rfqStatus(rfq))}</td></tr>
-    `).join('') : '<tr><td colspan="5">No pending RFQs.</td></tr>';
+      <tr data-open-pending-rfq="${esc(rfq.id)}"><td>${index + 1}</td><td>${esc(IMS.fmtDate(rfq.date))}</td><td>${esc(rfq.no)}</td>
+      <td>${(rfq.lines || []).filter((line) => Math.max(0, Number(line.qty) - Number(line.consumed || 0)) > 0).length}</td><td>${esc(rfqStatus(rfq))}</td>
+      <td><button class="action-btn has-label" type="button" data-receive-quotation="${esc(rfq.id)}">Receive</button></td></tr>
+    `).join('') : '<tr><td colspan="6">No pending RFQs.</td></tr>';
   }
 
   function updateTotal() {
@@ -223,6 +225,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   el.tabAllQr.addEventListener('click', () => showTab('all'));
   el.tabPendingRfq.addEventListener('click', () => showTab('pending'));
+  el.qrAllBody.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-open-qr-button]');
+    if (!button) return;
+    const qr = IMS.qrAll().find((entry) => String(entry.id) === button.dataset.openQrButton);
+    if (qr) openForm(qr.rfqId, qr);
+  });
+  el.pendingRfqBody.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-receive-quotation]');
+    if (button) openForm(button.dataset.receiveQuotation);
+  });
   el.pendingRfqBody.addEventListener('dblclick', (event) => {
     const row = event.target.closest('[data-open-pending-rfq]');
     if (!row) return;

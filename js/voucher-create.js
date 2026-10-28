@@ -26,11 +26,19 @@ document.addEventListener('DOMContentLoaded', function () {
   const vouchersKey = 'materialRequisitionVouchers';
   const counterKey = 'materialRequisitionCounter';
   const saveButton = document.getElementById('saveVoucherBtn');
+  const returnLink = document.getElementById('returnToIssueList');
   const previousButton = document.getElementById('previousVoucherBtn');
   const nextButton = document.getElementById('nextVoucherBtn');
-  const requestedDocNo = new URLSearchParams(window.location.search).get('docNo');
+  const pageParams = new URLSearchParams(window.location.search);
+  const requestedDocNo = pageParams.get('docNo');
+  const returnTo = pageParams.get('returnTo') === 'pending' ? 'pending' : 'all';
   let currentDocNo = '';
   let isSaving = false;
+  if (returnLink) returnLink.href = `material-issue-list.html?view=${returnTo}`;
+
+  function getVoucherStatus(voucher) {
+    return String(voucher?.authorizationStatus || voucher?.status || 'Pending').trim() || 'Pending';
+  }
 
   function refreshItemOptions() {
     const datalist = document.getElementById('materialRequisitionItemOptions');
@@ -57,6 +65,9 @@ document.addEventListener('DOMContentLoaded', function () {
   function readVouchers() {
     const stored = JSON.parse(localStorage.getItem(vouchersKey) || '[]');
     if (!Array.isArray(stored)) throw new Error('Saved voucher data is invalid.');
+    if (!stored.every((voucher) => voucher && typeof voucher === 'object' && !Array.isArray(voucher))) {
+      throw new Error('Saved voucher data contains an invalid record.');
+    }
     return stored;
   }
 
@@ -156,8 +167,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!status) {
       status = document.createElement('p');
       status.id = 'voucherStatus';
+      status.className = 'ims-message';
       status.setAttribute('role', 'status');
-      status.style.margin = '10px 0 0';
       document.querySelector('.voucher-footer')?.appendChild(status);
     }
     status.textContent = message;
@@ -195,61 +206,84 @@ document.addEventListener('DOMContentLoaded', function () {
     itemsBody.replaceChildren();
     (voucher.items || []).forEach(addItemRow);
     while (itemsBody.rows.length < 5) addItemRow();
-    setStatus(`Viewing saved voucher ${voucher.docNo}.`);
+    setStatus(`Viewing saved voucher ${voucher.docNo} (${getVoucherStatus(voucher)}).`);
+  }
+
+  function collectVoucherData() {
+    const items = collectItems();
+    if (!dateField.value) {
+      window.alert('Please select a voucher date.');
+      return null;
+    }
+    if (!items.length || items.some((item) => !item.item || !item.quantity || Number(item.quantity) <= 0)) {
+      window.alert('Add at least one item with an item name and quantity greater than zero.');
+      return null;
+    }
+
+    return {
+      docNo: currentDocNo,
+      date: dateField.value,
+      warehouse: document.getElementById('warehouse').value,
+      department: document.getElementById('department').value,
+      location: document.getElementById('location').value,
+      requestedBy: requestedByField.value.trim(),
+      narration: document.getElementById('narration').value.trim(),
+      requestType: document.getElementById('requestType').value,
+      items
+    };
+  }
+
+  function persistVoucher(formData) {
+    const vouchers = readVouchers();
+    const now = new Date();
+    const existingIndex = vouchers.findIndex((saved) => saved.docNo === currentDocNo);
+    const existing = existingIndex >= 0 ? vouchers[existingIndex] : null;
+
+    const existingStatus = existing ? getVoucherStatus(existing) : 'Pending';
+    const voucher = {
+      ...(existing || {}),
+      ...formData,
+      createdBy: existing?.createdBy || localStorage.getItem('loggedInUser') || 'User',
+      createdDate: existing?.createdDate || localDateString(now),
+      createdTime: existing?.createdTime || now.toLocaleTimeString(),
+      authorizationStatus: existingStatus,
+      status: existing?.status || existingStatus
+    };
+
+    if (existingIndex >= 0) vouchers[existingIndex] = voucher;
+    else vouchers.push(voucher);
+    localStorage.setItem(vouchersKey, JSON.stringify(vouchers));
+    return voucher;
+  }
+
+  function setActionBusy(isBusy) {
+    isSaving = isBusy;
+    if (!saveButton) return;
+    saveButton.disabled = isBusy;
+    if (isBusy) saveButton.setAttribute('aria-busy', 'true');
+    else saveButton.removeAttribute('aria-busy');
   }
 
   function saveVoucher() {
     if (isSaving) return;
+    const formData = collectVoucherData();
+    if (!formData) return;
 
-    const items = collectItems();
-    if (!dateField.value) {
-      window.alert('Please select a voucher date.');
-      return;
-    }
-    if (!items.length || items.some((item) => !item.item || !item.quantity || Number(item.quantity) <= 0)) {
-      window.alert('Add at least one item with an item name and quantity greater than zero.');
-      return;
-    }
-
-    isSaving = true;
-    if (saveButton) {
-      saveButton.disabled = true;
-      saveButton.setAttribute('aria-busy', 'true');
-    }
-
+    setActionBusy(true);
     try {
-      const vouchers = readVouchers();
-      const now = new Date();
-      const voucher = {
-        docNo: currentDocNo,
-        date: dateField.value,
-        warehouse: document.getElementById('warehouse').value,
-        department: document.getElementById('department').value,
-        location: document.getElementById('location').value,
-        requestedBy: requestedByField.value.trim(),
-        narration: document.getElementById('narration').value.trim(),
-        requestType: document.getElementById('requestType').value,
-        items,
-        createdBy: localStorage.getItem('loggedInUser') || 'User',
-        createdDate: localDateString(now),
-        createdTime: now.toLocaleTimeString()
-      };
-      const existingIndex = vouchers.findIndex((saved) => saved.docNo === currentDocNo);
-      if (existingIndex >= 0) vouchers[existingIndex] = { ...vouchers[existingIndex], ...voucher };
-      else vouchers.push(voucher);
-      localStorage.setItem(vouchersKey, JSON.stringify(vouchers));
-      const savedDocNo = voucher.docNo;
-      resetForm({ preserveStatus: true });
-      setStatus(`Saved ${savedDocNo}. New voucher ${currentDocNo} is ready.`);
+      const voucher = persistVoucher(formData);
+      const approved = ['approved', 'authorized', 'issued', 'completed']
+        .includes(getVoucherStatus(voucher).toLocaleLowerCase());
+      const params = new URLSearchParams({
+        view: approved ? 'all' : 'pending',
+        saved: voucher.docNo
+      });
+      window.location.href = `material-issue-list.html?${params.toString()}`;
     } catch (error) {
       console.error('Could not save material requisition.', error);
       window.alert('Voucher could not be saved. Please check browser storage and try again.');
     } finally {
-      isSaving = false;
-      if (saveButton) {
-        saveButton.disabled = false;
-        saveButton.removeAttribute('aria-busy');
-      }
+      setActionBusy(false);
     }
   }
 

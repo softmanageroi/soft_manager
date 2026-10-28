@@ -1,0 +1,134 @@
+.register-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 0 0 16px;
+    padding: 16px;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.register-month-field {
+    display: grid;
+    gap: 6px;
+}
+
+.register-month-field label {
+    color: #4a4a4a;
+    font-weight: 700;
+}
+
+.register-month-field input {
+    min-height: 40px;
+    padding: 7px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font: inherit;
+}
+
+.register-view .voucher-card-header {
+    align-items: end;
+}
+
+.register-view .voucher-card-header h2 {
+    margin: 0;
+}
+
+.register-period {
+    margin: 6px 0 0;
+    color: #63718d;
+}
+
+.register-total {
+    color: #4a4a4a;
+    white-space: nowrap;
+}
+
+.register-total-separator {
+    padding: 0 8px;
+    color: #9aa4b2;
+}
+
+.register-view .voucher-table {
+    min-width: 1050px;
+}
+
+.register-view .voucher-table td,
+.register-view .voucher-table th {
+    text-align: center;
+}
+
+.register-open-button {
+    min-height: 34px;
+}
+
+@media print {
+    body.registers-page {
+        min-width: 0;
+        background: #fff;
+    }
+
+    .registers-page .top-strip,
+    .registers-page .voucher-header,
+    .registers-page .register-controls,
+    .registers-page .ims-tabs,
+    .registers-page .register-open-button,
+    .registers-page .register-message {
+        display: none !important;
+    }
+
+    .registers-page .inventory-page {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .registers-page .register-view {
+        display: none !important;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        box-shadow: none;
+    }
+
+    .registers-page .register-view.is-printing {
+        display: block !important;
+    }
+
+    .registers-page .voucher-table-wrapper {
+        overflow: visible;
+    }
+
+    .registers-page .voucher-table {
+        min-width: 0;
+        width: 100%;
+        font-size: 9pt;
+    }
+
+    .registers-page .voucher-table th,
+    .registers-page .voucher-table td {
+        padding: 5px;
+        border: 1px solid #777;
+        color: #111;
+    }
+
+    .registers-page .register-period,
+    .registers-page .register-total,
+    .registers-page .register-view .voucher-card-header h2 {
+        color: #111;
+    }
+
+    .registers-page .register-view .voucher-table th {
+        background: #e5e7eb !important;
+        color: #111 !important;
+        print-color-adjust: exact;
+    }
+}
+
+@page {
+    size: landscape;
+    margin: 12mm;
+}

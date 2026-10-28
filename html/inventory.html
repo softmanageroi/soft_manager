@@ -40,19 +40,10 @@
             </div>
             <div class="inventory-actions">
                 <button id="createVoucherBtn" class="action-btn has-label" title="Create new voucher" aria-label="New voucher"><i class="fa-solid fa-plus" aria-hidden="true"></i><span>New</span></button>
-                <button id="newDraftBtn" class="action-btn" title="New draft"><i class="fa-solid fa-file-lines"></i></button>
-                <button id="clearAllBtn" class="action-btn" title="Clear all vouchers"><i class="fa-solid fa-trash"></i></button>
                 <button id="deleteSelectedBtn" class="action-btn has-label" title="Delete selected vouchers" aria-label="Delete selected vouchers"><i class="fa-solid fa-trash-can" aria-hidden="true"></i><span>Delete</span></button>
                 <button id="printBtn" class="action-btn has-label" title="Print selected vouchers or list" aria-label="Print vouchers"><i class="fa-solid fa-print" aria-hidden="true"></i><span>Print</span></button>
-                <button id="sendBtn" class="action-btn" title="Send report"><i class="fa-solid fa-envelope"></i></button>
-                <button id="barcodeBtn" class="action-btn" title="Barcode"><i class="fa-solid fa-barcode"></i></button>
-                <button id="authorizeBtn" class="action-btn" title="Authorize selected"><i class="fa-solid fa-circle-check"></i></button>
-                <button id="suspendBtn" class="action-btn" title="Suspend selected"><i class="fa-solid fa-pause"></i></button>
-                <button id="rejectBtn" class="action-btn" title="Reject selected"><i class="fa-solid fa-xmark"></i></button>
-                <button id="infoBtn" class="action-btn" title="Row info"><i class="fa-solid fa-circle-info"></i></button>
                 <button id="refreshBtn" class="action-btn" title="Refresh data"><i class="fa-solid fa-arrows-rotate"></i></button>
-                <button id="filterBtn" class="action-btn" title="Filter options"><i class="fa-solid fa-filter"></i></button>
-                <button id="settingsBtn" class="action-btn" title="Settings"><i class="fa-solid fa-gear"></i></button>
+                <button id="filterBtn" class="action-btn" title="Filter options" aria-expanded="false" aria-controls="filterPanel"><i class="fa-solid fa-filter"></i></button>
             </div>
         </section>
 
@@ -61,7 +52,6 @@
                 <div class="search-group">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input id="inventorySearch" type="search" placeholder="Search vouchers, IDs, status..." />
-                    <button id="materialAuthorizeBtn" class="action-btn" title="Open Material Authorize">Material Authorize</button>
                 </div>
                 <div class="select-group">
                     <label for="rowsPerPage">Rows per page</label>
@@ -72,26 +62,16 @@
             </div>
 
             <div class="filter-modal hidden" id="filterPanel">
-                <div class="filter-dialog">
+                <div class="filter-dialog" role="dialog" aria-modal="true" aria-labelledby="filterDialogTitle">
                     <div class="filter-dialog-header">
                         <div>
-                            <div class="filter-title">Filter</div>
+                            <div id="filterDialogTitle" class="filter-title">Filter</div>
                             <div class="filter-subtitle">Default Filter</div>
                         </div>
                         <button id="closeFilterBtn" class="filter-close-btn" title="Close filter"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                     <div class="filter-divider"></div>
                     <div class="filter-dialog-body">
-                        <div class="filter-row">
-                            <div class="filter-field wide">
-                                <label for="filterDateFrom">Start Date</label>
-                                <input id="filterDateFrom" type="date" />
-                            </div>
-                            <div class="filter-field wide">
-                                <label for="filterDateTo">End Date</label>
-                                <input id="filterDateTo" type="date" />
-                            </div>
-                        </div>
                         <div class="filter-row">
                             <div class="filter-field wide">
                                 <label for="filterWarehouse">Warehouse</label>
