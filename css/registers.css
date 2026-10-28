@@ -16,6 +16,26 @@
     gap: 6px;
 }
 
+.register-search-field {
+    display: grid;
+    flex: 1 1 260px;
+    gap: 6px;
+    max-width: 420px;
+}
+
+.register-search-field label {
+    color: #4a4a4a;
+    font-weight: 700;
+}
+
+.register-search-field input {
+    min-height: 40px;
+    padding: 7px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font: inherit;
+}
+
 .register-month-field label {
     color: #4a4a4a;
     font-weight: 700;
@@ -63,6 +83,12 @@
 
 .register-open-button {
     min-height: 34px;
+}
+
+.register-report-note {
+    margin: 10px 0 0;
+    color: #63718d;
+    font-size: .9rem;
 }
 
 @media print {

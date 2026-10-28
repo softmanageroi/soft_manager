@@ -8,6 +8,7 @@
     rfq: 'ims_rfq',
     qr: 'ims_qr',
     purchaseOrders: 'ims_purchase_orders',
+    mrn: 'ims_mrn',
     counters: 'ims_counters'
   };
 
@@ -179,6 +180,7 @@
     qrSave: (list) => saveArray(KEYS.qr, list),
     purchaseOrders: () => array(KEYS.purchaseOrders),
     purchaseOrdersSave: (list) => saveArray(KEYS.purchaseOrders, list),
+    mrnAll: () => array(KEYS.mrn),
     peekNo: (prefix, date) => nextCounter(prefix, date, false),
     nextNo: (prefix, date) => nextCounter(prefix, date, true),
     esc: (value) => String(value ?? '').replace(/[&<>"']/g, (character) => ({
