@@ -3,66 +3,106 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Material Authorize</title>
-    <link rel="stylesheet" href="../css/inventory.css" />
-    <link rel="stylesheet" href="../css/common-header.css" />
-    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <title>Material Authorization | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
-<body>
-    <header class="top-strip">
-        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
-        <div class="search">
-            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
-            <ul id="searchResults" class="search-dropdown"></ul>
-        </div>
-        <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
-    </header>
-    <div class="inventory-page">
-        <header class="voucher-header">
-            <div>
-                <div class="breadcrumb-title">Material Authorize</div>
-                <div class="breadcrumb-path">Transactions / Material Authorize</div>
+<body class="erp-page">
+    <aside class="erp-sidebar">
+        <a class="erp-brand" href="dashboard.html">
+            <div class="erp-brand-mark"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <span><strong>Soft Manager</strong><small style="display:block; font-size: 10px; color: #a7bad4;">Warehouse & Purchase</small></span>
+        </a>
+        <nav class="erp-nav">
+            <a class="erp-nav-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            
+            <div class="erp-nav-heading">Purchase Process</div>
+            <a class="erp-nav-link" href="purchase-indent.html"><i class="fa-solid fa-file-circle-plus"></i><span>Purchase Indent</span></a>
+            <a class="erp-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
+            <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
+            <a class="erp-nav-link" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html?view=pending"><i class="fa-solid fa-shield-halved"></i><span>PO Authorization</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
+            
+            <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link" href="voucher-create.html"><i class="fa-solid fa-box-open"></i><span>Material Requisition</span></a>
+            <a class="erp-nav-link active" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
+            <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue</span></a>
+            
+            <div class="erp-nav-heading">Inventory & Stock</div>
+            <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            
+            <div class="erp-nav-heading">Reports</div>
+            <a class="erp-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Purchase Reports</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Reports</span></a>
+        </nav>
+    </aside>
+
+    <div class="erp-main">
+        <header class="erp-topbar">
+            <div class="erp-search">
+                <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                <input id="searchBox" type="search" placeholder="Global Search..." />
             </div>
-            <div class="voucher-actions">
-                <button id="authorizeSelectedBtn" class="toolbar-btn" title="Authorize selected"><i class="fa-solid fa-circle-check"></i></button>
-                <button id="refreshAuthorizeBtn" class="toolbar-btn" title="Refresh list"><i class="fa-solid fa-arrows-rotate"></i></button>
-                <button id="backToRequisitionBtn" class="toolbar-btn" title="Back to requisition"><i class="fa-solid fa-arrow-left"></i></button>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 28, 2026</span></div>
+                <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
+                </a>
             </div>
         </header>
 
-        <section class="voucher-form-card">
-            <div class="field-group full-width">
-                <label for="authorizeSearch">Search Voucher</label>
-                <div class="search-group">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input id="authorizeSearch" type="search" placeholder="Search voucher number, warehouse, location..." />
+        <main class="erp-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <div>
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Material Authorization</h1>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Review and approve internal material requisitions.</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button id="authorizeSelectedBtn" class="btn-primary" type="button"><i class="fa-solid fa-circle-check"></i> Authorize Selected</button>
+                    <button id="refreshAuthorizeBtn" class="btn-secondary" type="button"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
+                    <a href="voucher-create.html" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-arrow-left"></i> Requisition
+                    </a>
                 </div>
             </div>
-        </section>
 
-        <section class="voucher-table-card">
-            <div class="voucher-table-wrapper">
-                <table class="voucher-table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="selectAllAuthorize" /></th>
-                            <th>Voucher No.</th>
-                            <th>Date</th>
-                            <th>Warehouse</th>
-                            <th>Location</th>
-                            <th>Department</th>
-                            <th>Requested By</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="authorizeTableBody"></tbody>
-                </table>
-            </div>
-            <div class="voucher-footer">
-                <div class="voucher-total" id="authorizeCount">0 vouchers pending authorization</div>
-            </div>
-        </section>
+            <section class="erp-card">
+                <div class="erp-card-header">
+                    <h2 style="font-size: 14px;">Pending Approvals</h2>
+                    <div class="erp-search" style="width: 250px;">
+                        <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                        <input id="authorizeSearch" type="search" placeholder="Search voucher..." />
+                    </div>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;"><input type="checkbox" id="selectAllAuthorize" /></th>
+                                    <th>Voucher No.</th>
+                                    <th>Date</th>
+                                    <th>Warehouse</th>
+                                    <th>Location</th>
+                                    <th>Department</th>
+                                    <th>Requested By</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="authorizeTableBody">
+                                <!-- Injected by material-authorize.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 12px; color: var(--erp-text-muted); text-align: right;">
+                        <span id="authorizeCount">0 vouchers pending authorization</span>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
     <script src="../js/searchText.js"></script>
     <script src="../js/header-user.js"></script>

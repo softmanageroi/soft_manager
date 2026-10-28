@@ -3,116 +3,164 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Purchase Indent</title>
-    <link rel="stylesheet" href="../css/purchase.css" />
-    <link rel="stylesheet" href="../css/ims-flow.css" />
-    <link rel="stylesheet" href="../css/common-header.css" />
-    <link rel="stylesheet" href="../css/skeuomorphic.css?v=3" />
+    <title>Purchase Indent | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
-<body>
-    <header class="top-strip">
-        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
-        <div class="search">
-            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
-            <ul id="searchResults" class="search-dropdown"></ul>
-        </div>
-        <div class="top-actions">
-            <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
-            <a id="topUserLink" class="top-user" href="index.html" aria-label="Login">
-                <i class="fa-solid fa-user" aria-hidden="true"></i><span id="topUserLabel">Login</span>
-            </a>
-        </div>
-    </header>
+<body class="erp-page">
+    <aside class="erp-sidebar">
+        <a class="erp-brand" href="dashboard.html">
+            <div class="erp-brand-mark"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <span><strong>Soft Manager</strong><small style="display:block; font-size: 10px; color: #a7bad4;">Warehouse & Purchase</small></span>
+        </a>
+        <nav class="erp-nav">
+            <a class="erp-nav-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            
+            <div class="erp-nav-heading">Purchase Process</div>
+            <a class="erp-nav-link active" href="purchase-indent.html"><i class="fa-solid fa-file-circle-plus"></i><span>Purchase Indent</span></a>
+            <a class="erp-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
+            <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
+            <a class="erp-nav-link" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html?view=pending"><i class="fa-solid fa-shield-halved"></i><span>PO Authorization</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
+            
+            <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link" href="voucher-create.html"><i class="fa-solid fa-box-open"></i><span>Material Requisition</span></a>
+            <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
+            <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue</span></a>
+            
+            <div class="erp-nav-heading">Inventory & Stock</div>
+            <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            
+            <div class="erp-nav-heading">Reports</div>
+            <a class="erp-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Purchase Reports</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Reports</span></a>
+        </nav>
+    </aside>
 
-    <div class="purchase-indent-shell">
-        <aside class="side-navigation">
-            <nav class="side-menu" aria-label="Sidebar navigation">
-                <button class="nav-item" type="button"><i class="fa-solid fa-house"></i><span>Home</span></button>
-                <button class="nav-item" type="button"><i class="fa-solid fa-wallet"></i><span>Financial Transactions</span></button>
-                <button class="nav-item active" type="button"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Transactions</span></button>
-                <button class="nav-item" type="button"><i class="fa-solid fa-gear"></i><span>Settings</span></button>
-            </nav>
-        </aside>
+    <div class="erp-main">
+        <header class="erp-topbar">
+            <div class="erp-search">
+                <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                <input id="searchBox" type="search" placeholder="Global Search..." />
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 28, 2026</span></div>
+                <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
+                </a>
+            </div>
+        </header>
 
-        <main class="purchase-indent-page">
-            <header class="purchase-page-header">
-                <div class="page-header-title-wrap">
-                    <h1>Purchase Indent</h1>
+        <main class="erp-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <div>
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Purchase Indent</h1>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Manage and track material requests for procurement.</p>
                 </div>
-                <div class="page-header-tools" aria-label="Purchase indent actions">
-                    <button id="piNewBtn" class="toolbar-btn has-label" type="button" title="New Purchase Indent"><i class="fa-solid fa-plus" aria-hidden="true"></i><span>New</span></button>
-                    <a class="toolbar-btn has-label" href="request-for-quotation.html">RFQ</a>
+                <div style="display: flex; gap: 10px;">
+                    <button id="piNewBtn" class="btn-primary" type="button"><i class="fa-solid fa-plus"></i> New Indent</button>
+                    <a href="request-for-quotation.html" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-file-signature"></i> Create RFQ
+                    </a>
                 </div>
-            </header>
+            </div>
 
-            <section id="piListView" class="voucher-table-card">
-                <div class="voucher-card-header"><h2>All Vouchers (<span id="piCount">0</span>)</h2></div>
-                <div class="voucher-table-wrapper">
-                    <table class="voucher-table">
-                        <thead><tr><th>#</th><th>Date</th><th>Voucher No</th><th>Items</th><th>Link status</th><th>Action</th></tr></thead>
-                        <tbody id="piListBody"></tbody>
-                    </table>
+            <!-- List View -->
+            <section id="piListView" class="erp-card">
+                <div class="erp-card-header">
+                    <h2>All Vouchers (<span id="piCount">0</span>)</h2>
+                    <div class="ims-tabs" style="display: flex; gap: 8px;">
+                        <button class="status-badge status-neutral active" style="cursor:pointer; border:none;">All</button>
+                        <button class="status-badge status-pending" style="cursor:pointer; border:none;">Pending</button>
+                        <button class="status-badge status-approved" style="cursor:pointer; border:none;">Approved</button>
+                    </div>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Indent No</th>
+                                    <th>Items</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="piListBody">
+                                <!-- Data will be injected by purchase-indent.js -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
 
-            <section id="piFormView" class="purchase-form-card" hidden>
-                <div class="purchase-form-grid top-grid">
-                    <div class="field-group field-inline">
-                        <label for="piVoucherNo">Document No.</label>
-                        <input id="piVoucherNo" readonly value="PIU/26-27/0135" />
-                    </div>
-                    <div class="field-group field-inline">
-                        <label for="piDate">Date</label>
-                        <input id="piDate" type="date" value="2026-10-10" />
-                    </div>
-                    <div class="field-group field-inline">
-                        <label for="piLocation">Location</label>
-                        <select id="piLocation">
-                            <option>Office</option>
-                            <option>Warehouse</option>
-                            <option>Plant</option>
-                        </select>
+            <!-- Form View -->
+            <section id="piFormView" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <h2>Create Purchase Indent</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="piCancelBtn" class="btn-secondary" type="button">Cancel</button>
+                        <button id="piSaveBtn" class="btn-primary" type="button">Save Indent</button>
                     </div>
                 </div>
+                <div class="erp-card-body">
+                    <div class="erp-form-grid">
+                        <div class="erp-field">
+                            <label for="piVoucherNo">Document No.</label>
+                            <input id="piVoucherNo" readonly value="PIU/26-27/0135" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="piDate">Date</label>
+                            <input id="piDate" type="date" value="2026-10-10" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="piLocation">Warehouse / Location</label>
+                            <select id="piLocation">
+                                <option>Office</option>
+                                <option>Warehouse</option>
+                                <option>Plant</option>
+                            </select>
+                        </div>
+                        <div class="erp-field" style="grid-column: span 2;">
+                            <label for="piNarration">Purpose / Narration</label>
+                            <input id="piNarration" type="text" placeholder="Enter purpose of the request..." />
+                        </div>
+                        <div class="erp-field">
+                            <label for="piRequestedBy">Requested By</label>
+                            <select id="piRequestedBy"></select>
+                        </div>
+                    </div>
 
-                <div class="purchase-form-grid middle-grid">
-                    <div class="field-group field-inline">
-                        <label for="piNarration">Narration</label>
-                        <input id="piNarration" type="text" placeholder="Enter narration" />
+                    <div class="erp-card" style="background: #fcfdfe; border-style: dashed;">
+                        <div class="erp-card-header">
+                            <h2 style="font-size: 14px;"><i class="fa-solid fa-list"></i> Item Details</h2>
+                        </div>
+                        <div class="erp-table-container">
+                            <table class="erp-table" id="piItemTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th>Item / Brand</th>
+                                        <th>Description</th>
+                                        <th>Unit</th>
+                                        <th>Quantity</th>
+                                        <th>Current Stock</th>
+                                        <th style="width: 50px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="piLinesBody">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="field-group field-inline">
-                        <label for="piRequestedBy">Requested By</label>
-                        <select id="piRequestedBy"></select>
-                    </div>
+                    <p id="piMessage" style="margin-top: 15px; font-size: 12px; color: var(--erp-text-muted);"></p>
                 </div>
-
-                <div class="purchase-table-shell">
-                    <table class="purchase-table">
-                        <thead>
-                            <tr>
-                                <th class="col-number">#</th>
-                                <th>Brand</th>
-                                <th>Item</th>
-                                <th>Description</th>
-                                <th>Units</th>
-                                <th>Quantity</th>
-                                <th>Stock In Hand</th>
-                            </tr>
-                        </thead>
-                        <tbody id="piLinesBody"></tbody>
-                    </table>
-                </div>
-                <datalist id="piItemOptions"></datalist>
-
-                <div class="purchase-footer-bar">
-                    <div class="footer-left"><span class="footer-label">Net:</span> <strong>₹ 0.000</strong></div>
-                    <div class="footer-actions">
-                        <button id="piSaveBtn" class="toolbar-btn" type="button">Save</button>
-                        <button id="piCancelBtn" class="toolbar-btn" type="button">Cancel</button>
-                    </div>
-                </div>
-                <p id="piMessage" class="ims-message" role="status" aria-live="polite"></p>
             </section>
         </main>
     </div>

@@ -3,464 +3,326 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Master</title>
-    <link rel="stylesheet" href="../css/item-master.css" />
-    <link rel="stylesheet" href="../css/common-header.css" />
-    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <title>Master Data | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
-<body>
-    <header class="top-strip">
-        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
-        <div class="search">
-            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search" />
-            <ul id="searchResults" class="search-dropdown"></ul>
-        </div>
-        <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
-    </header>
-
-    <main class="item-dashboard">
-        <div class="page-heading">
-            <div>
-                <p class="breadcrumb">Home <span>/</span> Master <span>/</span> <span id="masterBreadcrumb">Item</span></p>
-                <h1 id="masterTitle">Item Master</h1>
-                <p id="masterDescription" class="page-description">Manage item details, stock, and GST rates.</p>
-            </div>
-            <button id="addMasterRecordBtn" class="primary-btn" type="button">
-                <i class="fa-solid fa-plus" aria-hidden="true"></i> Add item
-            </button>
-        </div>
-
-        <nav class="master-tabs" role="tablist" aria-label="Master types">
-            <button class="master-tab active" id="itemsMasterTab" type="button" role="tab" aria-selected="true" aria-controls="itemLayout" data-master="item">
-                <i class="fa-solid fa-box" aria-hidden="true"></i> Item
-            </button>
-            <button class="master-tab" id="accountsMasterTab" type="button" role="tab" aria-selected="false" aria-controls="accountMasterPanel" data-master="account">
-                <i class="fa-solid fa-address-book" aria-hidden="true"></i> Account
-            </button>
-            <button class="master-tab" id="departmentsMasterTab" type="button" role="tab" aria-selected="false" aria-controls="departmentMasterPanel" data-master="department">
-                <i class="fa-solid fa-building" aria-hidden="true"></i> Department
-            </button>
-            <button class="master-tab" id="warehousesMasterTab" type="button" role="tab" aria-selected="false" aria-controls="warehouseMasterPanel" data-master="warehouse">
-                <i class="fa-solid fa-warehouse" aria-hidden="true"></i> Warehouse
-            </button>
-            <button class="master-tab" id="employeesMasterTab" type="button" role="tab" aria-selected="false" aria-controls="employeeMasterPanel" data-master="employee">
-                <i class="fa-solid fa-users" aria-hidden="true"></i> Employee
-            </button>
+<body class="erp-page">
+    <aside class="erp-sidebar">
+        <a class="erp-brand" href="dashboard.html">
+            <div class="erp-brand-mark"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <span><strong>Soft Manager</strong><small style="display:block; font-size: 10px; color: #a7bad4;">Warehouse & Purchase</small></span>
+        </a>
+        <nav class="erp-nav">
+            <a class="erp-nav-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            
+            <div class="erp-nav-heading">Purchase Process</div>
+            <a class="erp-nav-link" href="purchase-indent.html"><i class="fa-solid fa-file-circle-plus"></i><span>Purchase Indent</span></a>
+            <a class="erp-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
+            <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
+            <a class="erp-nav-link" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html?view=pending"><i class="fa-solid fa-shield-halved"></i><span>PO Authorization</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
+            
+            <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link" href="voucher-create.html"><i class="fa-solid fa-box-open"></i><span>Material Requisition</span></a>
+            <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
+            <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue</span></a>
+            
+            <div class="erp-nav-heading">Inventory & Stock</div>
+            <a class="erp-nav-link active" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            
+            <div class="erp-nav-heading">Reports</div>
+            <a class="erp-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Purchase Reports</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Reports</span></a>
         </nav>
+    </aside>
 
-        <div id="statusMessage" class="status-message" role="status" aria-live="polite"></div>
-        <span id="itemMessage" hidden></span>
-        <span id="itemCount" hidden></span>
+    <div class="erp-main">
+        <header class="erp-topbar">
+            <div class="erp-search">
+                <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                <input id="searchBox" type="search" placeholder="Global Search..." />
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 28, 2026</span></div>
+                <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
+                </a>
+            </div>
+        </header>
 
-        <div id="itemLayout" class="item-layout" role="tabpanel" aria-labelledby="itemsMasterTab">
-            <aside class="category-panel">
-                <div class="panel-heading">
-                    <h2>Item categories</h2>
-                    <span id="categoryCount" class="count-badge">0</span>
+        <main class="erp-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <div>
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Master Data Management</h1>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Manage items, accounts, warehouses, and company structure.</p>
                 </div>
-                <button class="category-option active" type="button" data-category="all">
-                    <span>All items</span><span id="allItemsCount" class="category-count">0</span>
-                </button>
-                <div id="departmentList">
-                    <div id="categoryList" class="category-list"></div>
-                </div>
-            </aside>
+                <button id="addMasterRecordBtn" class="btn-primary" type="button"><i class="fa-solid fa-plus"></i> Add New Record</button>
+            </div>
 
-            <section class="items-panel" aria-label="Items">
-                <div id="itemsView">
-                    <div class="items-toolbar">
-                        <div>
-                            <h2 id="selectedDepartmentTitle">Items</h2>
-                            <p id="itemsSummary">Your item catalogue</p>
-                        </div>
-                        <label class="table-search">
-                            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-                            <input id="itemSearch" type="search" placeholder="Search name or code" />
-                        </label>
+            <!-- Master Type Selector -->
+            <div style="display: flex; gap: 8px; margin-bottom: 24px; background: #fff; padding: 8px; border-radius: 12px; border: 1px solid var(--erp-border); width: fit-content;">
+                <button class="status-badge status-neutral active" id="itemsMasterTab" style="cursor:pointer; border:none; padding: 8px 16px;" data-master="item"><i class="fa-solid fa-box"></i> Item</button>
+                <button class="status-badge status-neutral" id="accountsMasterTab" style="cursor:pointer; border:none; padding: 8px 16px;" data-master="account"><i class="fa-solid fa-address-book"></i> Account</button>
+                <button class="status-badge status-neutral" id="departmentsMasterTab" style="cursor:pointer; border:none; padding: 8px 16px;" data-master="department"><i class="fa-solid fa-building"></i> Department</button>
+                <button class="status-badge status-neutral" id="warehousesMasterTab" style="cursor:pointer; border:none; padding: 8px 16px;" data-master="warehouse"><i class="fa-solid fa-warehouse"></i> Warehouse</button>
+                <button class="status-badge status-neutral" id="employeesMasterTab" style="cursor:pointer; border:none; padding: 8px 16px;" data-master="employee"><i class="fa-solid fa-users"></i> Employee</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 260px 1fr; gap: 24px;">
+                <!-- Category/Filter Panel -->
+                <aside class="erp-card" style="padding: 16px; height: fit-content;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="font-size: 14px; margin: 0; color: var(--erp-text-main);">Categories</h3>
+                        <span id="categoryCount" class="status-badge status-neutral" style="font-size: 10px;">0</span>
                     </div>
-                    <div class="table-wrap">
-                        <table>
+                    <div id="categoryList" style="display: flex; flex-direction: column; gap: 8px;">
+                        <button class="btn-secondary" style="width: 100%; text-align: left; font-size: 12px; padding: 8px 12px; justify-content: space-between; border-radius: 8px;" data-category="all">
+                            <span>All items</span> <span id="allItemsCount" style="font-weight: 600; opacity: 0.7;">0</span>
+                        </button>
+                        <!-- Categories injected by item-master.js -->
+                    </div>
+                </aside>
+
+                <!-- Main Data Panel -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <section id="itemsView" class="erp-card">
+                        <div class="erp-card-header">
+                            <h2 id="selectedDepartmentTitle">Items Catalogue</h2>
+                            <div class="erp-search" style="width: 300px;">
+                                <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                                <input id="itemSearch" type="search" placeholder="Search item code or name..." />
+                            </div>
+                        </div>
+                        <div class="erp-card-body">
+                            <div class="erp-table-container">
+                                <table class="erp-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Master ID</th>
+                                            <th>Name</th>
+                                            <th>Code</th>
+                                            <th>Category</th>
+                                            <th>Type</th>
+                                            <th>GST %</th>
+                                            <th>Stock</th>
+                                            <th style="width: 80px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="itemTableBody">
+                                        <!-- Data injected by item-master.js -->
+                                    </tbody>
+                                </table>
+                                <div id="emptyState" style="text-align: center; padding: 40px; color: var(--erp-text-muted);">
+                                    <i class="fa-solid fa-box-open" style="font-size: 32px; margin-bottom: 10px; display: block;"></i>
+                                    <p>No items found</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Item Form Panel -->
+                    <section id="itemFormPanel" class="erp-card" hidden>
+                        <div class="erp-card-header">
+                            <h2 id="formTitle">Add/Edit Item</h2>
+                            <button id="closeFormBtn" class="btn-secondary" type="button"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="erp-card-body">
+                            <form id="itemForm">
+                                <select id="itemDepartment" hidden></select>
+                                <input id="itemRate" type="hidden" />
+                                <input id="itemReorder" type="hidden" />
+                                
+                                <div class="erp-form-grid">
+                                    <div class="erp-field">
+                                        <label for="itemName">Item Name <span style="color: red;">*</span></label>
+                                        <input id="itemName" name="name" type="text" required />
+                                    </div>
+                                    <div class="erp-field">
+                                        <label for="itemCode">Item Code <span style="color: red;">*</span></label>
+                                        <input id="itemCode" name="code" type="text" required />
+                                    </div>
+                                    <div class="erp-field">
+                                        <label for="itemType">Item Type</label>
+                                        <select id="itemType">
+                                            <option>Finished goods</option>
+                                            <option>Raw material</option>
+                                            <option>Consumable</option>
+                                            <option>Service</option>
+                                        </select>
+                                    </div>
+                                    <div class="erp-field">
+                                        <label for="itemCategory">Category</label>
+                                        <input id="itemCategory" type="text" list="categorySuggestions" />
+                                        <datalist id="categorySuggestions">
+                                            <option value="Building Material"></option>
+                                            <option value="Electrical"></option>
+                                            <option value="Electronics"></option>
+                                            <option value="Fire And Safety"></option>
+                                            <option value="Hardware"></option>
+                                            <option value="Housekeeping"></option>
+                                            <option value="Stationery"></option>
+                                        </datalist>
+                                    </div>
+                                    <div class="erp-field">
+                                        <label for="itemBrand">Brand</label>
+                                        <input id="itemBrand" type="text" />
+                                    </div>
+                                    <div class="erp-field">
+                                        <label for="itemUnit">Unit</label>
+                                        <select id="itemUnit">
+                                            <option value="Nos">Nos</option>
+                                            <option value="Pcs">Pcs</option>
+                                            <option value="Kg">Kg</option>
+                                        </select>
+                                    </div>
+                                    <div class="erp-field">
+                                        <label for="itemStock">Opening Stock</label>
+                                        <input id="itemStock" type="number" value="0" />
+                                    </div>
+                                    <div class="erp-field">
+                                        <label for="itemPrice">Unit Price (₹)</label>
+                                        <input id="itemPrice" type="number" step="0.01" value="0" />
+                                    </div>
+                                    <div class="erp-field" style="grid-column: span 2;">
+                                        <label for="itemDescription">Description</label>
+                                        <textarea id="itemDescription" rows="2"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="erp-card" style="background: #fcfdfe; border-style: dashed; margin-top: 20px;">
+                                    <div class="erp-card-header">
+                                        <h2 style="font-size: 14px;"><i class="fa-solid fa-percent"></i> GST Settings</h2>
+                                    </div>
+                                    <div class="erp-form-grid">
+                                        <div class="erp-field">
+                                            <label for="itemGst">GST Rate (%)</label>
+                                            <select id="itemGst">
+                                        </select>
+                                    </div>
+                                    <div class="erp-field" style="display: flex; align-items: center; gap: 10px; font-weight: 600;">
+                                        <span>GST on Unit Price:</span>
+                                        <span id="gstAmount" style="color: var(--erp-primary); font-size: 16px;">₹0.00</span>
+                                    </div>
+                                </div>
+                                </div>
+
+                                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                                    <button id="cancelFormBtn" class="btn-secondary" type="button">Cancel</button>
+                                    <button id="clearItemBtn" class="btn-secondary" type="button" hidden>Clear</button>
+                                    <button id="saveItemBtn" class="btn-primary" type="submit">Save Item</button>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Other Master Panels (Placeholders for consistency) -->
+            <section id="accountMasterPanel" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <h2>Account Master</h2>
+                    <div class="erp-search" style="width: 300px;">
+                        <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                        <input id="accountSearch" type="search" placeholder="Search accounts..." />
+                    </div>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-table-container">
+                        <table class="erp-table">
                             <thead>
                                 <tr>
-                                    <th>Master ID</th>
-                                    <th>Name</th>
                                     <th>Code</th>
-                                    <th>Category</th>
-                                    <th>Item type</th>
-                                    <th>GST</th>
-                                    <th>Stock</th>
-                                    <th><span class="visually-hidden">Actions</span></th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>GSTIN</th>
+                                    <th>Contact</th>
+                                    <th>Phone</th>
+                                    <th>Terms</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="itemTableBody"></tbody>
+                            <tbody id="accountTableBody"></tbody>
                         </table>
-                        <div id="emptyState" class="empty-state">
-                            <span class="empty-icon"><i class="fa-solid fa-box-open" aria-hidden="true"></i></span>
-                            <h3>No items yet</h3>
-                            <p>Add an item to start building your catalogue.</p>
-                            <button class="primary-btn" type="button" data-add-item>Add your first item</button>
-                        </div>
                     </div>
                 </div>
-
-                <section id="itemFormPanel" class="form-panel hidden" aria-labelledby="formTitle">
-                    <div class="form-heading">
-                        <div>
-                            <p class="breadcrumb">Masters <span>/</span> Item <span>/</span> <span id="formBreadcrumb">New item</span></p>
-                            <h2 id="formTitle">Add item</h2>
-                            <p>Enter item information and select its GST rate.</p>
-                        </div>
-                        <button id="closeFormBtn" class="icon-btn" type="button" aria-label="Close form">
-                            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-                        </button>
-                    </div>
-
-                    <form id="itemForm" novalidate>
-                        <select id="itemDepartment" hidden aria-hidden="true"><option value=""></option></select>
-                        <input id="itemRate" type="hidden" value="0">
-                        <input id="itemReorder" type="hidden" value="0">
-                        <div class="form-tabs" role="tablist" aria-label="Item information sections">
-                            <button class="form-tab active" type="button" role="tab" aria-selected="true" aria-controls="generalPanel" id="generalTab" data-tab="generalPanel">General</button>
-                            <button class="form-tab" type="button" role="tab" aria-selected="false" aria-controls="gstPanel" id="gstTab" data-tab="gstPanel">GST</button>
-                        </div>
-
-                        <div id="generalPanel" class="tab-panel" role="tabpanel" aria-labelledby="generalTab">
-                            <div class="form-grid">
-                                <div class="form-row">
-                                    <label for="itemName">Item name <span class="required">*</span></label>
-                                    <input id="itemName" name="name" type="text" maxlength="100" required />
-                                </div>
-                                <div class="form-row">
-                                    <label for="itemCode">Item code <span class="required">*</span></label>
-                                    <input id="itemCode" name="code" type="text" maxlength="40" required />
-                                </div>
-                                <div class="form-row">
-                                    <label for="itemType">Item type</label>
-                                    <select id="itemType" name="type">
-                                        <option>Finished goods</option>
-                                        <option>Raw material</option>
-                                        <option>Consumable</option>
-                                        <option>Service</option>
-                                    </select>
-                                </div>
-                                <div class="form-row">
-                                    <label for="itemCategory">Category</label>
-                                    <input id="itemCategory" name="category" type="text" list="categorySuggestions" maxlength="60" placeholder="e.g. Electronics" />
-                                    <datalist id="categorySuggestions">
-                                        <option value="Building Material"></option>
-                                        <option value="Electrical"></option>
-                                        <option value="Electronics"></option>
-                                        <option value="Fire And Safety"></option>
-                                        <option value="Hardware"></option>
-                                        <option value="Housekeeping"></option>
-                                        <option value="Stationery"></option>
-                                    </datalist>
-                                </div>
-                                <div class="form-row">
-                                    <label for="itemBrand">Brand</label>
-                                    <input id="itemBrand" name="brand" type="text" maxlength="60" placeholder="e.g. Brand name" />
-                                    <small id="itemBrandHint" class="field-hint" hidden>Add this item's brand so it can be filled automatically in Purchase Indent.</small>
-                                </div>
-                                <div class="form-row">
-                                    <label for="itemUnit">Unit</label>
-                                    <select id="itemUnit" name="unit">
-                                        <option value="Nos">Nos</option>
-                                        <option value="Pcs">Pcs</option>
-                                        <option value="Kg">Kg</option>
-                                    </select>
-                                </div>
-                                <div class="form-row">
-                                    <label for="itemStock">Opening stock</label>
-                                    <input id="itemStock" name="stock" type="number" min="0" step="any" value="0" />
-                                </div>
-                                <div class="form-row">
-                                    <label for="itemPrice">Unit price (₹)</label>
-                                    <input id="itemPrice" name="price" type="number" min="0" step="0.01" value="0" />
-                                </div>
-                                <div class="form-row">
-                                    <label for="itemDescription">Description</label>
-                                    <textarea id="itemDescription" name="description" rows="3" maxlength="500"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="gstPanel" class="tab-panel hidden" role="tabpanel" aria-labelledby="gstTab">
-                            <div class="gst-card">
-                                <span class="gst-icon"><i class="fa-solid fa-percent" aria-hidden="true"></i></span>
-                                <div>
-                                    <h3>GST rate for this item</h3>
-                                    <p>Select the applicable GST percentage. It will also appear in the item list.</p>
-                                </div>
-                            </div>
-                            <div class="form-grid gst-grid">
-                                <div class="form-row">
-                                    <label for="itemGst">GST rate (%)</label>
-                                    <select id="itemGst" name="gst">
-                                        <option value="0">0% — Exempt</option>
-                                        <option value="5">5%</option>
-                                        <option value="12">12%</option>
-                                        <option value="18" selected>18%</option>
-                                        <option value="28">28%</option>
-                                    </select>
-                                </div>
-                                <div class="gst-preview">
-                                    <span>GST on unit price</span>
-                                    <strong id="gstAmount">₹0.00</strong>
-                                    <small>Calculated from the unit price on the General tab.</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button id="cancelFormBtn" class="secondary-btn" type="button">Cancel</button>
-                            <button id="clearItemBtn" class="secondary-btn" type="button" hidden>Clear</button>
-                            <button id="saveItemBtn" class="primary-btn" type="submit"><i class="fa-solid fa-check" aria-hidden="true"></i> Save item</button>
-                        </div>
-                    </form>
-                </section>
             </section>
-        </div>
 
-        <section id="accountMasterPanel" class="account-master-panel hidden" role="tabpanel" aria-labelledby="accountsMasterTab">
-            <div id="accountsView">
-                <div class="items-toolbar">
-                    <div>
-                        <h2>Accounts</h2>
-                        <p id="accountsSummary">Manage vendors and other business accounts</p>
-                    </div>
-                    <label class="table-search">
-                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-                        <input id="accountSearch" type="search" placeholder="Search name, code, GSTIN or phone" />
-                    </label>
+            <section id="departmentMasterPanel" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <h2>Department Master</h2>
                 </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Account code</th>
-                                <th>Account / vendor name</th>
-                                <th>Type</th>
-                                <th>GSTIN</th>
-                                <th>Contact</th>
-                                <th>Phone</th>
-                                <th>Payment terms</th>
-                                <th><span class="visually-hidden">Actions</span></th>
-                            </tr>
-                        </thead>
-                        <tbody id="accountTableBody"></tbody>
-                    </table>
-                    <div id="accountEmptyState" class="empty-state">
-                        <span class="empty-icon"><i class="fa-solid fa-address-book" aria-hidden="true"></i></span>
-                        <h3>No accounts yet</h3>
-                        <p>Add a vendor account to use its details when creating purchase orders.</p>
-                        <button class="primary-btn" type="button" data-add-account>Add your first account</button>
+                <div class="erp-card-body">
+                    <div class="erp-form-grid" style="grid-template-columns: 1fr auto;">
+                        <div class="erp-field">
+                            <label for="newDepartment">New Department</label>
+                            <input id="newDepartment" type="text" />
+                        </div>
+                        <div class="erp-field" style="justify-content: flex-end;">
+                            <button id="addDepartmentBtn" class="btn-primary" type="submit">Add</button>
+                        </div>
+                    </div>
+                    <div class="erp-table-container" style="margin-top: 20px;">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>Department Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="departmentTableBody"></tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-
-            <section id="accountFormPanel" class="form-panel hidden" aria-labelledby="accountFormTitle">
-                <div class="form-heading">
-                    <div>
-                        <p class="breadcrumb">Master <span>/</span> Account <span>/</span> <span id="accountFormBreadcrumb">New account</span></p>
-                        <h2 id="accountFormTitle">Add account</h2>
-                        <p>Enter vendor and billing details used for purchase orders.</p>
-                    </div>
-                    <button id="closeAccountFormBtn" class="icon-btn" type="button" aria-label="Close account form">
-                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-                    </button>
-                </div>
-
-                <form id="accountForm" novalidate>
-                    <div class="form-grid">
-                        <div class="form-row">
-                            <label for="accountName">Account / vendor name <span class="required">*</span></label>
-                            <input id="accountName" name="name" type="text" maxlength="120" autocomplete="organization" required />
-                        </div>
-                        <div class="form-row">
-                            <label for="accountCode">Account code</label>
-                            <input id="accountCode" name="code" type="text" maxlength="40" placeholder="Auto-generated if blank" />
-                        </div>
-                        <div class="form-row">
-                            <label for="accountType">Account type</label>
-                            <select id="accountType" name="type">
-                                <option value="Vendor">Vendor</option>
-                                <option value="Customer">Customer</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-row">
-                            <label for="accountContact">Contact person</label>
-                            <input id="accountContact" name="contact" type="text" maxlength="100" autocomplete="name" />
-                        </div>
-                        <div class="form-row">
-                            <label for="accountPhone">Phone number</label>
-                            <input id="accountPhone" name="phone" type="tel" maxlength="20" autocomplete="tel" />
-                        </div>
-                        <div class="form-row">
-                            <label for="accountEmail">Email</label>
-                            <input id="accountEmail" name="email" type="email" maxlength="120" autocomplete="email" />
-                        </div>
-                        <div class="form-row">
-                            <label for="accountGstin">GSTIN</label>
-                            <input id="accountGstin" name="gstin" type="text" maxlength="15" autocomplete="off" />
-                        </div>
-                        <div class="form-row">
-                            <label for="accountPan">PAN</label>
-                            <input id="accountPan" name="pan" type="text" maxlength="10" autocomplete="off" />
-                        </div>
-                        <div class="form-row full-width">
-                            <label for="accountAddress">Billing address</label>
-                            <textarea id="accountAddress" name="address" rows="3" maxlength="500" autocomplete="street-address"></textarea>
-                        </div>
-                        <div class="form-row">
-                            <label for="accountCity">City</label>
-                            <input id="accountCity" name="city" type="text" maxlength="80" autocomplete="address-level2" />
-                        </div>
-                        <div class="form-row">
-                            <label for="accountState">State</label>
-                            <input id="accountState" name="state" type="text" maxlength="80" autocomplete="address-level1" />
-                        </div>
-                        <div class="form-row">
-                            <label for="accountPincode">PIN code</label>
-                            <input id="accountPincode" name="pincode" type="text" inputmode="numeric" maxlength="10" autocomplete="postal-code" />
-                        </div>
-                        <div class="form-row">
-                            <label for="accountPaymentTerms">Payment terms</label>
-                            <select id="accountPaymentTerms" name="paymentTerms">
-                                <option value="Due on receipt">Due on receipt</option>
-                                <option value="Advance">Advance</option>
-                                <option value="Net 15">Net 15</option>
-                                <option value="Net 30" selected>Net 30</option>
-                                <option value="Net 45">Net 45</option>
-                                <option value="Net 60">Net 60</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button id="cancelAccountFormBtn" class="secondary-btn" type="button">Cancel</button>
-                        <button class="primary-btn" type="submit"><i class="fa-solid fa-check" aria-hidden="true"></i> Save account</button>
-                    </div>
-                </form>
             </section>
-        </section>
 
-        <section id="departmentMasterPanel" class="account-master-panel department-master-panel hidden" role="tabpanel" aria-labelledby="departmentsMasterTab">
-            <div class="items-toolbar">
-                <div>
-                    <h2>Departments</h2>
-                    <p id="departmentsSummary">Departments available in Material Issue</p>
+            <section id="warehouseMasterPanel" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <h2>Warehouse Master</h2>
                 </div>
-            </div>
-            <form id="departmentForm" class="department-form" novalidate>
-                <label for="newDepartment">New department</label>
-                <input id="newDepartment" name="name" type="text" maxlength="80" autocomplete="organization-title" required />
-                <button id="addDepartmentBtn" class="primary-btn" type="submit">
-                    <i class="fa-solid fa-plus" aria-hidden="true"></i> Add department
-                </button>
-            </form>
-            <div class="table-wrap">
-                <table>
-                    <thead><tr><th>Department name</th></tr></thead>
-                    <tbody id="departmentTableBody"></tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="warehouseMasterPanel" class="account-master-panel department-master-panel hidden" role="tabpanel" aria-labelledby="warehousesMasterTab">
-            <div class="items-toolbar">
-                <div>
-                    <h2>Warehouses</h2>
-                    <p id="warehousesSummary">Warehouses available in Material Issue and Purchase Order</p>
-                </div>
-            </div>
-            <form id="warehouseForm" class="warehouse-form hidden" novalidate>
-                <div class="form-grid">
-                    <div class="form-row">
-                        <label for="newWarehouse">Warehouse name <span class="required">*</span></label>
-                        <input id="newWarehouse" name="name" type="text" maxlength="100" autocomplete="organization" required />
-                    </div>
-                    <div class="form-row">
-                        <label for="warehouseGstin">GSTIN</label>
-                        <input id="warehouseGstin" name="gstin" type="text" maxlength="15" autocomplete="off" />
-                    </div>
-                    <div class="form-row">
-                        <label for="warehousePan">PAN</label>
-                        <input id="warehousePan" name="pan" type="text" maxlength="10" autocomplete="off" />
-                    </div>
-                    <div class="form-row">
-                        <label for="warehouseContact">Contact person</label>
-                        <input id="warehouseContact" name="contact" type="text" maxlength="100" autocomplete="name" />
-                    </div>
-                    <div class="form-row">
-                        <label for="warehousePhone">Phone number</label>
-                        <input id="warehousePhone" name="phone" type="tel" maxlength="20" autocomplete="tel" />
-                    </div>
-                    <div class="form-row">
-                        <label for="warehouseEmail">Email</label>
-                        <input id="warehouseEmail" name="email" type="email" maxlength="120" autocomplete="email" />
-                    </div>
-                    <div class="form-row full-width">
-                        <label for="warehouseAddress">Billing address</label>
-                        <textarea id="warehouseAddress" name="address" rows="3" maxlength="500" autocomplete="street-address"></textarea>
-                    </div>
-                    <div class="form-row full-width">
-                        <label for="warehouseShippingAddress">Shipping address</label>
-                        <textarea id="warehouseShippingAddress" name="shippingAddress" rows="3" maxlength="500" autocomplete="shipping street-address"></textarea>
-                    </div>
-                    <div class="form-row">
-                        <label for="warehouseCity">City</label>
-                        <input id="warehouseCity" name="city" type="text" maxlength="80" autocomplete="address-level2" />
-                    </div>
-                    <div class="form-row">
-                        <label for="warehouseState">State</label>
-                        <input id="warehouseState" name="state" type="text" maxlength="80" autocomplete="address-level1" />
-                    </div>
-                    <div class="form-row">
-                        <label for="warehousePincode">PIN code</label>
-                        <input id="warehousePincode" name="pincode" type="text" inputmode="numeric" maxlength="10" autocomplete="postal-code" />
+                <div class="erp-card-body">
+                    <div class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>Warehouse</th>
+                                    <th>GSTIN</th>
+                                    <th>PAN</th>
+                                    <th>Contact</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="warehouseTableBody"></tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="form-actions">
-                    <button id="cancelWarehouseFormBtn" class="secondary-btn" type="button">Cancel</button>
-                    <button id="saveWarehouseBtn" class="primary-btn" type="submit">
-                        <i class="fa-solid fa-check" aria-hidden="true"></i> Save warehouse
-                    </button>
+            </section>
+
+            <section id="employeeMasterPanel" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <h2>Employee Master</h2>
                 </div>
-            </form>
-            <div class="table-wrap">
-                <table>
-                    <thead><tr><th>Warehouse</th><th>Billing address</th><th>Shipping address</th><th>GSTIN</th><th>PAN</th><th>Contact</th><th>Phone</th><th>Email</th><th><span class="visually-hidden">Actions</span></th></tr></thead>
-                    <tbody id="warehouseTableBody"></tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="employeeMasterPanel" class="account-master-panel department-master-panel hidden" role="tabpanel" aria-labelledby="employeesMasterTab">
-            <div class="items-toolbar">
-                <div>
-                    <h2>Employees</h2>
-                    <p id="employeesSummary">Employee names available for Employee and Requested By fields</p>
+                <div class="erp-card-body">
+                    <div class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>Employee Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeeTableBody"></tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <form id="employeeForm" class="department-form hidden" novalidate>
-                <label for="employeeName">Employee / Requested By name</label>
-                <input id="employeeName" name="name" type="text" maxlength="100" autocomplete="name" required />
-                <button id="saveEmployeeBtn" class="primary-btn" type="submit">
-                    <i class="fa-solid fa-plus" aria-hidden="true"></i> Add employee
-                </button>
-                <button id="cancelEmployeeBtn" class="secondary-btn" type="button">Cancel</button>
-            </form>
-            <div class="table-wrap">
-                <table>
-                    <thead><tr><th>Employee / Requested By name</th><th><span class="visually-hidden">Actions</span></th></tr></thead>
-                    <tbody id="employeeTableBody"></tbody>
-                </table>
-            </div>
-        </section>
-
-    </main>
-
+            </section>
+        </main>
+    </div>
     <script src="../js/ims-store.js"></script>
     <script src="../js/searchText.js"></script>
     <script src="../js/header-user.js"></script>

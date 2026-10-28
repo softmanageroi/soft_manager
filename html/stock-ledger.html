@@ -3,110 +3,192 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stock Ledger</title>
-    <link rel="stylesheet" href="../css/common-header.css" />
-    <link rel="stylesheet" href="../css/inventory.css" />
-    <link rel="stylesheet" href="../css/skeuomorphic.css" />
-    <link rel="stylesheet" href="../css/stock-ledger.css" />
+    <title>Stock Ledger | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
-<body class="purchase-voucher-page stock-ledger-page">
-    <header class="top-strip">
-        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
-        <div class="search">
-            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search" />
-            <ul id="searchResults" class="search-dropdown"></ul>
-        </div>
-        <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
-    </header>
+<body class="erp-page">
+    <aside class="erp-sidebar">
+        <a class="erp-brand" href="dashboard.html">
+            <div class="erp-brand-mark"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <span><strong>Soft Manager</strong><small style="display:block; font-size: 10px; color: #a7bad4;">Warehouse & Purchase</small></span>
+        </a>
+        <nav class="erp-nav">
+            <a class="erp-nav-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            
+            <div class="erp-nav-heading">Purchase Process</div>
+            <a class="erp-nav-link" href="purchase-indent.html"><i class="fa-solid fa-file-circle-plus"></i><span>Purchase Indent</span></a>
+            <a class="erp-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
+            <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
+            <a class="erp-nav-link" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html?view=pending"><i class="fa-solid fa-shield- halftone"></i><span>PO Authorization</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
+            
+            <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link" href="voucher-create.html"><i class="fa-solid fa-box-open"></i><span>Material Requisition</span></a>
+            <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
+            <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue</span></a>
+            
+            <div class="erp-nav-heading">Inventory & Stock</div>
+            <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
+            <a class="erp-nav-link active" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            
+            <div class="erp-nav-heading">Reports</div>
+            <a class="erp-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Purchase Reports</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Reports</span></a>
+        </nav>
+    </aside>
 
-    <main class="inventory-page stock-ledger-content">
-        <header class="inventory-breadcrumb">
-            <div>
-                <h1 class="breadcrumb-title">Stock Ledger</h1>
-                <p class="breadcrumb-path">Inventory / Stock Ledger</p>
+    <div class="erp-main">
+        <header class="erp-topbar">
+            <div class="erp-search">
+                <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                <input id="searchBox" type="search" placeholder="Global Search..." />
             </div>
-            <a class="top-btn" href="dashboard.html"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back</a>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 28, 2026</span></div>
+                <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
+                </a>
+            </div>
         </header>
 
-        <section class="stock-ledger-filter" aria-labelledby="ledgerFilterTitle">
-            <div class="stock-ledger-selection">
+        <main class="erp-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <div>
-                    <h2 id="ledgerFilterTitle">Choose an item</h2>
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Stock Ledger</h1>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Detailed movement history for items including receipts and issues.</p>
                 </div>
-                <form id="stockLedgerForm" class="stock-ledger-form">
-                    <label for="ledgerItemSearch">Search item</label>
-                    <input id="ledgerItemSearch" type="search" list="ledgerItemOptions" placeholder="Item name or code" autocomplete="off" required />
-                    <datalist id="ledgerItemOptions"></datalist>
-                    <div class="ledger-date-range">
-                        <div class="ledger-date-option">
-                            <label for="ledgerDateOption">Date option</label>
-                            <select id="ledgerDateOption">
-                                <option value="as-on-date" selected>As on date</option>
-                                <option value="current-month">Current month</option>
-                                <option value="previous-month">Previous month</option>
-                                <option value="current-week">Current week</option>
-                                <option value="previous-week">Previous week</option>
-                                <option value="today">Today</option>
-                                <option value="current-year">Current year</option>
-                                <option value="previous-year">Previous year</option>
-                                <option value="current-financial-year">Current Financial Year</option>
-                                <option value="previous-financial-year">Previous Financial Year</option>
-                                <option value="yesterday">Yesterday</option>
-                                <option value="current-quarter">Current Quarter</option>
-                                <option value="previous-quarter">Previous Quarter</option>
-                            </select>
+                <a href="dashboard.html" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i> Dashboard
+                </a>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 300px; gap: 24px; margin-bottom: 24px;">
+                <!-- Filter Section -->
+                <section class="erp-card">
+                    <div class="erp-card-header">
+                        <h2 style="font-size: 14px;">Stock Filter</h2>
+                    </div>
+                    <div class="erp-card-body">
+                        <form id="stockLedgerForm" class="erp-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); align-items: end;">
+                            <div class="erp-field">
+                                <label for="ledgerItemSearch">Item Search</label>
+                                <input id="ledgerItemSearch" type="search" list="ledgerItemOptions" placeholder="Item name or code" required />
+                                <datalist id="ledgerItemOptions"></datalist>
+                            </div>
+                            <div class="erp-field">
+                                <label for="ledgerDateOption">Date Range</label>
+                                <select id="ledgerDateOption">
+                                    <option value="as-on-date" selected>As on date</option>
+                                    <option value="current-month">Current month</option>
+                                    <option value="previous-month">Previous month</option>
+                                    <option value="current-week">Current week</option>
+                                    <option value="previous-week">Previous week</option>
+                                    <option value="today">Today</option>
+                                    <option value="current-year">Current year</option>
+                                    <option value="previous-year">Previous year</option>
+                                    <option value="current-financial-year">Current Financial Year</option>
+                                    <option value="previous-financial-year">Previous Financial Year</option>
+                                    <option value="yesterday">Yesterday</option>
+                                    <option value="current-quarter">Current Quarter</option>
+                                    <option value="previous-quarter">Previous Quarter</option>
+                                </select>
+                            </div>
+                            <div class="erp-field">
+                                <label for="ledgerFromDate">Start Date</label>
+                                <input id="ledgerFromDate" type="date" disabled />
+                            </div>
+                            <div class="erp-field">
+                                <label for="ledgerToDate">End Date</label>
+                                <input id="ledgerToDate" type="date" disabled />
+                            </div>
+                            <div class="erp-field" style="justify-content: flex-end;">
+                                <button id="showLedgerBtn" class="btn-primary" type="submit" style="width: 100%;">Generate Ledger</button>
+                            </div>
+                        </form>
+                        <p id="ledgerMessage" style="margin-top: 12px; font-size: 12px; color: var(--erp-text-muted);"></p>
+                    </div>
+                </section>
+
+                <!-- Department / Quick Select -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <section class="erp-card">
+                        <div class="erp-card-header">
+                            <h2 style="font-size: 14px;">Departments</h2>
                         </div>
-                        <div class="ledger-date-field">
-                            <label for="ledgerFromDate">Start Date</label>
-                            <input id="ledgerFromDate" type="date" disabled />
+                        <div class="erp-card-body" id="ledgerDepartmentList" style="display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Injected by stock-ledger.js -->
                         </div>
-                        <div class="ledger-date-field">
-                            <label for="ledgerToDate">End Date</label>
-                            <input id="ledgerToDate" type="date" disabled />
+                    </section>
+                    <section class="erp-card">
+                        <div class="erp-card-header">
+                            <h2 style="font-size: 14px;">Quick Items</h2>
+                        </div>
+                        <div class="erp-card-body" id="ledgerDepartmentItems" style="display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Injected by stock-ledger.js -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <section id="ledgerResult" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <h2 id="selectedItemName" style="margin: 0; font-size: 18px;">Item Name</h2>
+                        <span id="selectedItemMeta" class="status-badge status-neutral" style="font-size: 10px;">Item Code</span>
+                    </div>
+                    <button id="printLedgerBtn" class="btn-secondary" type="button"><i class="fa-solid fa-print"></i> Print Ledger</button>
+                </div>
+                <div class="erp-card-body">
+                    <!-- Summary KPI Cards -->
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 24px;">
+                        <div class="erp-card" style="padding: 15px; text-align: center; background: #fff; border-color: var(--erp-border);">
+                            <span style="display: block; font-size: 11px; color: var(--erp-text-muted); margin-bottom: 5px;">Opening Balance</span>
+                            <strong id="openingBalance" style="font-size: 20px; color: var(--erp-text-main);">0</strong>
+                        </div>
+                        <div class="erp-card" style="padding: 15px; text-align: center; background: #fff; border-color: var(--erp-border);">
+                            <span style="display: block; font-size: 11px; color: var(--erp-text-muted); margin-bottom: 5px;">Total Received</span>
+                            <strong id="totalIn" style="font-size: 20px; color: var(--status-green-text);">0</strong>
+                        </div>
+                        <div class="erp-card" style="padding: 15px; text-align: center; background: #fff; border-color: var(--erp-border);">
+                            <span style="display: block; font-size: 11px; color: var(--erp-text-muted); margin-bottom: 5px;">Total Issued</span>
+                            <strong id="totalOut" style="font-size: 20px; color: var(--status-red-text);">0</strong>
+                        </div>
+                        <div class="erp-card" style="padding: 15px; text-align: center; background: #fff; border-color: var(--erp-border);">
+                            <span style="display: block; font-size: 11px; color: var(--erp-text-muted); margin-bottom: 5px;">Current Stock</span>
+                            <strong id="currentBalance" style="font-size: 20px; color: var(--erp-primary);">0</strong>
                         </div>
                     </div>
-                    <button id="showLedgerBtn" class="primary-btn" type="submit">OK</button>
-                    <p id="ledgerMessage" class="ledger-message" role="status" aria-live="polite"></p>
-                </form>
-            </div>
-            <aside class="ledger-department-field" aria-labelledby="ledgerDepartmentTitle">
-                <h3 id="ledgerDepartmentTitle">Department</h3>
-                <div id="ledgerDepartmentList" class="ledger-department-list" role="listbox" aria-label="Departments"></div>
-            </aside>
-            <section class="ledger-department-items" aria-labelledby="ledgerDepartmentItemsTitle">
-                <h3 id="ledgerDepartmentItemsTitle">Items in selected department</h3>
-                <div id="ledgerDepartmentItems" class="ledger-item-list"></div>
-            </section>
-        </section>
 
-        <section id="ledgerResult" class="stock-ledger-result" hidden>
-            <div class="stock-ledger-heading">
-                <div>
-                    <h2 id="selectedItemName"></h2>
-                    <p id="selectedItemMeta"></p>
+                    <div class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">#</th>
+                                    <th>Date</th>
+                                    <th>Voucher No.</th>
+                                    <th>Activity</th>
+                                    <th>Warehouse / Location</th>
+                                    <th style="text-align: right;">In</th>th>
+                                    <th style="text-align: right;">Out</th>
+                                    <th style="text-align: right;">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledgerRows">
+                                <!-- Injected by stock-ledger.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="margin-top: 20px; font-size: 11px; color: var(--erp-text-muted); font-style: italic;">
+                        IN is derived from Material Receipt Notes. OUT is derived from approved Material Requisitions.
+                    </p>
                 </div>
-                <button id="printLedgerBtn" class="page-btn" type="button"><i class="fa-solid fa-print" aria-hidden="true"></i> Print</button>
-            </div>
-            <div class="ledger-summary" aria-label="Stock summary">
-                <article><span>Opening balance for selected range</span><strong id="openingBalance">0</strong></article>
-                <article><span>Total received</span><strong id="totalIn">0</strong></article>
-                <article><span>Total issued</span><strong id="totalOut">0</strong></article>
-                <article><span>Current stock</span><strong id="currentBalance">0</strong></article>
-            </div>
-            <div class="inventory-table-wrapper stock-ledger-table-wrap">
-                <table class="inventory-table stock-ledger-table">
-                    <thead>
-                        <tr><th>#</th><th>Date</th><th>Voucher No.</th><th>Activity</th><th>Warehouse / Location</th><th>In</th><th>Out</th><th>Balance</th></tr>
-                    </thead>
-                    <tbody id="ledgerRows"></tbody>
-                </table>
-                <p id="ledgerEmptyState" class="ledger-empty" hidden>No recorded stock movements for this item.</p>
-            </div>
-            <p class="ledger-note">IN is taken from saved Material Receipt Notes. OUT is taken from approved Material Requisitions. The default range starts on the item creation date and ends today.</p>
-        </section>
-    </main>
-
+            </section>
+        </main>
+    </div>
     <script src="../js/ims-store.js"></script>
     <script src="../js/searchText.js"></script>
     <script src="../js/header-user.js"></script>

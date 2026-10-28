@@ -1440,3 +1440,482 @@ body:has(.purchase-indent-shell) .page-header-tools .toolbar-btn.has-label:hover
     padding: 12px;
   }
 }
+
+body.purchase-voucher-page {
+  min-width: 320px;
+  background: #f3f6fb;
+}
+
+body.purchase-voucher-page > .top-strip {
+  position: sticky;
+  z-index: 20;
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: 60px;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 18px;
+  background: #fff;
+}
+
+body.purchase-voucher-page > .top-strip .brand {
+  flex: 0 0 auto;
+}
+
+body.purchase-voucher-page > .top-strip .search {
+  flex: 1 1 220px;
+  width: auto;
+  min-width: 120px;
+  max-width: 420px;
+  margin: 0;
+}
+
+body.purchase-voucher-page > .top-strip .top-actions {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+body.purchase-voucher-page > .top-strip .top-home,
+body.purchase-voucher-page > .top-strip .top-user,
+body.purchase-voucher-page > .top-strip .top-back {
+  font-size: 11px;
+}
+
+body.purchase-voucher-page > .inventory-page,
+body.purchase-voucher-page > .inventory-page.inventory-page {
+  width: min(1600px, 100%);
+  max-width: 1600px;
+  margin: 18px auto 0;
+  padding: 0 22px 32px;
+}
+
+body.purchase-voucher-page > .voucher-header,
+body.purchase-voucher-page .inventory-page > .voucher-header {
+  min-height: 58px;
+  margin: 0 0 14px;
+  padding: 10px 16px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(30, 53, 85, .035);
+}
+
+body.purchase-voucher-page .breadcrumb-title {
+  color: #1d2b43;
+  font-size: 19px;
+}
+
+body.purchase-voucher-page .breadcrumb-path {
+  display: block;
+  margin-top: 3px;
+  color: #74839b;
+  font-size: 11px;
+}
+
+body.purchase-voucher-page .voucher-actions {
+  gap: 8px;
+}
+
+body.purchase-voucher-page .ims-tabs {
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 4px;
+  border: 1px solid #e5ebf3;
+  border-radius: 9px;
+  background: #fff;
+}
+
+body.purchase-voucher-page .ims-tabs .tab {
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #60718a;
+  font-size: 12px;
+}
+
+body.purchase-voucher-page .ims-tabs .tab.active,
+body.purchase-voucher-page .ims-tabs .tab.active:hover {
+  border-color: #1769e8;
+  background: #1769e8;
+  color: #fff;
+}
+
+body.purchase-voucher-page .voucher-table-card,
+body.purchase-voucher-page .inventory-card,
+body.purchase-voucher-page .voucher-form-card {
+  margin: 0 0 14px;
+  padding: 16px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(30, 53, 85, .035);
+}
+
+body.purchase-voucher-page .voucher-card-header,
+body.purchase-voucher-page .inventory-card-header {
+  margin-bottom: 12px;
+}
+
+body.purchase-voucher-page .voucher-card-header h2,
+body.purchase-voucher-page .inventory-card-header h2 {
+  color: #253650;
+  font-size: 15px;
+}
+
+body.purchase-voucher-page .voucher-table-wrapper {
+  height: auto;
+  max-height: min(65vh, 560px);
+  overflow: auto;
+  border: 1px solid #e1e8f0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: none;
+}
+
+body.purchase-voucher-page .voucher-table {
+  min-width: 900px;
+}
+
+body.purchase-voucher-page .voucher-table th,
+body.purchase-voucher-page .voucher-table td {
+  height: 36px;
+  padding: 7px 9px;
+  border-color: #e8edf4;
+  color: #43536b;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+body.purchase-voucher-page .voucher-table th {
+  background: #edf3fb;
+  color: #405570;
+  font-weight: 650;
+  text-shadow: none;
+  box-shadow: inset 0 -1px 0 #e1e8f0;
+}
+
+body.purchase-voucher-page .voucher-table tbody tr,
+body.purchase-voucher-page .voucher-table tbody tr > td {
+  background: #fff !important;
+}
+
+body.purchase-voucher-page .voucher-table tbody tr:nth-child(even),
+body.purchase-voucher-page .voucher-table tbody tr:nth-child(even) > td {
+  background: #fafbfd !important;
+}
+
+body.purchase-voucher-page .voucher-table tbody tr:hover,
+body.purchase-voucher-page .voucher-table tbody tr:hover > td {
+  background: #f1f6ff !important;
+}
+
+body.purchase-voucher-page .voucher-form-card {
+  padding: 18px;
+}
+
+body.purchase-voucher-page .voucher-form-card > .voucher-card-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e8edf4;
+}
+
+body.purchase-voucher-page .voucher-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px 18px;
+  padding: 10px 0 16px;
+}
+
+body.purchase-voucher-page .field-group {
+  gap: 6px;
+}
+
+body.purchase-voucher-page .field-group label {
+  color: #43536b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+body.purchase-voucher-page .field-group input,
+body.purchase-voucher-page .field-group select,
+body.purchase-voucher-page .field-group textarea,
+body.purchase-voucher-page.po-form-active .field-group input,
+body.purchase-voucher-page.po-form-active .field-group select,
+body.purchase-voucher-page.po-form-active .field-group textarea {
+  min-height: 38px;
+  height: auto;
+  padding: 8px 10px;
+  border: 1px solid #dfe6ef;
+  border-radius: 7px;
+  border-left: 1px solid #dfe6ef;
+  background: #fff;
+  color: #243247;
+  font-size: 12px;
+  box-shadow: none;
+}
+
+body.purchase-voucher-page .field-group textarea,
+body.purchase-voucher-page.po-form-active .field-group textarea {
+  min-height: 70px;
+}
+
+body.purchase-voucher-page .toolbar-btn,
+body.purchase-voucher-page .action-btn,
+body.purchase-voucher-page .page-btn,
+body.purchase-voucher-page .voucher-actions > button,
+body.purchase-voucher-page .voucher-actions > a {
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid #dce5f0;
+  border-radius: 7px;
+  background: #fff;
+  color: #3a4b64;
+  font-size: 11px;
+  text-decoration: none;
+  box-shadow: none;
+}
+
+body.purchase-voucher-page .toolbar-btn:hover,
+body.purchase-voucher-page .action-btn:hover,
+body.purchase-voucher-page .page-btn:hover,
+body.purchase-voucher-page .voucher-actions > button:hover,
+body.purchase-voucher-page .voucher-actions > a:hover {
+  border-color: #b8d2f6;
+  background: #f4f8ff;
+  color: #145fcf;
+}
+
+body.purchase-voucher-page button[id*="Save"],
+body.purchase-voucher-page button[id*="Submit"],
+body.purchase-voucher-page button[id*="Create"],
+body.purchase-voucher-page .button-primary {
+  border-color: #1769e8;
+  background: #1769e8;
+  color: #fff;
+}
+
+body.purchase-voucher-page button[id*="Save"]:hover,
+body.purchase-voucher-page button[id*="Submit"]:hover,
+body.purchase-voucher-page button[id*="Create"]:hover,
+body.purchase-voucher-page .button-primary:hover {
+  border-color: #0e57c7;
+  background: #0e57c7;
+  color: #fff;
+}
+
+body.purchase-voucher-page.po-form-active > .inventory-page {
+  width: min(1600px, 100%);
+  margin: 18px auto 0;
+  padding: 0 22px 32px;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-header {
+  min-height: 58px;
+  margin: 0 0 14px;
+  padding: 10px 16px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fff;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-form-card {
+  padding: 18px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(30, 53, 85, .035);
+}
+
+body.purchase-voucher-page.po-form-active .po-main-tab {
+  margin: 0 0 14px;
+  padding: 0 0 8px;
+  border-bottom: 2px solid #1769e8;
+  color: #1769e8;
+  font-size: 13px;
+}
+
+body.purchase-voucher-page.po-form-active .po-entry-grid {
+  gap: 14px 18px;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-table-wrapper:has(#poLinesBody) {
+  max-height: min(45vh, 380px);
+  border: 1px solid #e1e8f0;
+  border-radius: 8px;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) th {
+  background: #edf3fb;
+  color: #405570;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) th,
+body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) td {
+  border-color: #e8edf4;
+}
+
+body.purchase-voucher-page .filter-dialog {
+  max-width: min(920px, 100%);
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table-wrapper,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table-wrapper,
+body.purchase-voucher-page #piListView .voucher-table-wrapper,
+body.purchase-voucher-page #rfqAllView .voucher-table-wrapper,
+body.purchase-voucher-page #rfqPendingView .voucher-table-wrapper,
+body.purchase-voucher-page #qrAllView .voucher-table-wrapper,
+body.purchase-voucher-page #qrPendingView .voucher-table-wrapper,
+body.purchase-voucher-page #allPoView .voucher-table-wrapper,
+body.purchase-voucher-page #pendingQrView .voucher-table-wrapper,
+body.purchase-voucher-page #issueAllView .voucher-table-wrapper,
+body.purchase-voucher-page #issuePendingView .voucher-table-wrapper {
+  height: auto;
+  max-height: min(65vh, 560px);
+  border: 1px solid #e1e8f0;
+  border-radius: 8px;
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table,
+body.purchase-voucher-page #piListView .voucher-table,
+body.purchase-voucher-page #rfqAllView .voucher-table,
+body.purchase-voucher-page #rfqPendingView .voucher-table,
+body.purchase-voucher-page #qrAllView .voucher-table,
+body.purchase-voucher-page #qrPendingView .voucher-table,
+body.purchase-voucher-page #allPoView .voucher-table,
+body.purchase-voucher-page #pendingQrView .voucher-table,
+body.purchase-voucher-page #issueAllView .voucher-table,
+body.purchase-voucher-page #issuePendingView .voucher-table {
+  min-width: 900px;
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table th,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table th {
+  background: #edf3fb;
+  color: #405570;
+  text-shadow: none;
+  box-shadow: inset 0 -1px 0 #e1e8f0;
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table th,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table th,
+body.purchase-voucher-page #allPoView .voucher-table th,
+body.purchase-voucher-page #pendingQrView .voucher-table th,
+body.purchase-voucher-page #rfqAllView .voucher-table th,
+body.purchase-voucher-page #rfqPendingView .voucher-table th,
+body.purchase-voucher-page #qrAllView .voucher-table th,
+body.purchase-voucher-page #qrPendingView .voucher-table th,
+body.purchase-voucher-page #piListView .voucher-table th,
+body.purchase-voucher-page #issueAllView .voucher-table th,
+body.purchase-voucher-page #issuePendingView .voucher-table th {
+  height: 36px;
+  padding: 7px 9px;
+  border-color: #e1e8f0;
+  background: #edf3fb !important;
+  color: #405570 !important;
+  font-size: 11px;
+  font-weight: 650;
+  text-shadow: none;
+  box-shadow: inset 0 -1px 0 #e1e8f0;
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table td,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table td,
+body.purchase-voucher-page #allPoView .voucher-table td,
+body.purchase-voucher-page #pendingQrView .voucher-table td,
+body.purchase-voucher-page #rfqAllView .voucher-table td,
+body.purchase-voucher-page #rfqPendingView .voucher-table td,
+body.purchase-voucher-page #qrAllView .voucher-table td,
+body.purchase-voucher-page #qrPendingView .voucher-table td,
+body.purchase-voucher-page #piListView .voucher-table td,
+body.purchase-voucher-page #issueAllView .voucher-table td,
+body.purchase-voucher-page #issuePendingView .voucher-table td {
+  height: 36px;
+  padding: 7px 9px;
+  border-color: #e8edf4;
+  color: #43536b !important;
+  font-size: 11px;
+}
+
+body.purchase-voucher-page .shared-voucher-filter-panel,
+body.purchase-voucher-page .filter-modal {
+  background: rgba(15, 35, 65, .42);
+}
+
+body:has(.purchase-indent-shell) > .top-strip {
+  position: sticky;
+  z-index: 20;
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: 60px;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 18px;
+}
+
+body:has(.purchase-indent-shell) > .top-strip .brand {
+  flex: 0 0 auto;
+}
+
+body:has(.purchase-indent-shell) > .top-strip .search {
+  flex: 1 1 220px;
+  width: auto;
+  min-width: 120px;
+  max-width: 420px;
+  margin: 0;
+}
+
+body:has(.purchase-indent-shell) > .top-strip .top-actions {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+@media (max-width: 760px) {
+  body.purchase-voucher-page > .top-strip,
+  body:has(.purchase-indent-shell) > .top-strip {
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+  }
+
+  body.purchase-voucher-page > .top-strip .search,
+  body:has(.purchase-indent-shell) > .top-strip .search {
+    flex: 1 1 100%;
+    order: 3;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  body.purchase-voucher-page > .top-strip .top-actions,
+  body:has(.purchase-indent-shell) > .top-strip .top-actions {
+    margin-left: auto;
+  }
+
+  body.purchase-voucher-page > .top-strip .top-home,
+  body.purchase-voucher-page > .top-strip .top-user,
+  body.purchase-voucher-page > .top-strip .top-back {
+    font-size: 12px;
+  }
+
+  body.purchase-voucher-page > .inventory-page,
+  body.purchase-voucher-page.po-form-active > .inventory-page {
+    margin-top: 10px;
+    padding: 0 10px 24px;
+  }
+
+  body.purchase-voucher-page .voucher-header {
+    align-items: flex-start;
+  }
+
+  body.purchase-voucher-page .voucher-grid,
+  body.purchase-voucher-page.po-form-active .po-entry-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body.purchase-voucher-page .voucher-table-card,
+  body.purchase-voucher-page .inventory-card,
+  body.purchase-voucher-page .voucher-form-card {
+    padding: 12px;
+  }
+}
