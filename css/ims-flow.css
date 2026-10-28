@@ -247,7 +247,9 @@ body.purchase-voucher-page.po-form-active #poLinesBody .ims-lines-input {
     padding: 5px 8px;
     border: 1px solid #c9c9c9;
     border-radius: 8px;
-    background: linear-gradient(180deg, #dfe5e6 0%, #f7f9f8 22%, #f7f9f8 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow: inset 0 1px 2px rgba(148, 163, 184, .08),
+                0 1px 0 rgba(255, 255, 255, .9);
     text-align: center;
 }
 
@@ -783,7 +785,9 @@ body:has(#piLinesBody) .purchase-table td input {
     min-height: 38px;
     border: 1px solid #c9c9c9;
     border-radius: 10px;
-    background: linear-gradient(180deg, #dfe5e6 0%, #f7f9f8 22%, #f7f9f8 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow: inset 0 1px 2px rgba(148, 163, 184, .08),
+                0 1px 0 rgba(255, 255, 255, .9);
 }
 
 body.purchase-voucher-page .po-tabs-ribbon {
