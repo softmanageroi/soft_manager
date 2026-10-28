@@ -483,10 +483,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   postUnpostedReceiptStock();
   render();
-  const authorizePoId = new URLSearchParams(window.location.search).get('authorizePo');
+  const requestedParams = new URLSearchParams(window.location.search);
+  const authorizePoId = requestedParams.get('authorizePo');
   if (authorizePoId) {
     setTab('pending');
     const order = pendingOrders().find((item) => String(item.id) === authorizePoId);
     if (order) openAuthorization(order);
+  } else if (requestedParams.get('view') === 'pending') {
+    setTab('pending');
   }
 });

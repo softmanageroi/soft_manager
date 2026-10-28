@@ -1,84 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="stylesheet" href="../css/common-header.css">
-    <link rel="stylesheet" href="../css/skeuomorphic.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <title>Dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10233f" />
+    <title>Dashboard | Soft Manager</title>
+    <link rel="stylesheet" href="../css/dashboard.css" />
+    <link rel="stylesheet" href="../css/common-header.css" />
+    <link rel="stylesheet" href="../css/skeuomorphic.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
-<body>
-    <header class="top-strip">
-        <div class="brand"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> Soft Manager</div>
-        <div class="search">
-            <input id="searchBox" type="search" placeholder="Menu Search" aria-label="Menu Search">
-            <ul id="searchResults" class="search-dropdown"></ul>
+<body class="dashboard-page">
+    <aside class="dashboard-sidebar" id="dashboardSidebar">
+        <a class="dashboard-brand" href="dashboard.html" aria-label="Soft Manager dashboard">
+            <span class="dashboard-brand-mark"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i></span>
+            <span><strong>Soft Manager</strong><small>Warehouse &amp; Purchase</small></span>
+        </a>
+        <nav class="dashboard-nav" aria-label="Main navigation">
+            <a class="dashboard-nav-link active" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            <div class="dashboard-nav-heading">Purchase process</div>
+            <a class="dashboard-nav-link" href="purchase-indent.html"><i class="fa-solid fa-file-circle-plus"></i><span>Purchase Indent</span></a>
+            <a class="dashboard-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>Request for Quotation</span></a>
+            <a class="dashboard-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
+            <a class="dashboard-nav-link" href="purchase-order-creation.html?view=all"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
+            <a class="dashboard-nav-link" href="material-receipt-note.html?view=pending"><i class="fa-solid fa-shield-halved"></i><span>PO Authorization</span></a>
+            <a class="dashboard-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>Material Receipt Note</span></a>
+            <div class="dashboard-nav-heading">Material management</div>
+            <a class="dashboard-nav-link" href="voucher-create.html"><i class="fa-solid fa-box-open"></i><span>Material Requisition</span></a>
+            <a class="dashboard-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
+            <a class="dashboard-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue Vouchers</span></a>
+            <div class="dashboard-nav-heading">Inventory &amp; stock</div>
+            <a class="dashboard-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item &amp; Account Masters</span></a>
+            <a class="dashboard-nav-link" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="dashboard-nav-link" href="stock-ledger.html"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            <div class="dashboard-nav-heading">Reports</div>
+            <a class="dashboard-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Monthly Reports</span></a>
+            <a class="dashboard-nav-link" href="stock-ledger.html"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Reports</span></a>
+        </nav>
+        <div class="dashboard-sidebar-footer">
+            <span class="dashboard-status-dot"></span>
+            <span>Workspace ready</span>
         </div>
-        <a class="top-home" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
-    </header>
-    <main class="dashboard-container">
-        <h2>Purchase Flow</h2>
-        <p class="dashboard-flow-caption">Purchase Indent → Request For Quotation → Quotation Receive → Purchase Order → Authorization → Material Receipt Note</p>
-        <div class="dashboard-grid">
-            <a class="dash-tile" href="item-master.html">
-                <div class="tile-icon"><i class="fa-solid fa-layer-group"></i></div>
-                <div class="tile-title">Master</div>
-                <div class="tile-sub">Manage item, account, department, and warehouse masters</div>
-            </a>
-            <a class="dash-tile" href="purchase-indent.html">
-                <div class="tile-icon"><i class="fa-solid fa-file-circle-plus"></i></div>
-                <div class="tile-title">Purchase Indent</div>
-                <div class="tile-sub">Start the purchase request and track indents</div>
-            </a>
-            <a class="dash-tile" href="request-for-quotation.html">
-                <div class="tile-icon"><i class="fa-solid fa-file-signature"></i></div>
-                <div class="tile-title">Request For Quotation</div>
-                <div class="tile-sub">Create RFQs from pending purchase indents</div>
-            </a>
-            <a class="dash-tile" href="quotation-receive.html">
-                <div class="tile-icon"><i class="fa-solid fa-file-circle-check"></i></div>
-                <div class="tile-title">Quotation Receive</div>
-                <div class="tile-sub">View received quotations or receive one from a pending RFQ</div>
-            </a>
-            <a class="dash-tile" href="purchase-order-creation.html?view=all">
-                <div class="tile-icon"><i class="fa-solid fa-cart-shopping"></i></div>
-                <div class="tile-title">Purchase Orders</div>
-                <div class="tile-sub">Create a PO from a pending received quotation</div>
-            </a>
-            <a class="dash-tile" href="material-receipt-note.html">
-                <div class="tile-icon"><i class="fa-solid fa-boxes-packing"></i></div>
-                <div class="tile-title">Material Receipt Note</div>
-                <div class="tile-sub">Receive quantities against authorized purchase orders</div>
-            </a>
-            <a class="dash-tile" href="material-issue-list.html">
-                <div class="tile-icon"><i class="fa-solid fa-book"></i></div>
-                <div class="tile-title">Material Issue Vouchers</div>
-                <div class="tile-sub">Review pending and authorized material issue vouchers</div>
-            </a>
-            <a class="dash-tile" href="voucher-create.html">
-                <div class="tile-icon"><i class="fa-solid fa-file-circle-plus"></i></div>
-                <div class="tile-title">Material Requisition</div>
-                <div class="tile-sub">Request items from a warehouse for internal use</div>
-            </a>
-            <a class="dash-tile" href="material-authorize.html">
-                <div class="tile-icon"><i class="fa-solid fa-circle-check"></i></div>
-                <div class="tile-title">Material Authorization</div>
-                <div class="tile-sub">Review and authorize submitted material requisitions</div>
-            </a>
-            <a class="dash-tile" href="stock-ledger.html">
-                <div class="tile-icon"><i class="fa-solid fa-chart-column"></i></div>
-                <div class="tile-title">Stock Ledger</div>
-                <div class="tile-sub">Review item stock movements and current balances</div>
-            </a>
-            <a class="dash-tile" href="registers.html">
-                <div class="tile-icon"><i class="fa-solid fa-book-open"></i></div>
-                <div class="tile-title">Registers &amp; Monthly Reports</div>
-                <div class="tile-sub">View and print monthly material requisition and purchase order registers</div>
-            </a>
-        </div>
-    </main>
+    </aside>
+    <button id="dashboardBackdrop" class="dashboard-backdrop" type="button" aria-label="Close navigation" tabindex="-1"></button>
+
+    <div class="dashboard-main">
+        <header class="dashboard-topbar">
+            <button id="dashboardMenuBtn" class="dashboard-menu-btn" type="button" aria-label="Toggle navigation" aria-controls="dashboardSidebar" aria-expanded="true">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+            <div class="search dashboard-search">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <input id="searchBox" type="search" placeholder="Search pages, items, suppliers..." aria-label="Search pages, items, suppliers" />
+                <kbd>/</kbd>
+                <ul id="searchResults" class="search-dropdown"></ul>
+            </div>
+            <div class="dashboard-topbar-spacer"></div>
+            <div class="dashboard-date"><i class="fa-regular fa-calendar" aria-hidden="true"></i><span id="dashboardToday"></span></div>
+            <div class="top-actions dashboard-session">
+                <a class="top-home dashboard-home-link" href="dashboard.html"><i class="fa-solid fa-house" aria-hidden="true"></i><span>Dashboard</span></a>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <section class="dashboard-page-heading">
+                <div>
+                    <p class="dashboard-eyebrow">OVERVIEW</p>
+                    <h1>Dashboard</h1>
+                    <p class="dashboard-subtitle">A clear view of your purchase and warehouse operations.</p>
+                </div>
+                <div class="dashboard-quick-actions" aria-label="Quick actions">
+                    <a class="dashboard-action action-primary" href="purchase-indent.html"><i class="fa-solid fa-plus"></i><span>New Indent</span></a>
+                    <a class="dashboard-action" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>Create RFQ</span></a>
+                    <a class="dashboard-action" href="purchase-order-creation.html?view=new"><i class="fa-solid fa-cart-shopping"></i><span>Create PO</span></a>
+                    <a class="dashboard-action" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Issue Vouchers</span></a>
+                </div>
+            </section>
+
+            <p id="dashboardError" class="dashboard-error" role="alert" hidden></p>
+
+            <section class="dashboard-kpis" aria-label="Operations summary">
+                <a class="dashboard-kpi kpi-blue" href="purchase-indent.html">
+                    <span class="kpi-icon"><i class="fa-solid fa-file-circle-plus"></i></span>
+                    <span class="kpi-label">Purchase Indents</span>
+                    <strong id="kpiIndents">0</strong>
+                    <span class="kpi-foot"><span id="kpiIndentsPending">0 pending</span><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                </a>
+                <a class="dashboard-kpi kpi-sky" href="request-for-quotation.html">
+                    <span class="kpi-icon"><i class="fa-solid fa-file-signature"></i></span>
+                    <span class="kpi-label">RFQs Sent</span>
+                    <strong id="kpiRfqs">0</strong>
+                    <span class="kpi-foot"><span id="kpiRfqsPending">0 pending</span><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                </a>
+                <a class="dashboard-kpi kpi-violet" href="quotation-receive.html">
+                    <span class="kpi-icon"><i class="fa-solid fa-file-circle-check"></i></span>
+                    <span class="kpi-label">Quotations</span>
+                    <strong id="kpiQuotations">0</strong>
+                    <span class="kpi-foot"><span>Received</span><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                </a>
+                <a class="dashboard-kpi kpi-orange" href="purchase-order-creation.html?view=all">
+                    <span class="kpi-icon"><i class="fa-solid fa-cart-shopping"></i></span>
+                    <span class="kpi-label">Purchase Orders</span>
+                    <strong id="kpiOrders">0</strong>
+                    <span class="kpi-foot"><span id="kpiOrderValue">₹ 0.00 total value</span><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                </a>
+                <a class="dashboard-kpi kpi-amber" href="material-receipt-note.html?view=pending">
+                    <span class="kpi-icon"><i class="fa-solid fa-shield-halved"></i></span>
+                    <span class="kpi-label">Pending Authorization</span>
+                    <strong id="kpiAuthorization">0</strong>
+                    <span class="kpi-foot"><span>Purchase orders</span><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                </a>
+                <a class="dashboard-kpi kpi-green" href="material-receipt-note.html">
+                    <span class="kpi-icon"><i class="fa-solid fa-boxes-packing"></i></span>
+                    <span class="kpi-label">Material Receipts</span>
+                    <strong id="kpiReceipts">0</strong>
+                    <span class="kpi-foot"><span id="kpiReceiptQty">0 units received</span><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                </a>
+                <a class="dashboard-kpi kpi-red" href="material-issue-list.html">
+                    <span class="kpi-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+                    <span class="kpi-label">Material Issues</span>
+                    <strong id="kpiIssues">0</strong>
+                    <span class="kpi-foot"><span id="kpiIssueQty">Authorized requisitions</span><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                </a>
+            </section>
+
+            <section class="dashboard-panel process-panel" aria-labelledby="processTitle">
+                <div class="panel-heading">
+                    <div><h2 id="processTitle">Purchase process</h2><p>Follow each step from request to receipt.</p></div>
+                    <span class="panel-caption">LIVE WORKFLOW</span>
+                </div>
+                <div class="process-flow" id="processFlow">
+                    <a class="process-step step-blue" href="purchase-indent.html"><span class="process-icon"><i class="fa-solid fa-file-circle-plus"></i></span><span class="process-number">01</span><strong>Purchase Indent</strong><small id="flowIndentCount">0 records</small></a>
+                    <i class="process-arrow fa-solid fa-chevron-right" aria-hidden="true"></i>
+                    <a class="process-step step-sky" href="request-for-quotation.html"><span class="process-icon"><i class="fa-solid fa-file-signature"></i></span><span class="process-number">02</span><strong>RFQ</strong><small id="flowRfqCount">0 records</small></a>
+                    <i class="process-arrow fa-solid fa-chevron-right" aria-hidden="true"></i>
+                    <a class="process-step step-violet" href="quotation-receive.html"><span class="process-icon"><i class="fa-solid fa-file-circle-check"></i></span><span class="process-number">03</span><strong>Quotation</strong><small id="flowQuotationCount">0 received</small></a>
+                    <i class="process-arrow fa-solid fa-chevron-right" aria-hidden="true"></i>
+                    <a class="process-step step-orange" href="purchase-order-creation.html?view=all"><span class="process-icon"><i class="fa-solid fa-cart-shopping"></i></span><span class="process-number">04</span><strong>Purchase Order</strong><small id="flowOrderCount">0 orders</small></a>
+                    <i class="process-arrow fa-solid fa-chevron-right" aria-hidden="true"></i>
+                    <a class="process-step step-green" href="material-receipt-note.html?view=pending"><span class="process-icon"><i class="fa-solid fa-shield-halved"></i></span><span class="process-number">05</span><strong>Authorization</strong><small id="flowAuthorizationCount">0 pending</small></a>
+                    <i class="process-arrow fa-solid fa-chevron-right" aria-hidden="true"></i>
+                    <a class="process-step step-amber" href="material-receipt-note.html"><span class="process-icon"><i class="fa-solid fa-boxes-packing"></i></span><span class="process-number">06</span><strong>Receipt</strong><small id="flowReceiptCount">0 receipts</small></a>
+                </div>
+            </section>
+
+            <section class="dashboard-insights">
+                <article class="dashboard-panel warehouse-panel">
+                    <div class="panel-heading">
+                        <div><h2>Warehouse overview</h2><p>Recorded receipts by warehouse</p></div>
+                        <a class="panel-link" href="stock-ledger.html">Stock ledger <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div id="warehouseOverview" class="warehouse-list"></div>
+                </article>
+                <article class="dashboard-panel category-panel">
+                    <div class="panel-heading">
+                        <div><h2>Inventory by category</h2><p>Current item stock</p></div>
+                        <a class="panel-link" href="item-master.html">Items <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="category-content">
+                        <div id="categoryDonut" class="category-donut" role="img" aria-label="Inventory quantity by category"><span><strong id="categoryTotal">0</strong><small>units</small></span></div>
+                        <div id="categoryLegend" class="category-legend"></div>
+                    </div>
+                </article>
+                <article class="dashboard-panel movement-panel">
+                    <div class="panel-heading">
+                        <div><h2>Stock movement</h2><p>Last 7 days · actual receipts and authorized issues</p></div>
+                        <span class="movement-legend"><span><i class="legend-in"></i>Inward</span><span><i class="legend-out"></i>Outward</span></span>
+                    </div>
+                    <div id="movementChart" class="movement-chart" aria-label="Stock movement over the last seven days"></div>
+                </article>
+            </section>
+
+            <section class="dashboard-lists">
+                <article class="dashboard-panel pending-panel">
+                    <div class="panel-heading">
+                        <div><h2>Recent documents</h2><p>Latest activity across purchase and material workflows</p></div>
+                        <a class="panel-link" href="registers.html">View reports <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="dashboard-table-wrap">
+                        <table class="dashboard-table">
+                            <thead><tr><th>Document No.</th><th>Type</th><th>Party / Requester</th><th>Date</th><th>Amount / Qty</th><th>Status</th><th></th></tr></thead>
+                            <tbody id="recentDocumentsBody"></tbody>
+                        </table>
+                    </div>
+                </article>
+                <article class="dashboard-panel low-stock-panel">
+                    <div class="panel-heading">
+                        <div><h2>Low stock alerts</h2><p>Items at or below reorder level</p></div>
+                        <a class="panel-link" href="stock-ledger.html">View ledger <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="dashboard-table-wrap">
+                        <table class="dashboard-table">
+                            <thead><tr><th>Item code</th><th>Item name</th><th>Current</th><th>Reorder</th></tr></thead>
+                            <tbody id="lowStockBody"></tbody>
+                        </table>
+                    </div>
+                </article>
+            </section>
+
+            <section class="dashboard-recent">
+                <article class="dashboard-panel">
+                    <div class="panel-heading">
+                        <div><h2>Recent material receipts</h2><p>Latest recorded deliveries</p></div>
+                        <a class="panel-link" href="material-receipt-note.html">View all <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="dashboard-table-wrap">
+                        <table class="dashboard-table">
+                            <thead><tr><th>MRN No.</th><th>Supplier</th><th>PO No.</th><th>Date</th><th>Received Qty</th></tr></thead>
+                            <tbody id="recentReceiptsBody"></tbody>
+                        </table>
+                    </div>
+                </article>
+                <article class="dashboard-panel">
+                    <div class="panel-heading">
+                        <div><h2>Recent material issues</h2><p>Authorized requisitions</p></div>
+                        <a class="panel-link" href="material-issue-list.html">View all <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                    <div class="dashboard-table-wrap">
+                        <table class="dashboard-table">
+                            <thead><tr><th>Voucher No.</th><th>Department</th><th>Date</th><th>Qty</th><th>Status</th></tr></thead>
+                            <tbody id="recentIssuesBody"></tbody>
+                        </table>
+                    </div>
+                </article>
+            </section>
+            <footer class="dashboard-footer">Soft Manager <span>·</span> Warehouse &amp; Purchase</footer>
+        </main>
+    </div>
     <script src="../js/ims-store.js"></script>
     <script src="../js/searchText.js"></script>
     <script src="../js/header-user.js"></script>
