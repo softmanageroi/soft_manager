@@ -43,9 +43,127 @@
 
 .stock-ledger-filter {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(210px, .24fr) minmax(330px, .7fr) minmax(320px, 1fr);
     gap: 10px;
     align-items: start;
+}
+
+.stock-ledger-selection {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    padding: 0 18px;
+}
+
+.ledger-department-field {
+    grid-column: 1;
+    grid-row: 1;
+    display: grid;
+    gap: 8px;
+    align-content: start;
+    padding: 8px 10px 0 0;
+}
+
+.ledger-department-field label {
+    color: #59432a;
+    font-weight: 700;
+}
+
+.ledger-department-field h3 {
+    margin: 0;
+    color: #59432a;
+    font-size: 1rem;
+}
+
+.ledger-department-list {
+    display: grid;
+    gap: 2px;
+    padding: 8px 0;
+    border-top: 1px solid rgba(128, 94, 56, .24);
+}
+
+.ledger-department-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 10px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #49321d;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.ledger-department-item::before {
+    content: "•";
+    color: #59432a;
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.ledger-department-item:hover,
+.ledger-department-item[aria-selected="true"] {
+    background: rgba(199, 155, 91, .22);
+}
+
+.ledger-department-items {
+    grid-column: 3;
+    grid-row: 1;
+    min-width: 0;
+    max-height: 430px;
+    margin: 8px 0 0 8px;
+    padding: 0 0 0 18px;
+    border-left: 1px solid rgba(128, 94, 56, .24);
+    overflow: auto;
+}
+
+.ledger-department-items h3 {
+    margin: 0 0 10px;
+    color: #59432a;
+    font-size: 1rem;
+}
+
+.ledger-item-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+}
+
+.ledger-item-button {
+    display: grid;
+    gap: 3px;
+    min-height: 62px;
+    padding: 10px 12px;
+    border: 1px solid #d4bd99;
+    border-radius: 8px;
+    background: rgba(255, 250, 242, .68);
+    color: #49321d;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.ledger-item-button:hover {
+    background: #fffaf2;
+    box-shadow: 0 2px 6px rgba(83, 54, 27, .12);
+}
+
+.ledger-item-button strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ledger-item-button small {
+    color: #74634e;
+}
+
+.ledger-items-empty {
+    margin: 0;
+    color: #74634e;
 }
 
 .stock-ledger-filter h2,
@@ -64,10 +182,10 @@
 
 .stock-ledger-form {
     display: grid;
-    grid-template-columns: minmax(250px, 1.5fr) minmax(170px, .7fr) minmax(170px, .7fr) auto;
+    grid-template-columns: minmax(280px, 620px);
     gap: 8px 12px;
     align-items: end;
-    max-width: 980px;
+    max-width: 620px;
     margin-top: 18px;
 }
 
@@ -91,9 +209,35 @@
     box-shadow: inset 0 2px 4px rgba(64, 43, 22, .1);
 }
 
+.ledger-date-option,
 .ledger-date-field {
     display: grid;
     gap: 5px;
+}
+
+.ledger-date-range {
+    display: grid;
+    gap: 10px;
+}
+
+.ledger-date-option select {
+    width: 100%;
+    height: 42px;
+    min-height: 42px;
+    box-sizing: border-box;
+    padding: 9px 36px 9px 12px;
+    border: 1px solid #cbb693;
+    border-radius: 9px;
+    background: #fffaf2;
+    color: #382a1c;
+    font: inherit;
+    box-shadow: inset 0 2px 4px rgba(64, 43, 22, .1);
+}
+
+.ledger-date-field input {
+    width: 100%;
+    height: 42px;
+    box-sizing: border-box;
 }
 
 .ledger-date-field label {
@@ -185,8 +329,13 @@
 @media (max-width: 760px) {
     .stock-ledger-content { padding: 12px; }
     .stock-ledger-filter, .stock-ledger-result { padding: 14px; }
-    .stock-ledger-form { grid-template-columns: 1fr 1fr; }
-    .stock-ledger-form > label, .stock-ledger-form > input, .stock-ledger-form .ledger-message { grid-column: 1 / -1; }
+    .stock-ledger-filter { grid-template-columns: 1fr; }
+    .stock-ledger-selection, .ledger-department-field, .ledger-department-items { grid-column: 1; grid-row: auto; }
+    .stock-ledger-selection { padding: 0; }
+    .ledger-department-field { padding: 8px 0 0; }
+    .ledger-department-items { margin: 22px 0 0; padding: 16px 0 0; border-top: 1px solid rgba(128, 94, 56, .24); border-left: 0; max-height: none; }
+    .stock-ledger-form { grid-template-columns: 1fr; }
+    .stock-ledger-form > label, .stock-ledger-form > input, .stock-ledger-form .ledger-date-range, .stock-ledger-form .ledger-message { grid-column: 1 / -1; }
     .stock-ledger-form .primary-btn { grid-column: 1 / -1; }
     .ledger-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

@@ -33,24 +33,51 @@
             <div class="stock-ledger-selection">
                 <div>
                     <h2 id="ledgerFilterTitle">Choose an item</h2>
-                    <p>Item select karke OK dabayein, uski stock movement history dekhne ke liye.</p>
                 </div>
                 <form id="stockLedgerForm" class="stock-ledger-form">
                     <label for="ledgerItemSearch">Search item</label>
                     <input id="ledgerItemSearch" type="search" list="ledgerItemOptions" placeholder="Item name or code" autocomplete="off" required />
                     <datalist id="ledgerItemOptions"></datalist>
-                    <div class="ledger-date-field">
-                        <label for="ledgerFromDate">From date</label>
-                        <input id="ledgerFromDate" type="date" disabled />
-                    </div>
-                    <div class="ledger-date-field">
-                        <label for="ledgerToDate">To date</label>
-                        <input id="ledgerToDate" type="date" disabled />
+                    <div class="ledger-date-range">
+                        <div class="ledger-date-option">
+                            <label for="ledgerDateOption">Date option</label>
+                            <select id="ledgerDateOption">
+                                <option value="as-on-date" selected>As on date</option>
+                                <option value="current-month">Current month</option>
+                                <option value="previous-month">Previous month</option>
+                                <option value="current-week">Current week</option>
+                                <option value="previous-week">Previous week</option>
+                                <option value="today">Today</option>
+                                <option value="current-year">Current year</option>
+                                <option value="previous-year">Previous year</option>
+                                <option value="current-financial-year">Current Financial Year</option>
+                                <option value="previous-financial-year">Previous Financial Year</option>
+                                <option value="yesterday">Yesterday</option>
+                                <option value="current-quarter">Current Quarter</option>
+                                <option value="previous-quarter">Previous Quarter</option>
+                            </select>
+                        </div>
+                        <div class="ledger-date-field">
+                            <label for="ledgerFromDate">Start Date</label>
+                            <input id="ledgerFromDate" type="date" disabled />
+                        </div>
+                        <div class="ledger-date-field">
+                            <label for="ledgerToDate">End Date</label>
+                            <input id="ledgerToDate" type="date" disabled />
+                        </div>
                     </div>
                     <button id="showLedgerBtn" class="primary-btn" type="submit">OK</button>
                     <p id="ledgerMessage" class="ledger-message" role="status" aria-live="polite"></p>
                 </form>
             </div>
+            <aside class="ledger-department-field" aria-labelledby="ledgerDepartmentTitle">
+                <h3 id="ledgerDepartmentTitle">Department</h3>
+                <div id="ledgerDepartmentList" class="ledger-department-list" role="listbox" aria-label="Departments"></div>
+            </aside>
+            <section class="ledger-department-items" aria-labelledby="ledgerDepartmentItemsTitle">
+                <h3 id="ledgerDepartmentItemsTitle">Items in selected department</h3>
+                <div id="ledgerDepartmentItems" class="ledger-item-list"></div>
+            </section>
         </section>
 
         <section id="ledgerResult" class="stock-ledger-result" hidden>
