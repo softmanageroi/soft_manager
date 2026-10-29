@@ -6,6 +6,50 @@
     <title>Purchase Indent | Soft Manager</title>
     <link rel="stylesheet" href="../css/common-erp.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <style>
+        /* Module Specific Extensions */
+        .form-section {
+            border: 1px solid var(--erp-border);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .form-section-header {
+            background: #f8fafd;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--erp-border);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--erp-text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .form-section-body {
+            padding: 20px;
+        }
+        .item-table-header {
+            background: #f1f5f9 !important;
+            font-weight: 700 !important;
+            color: var(--erp-text-main) !important;
+        }
+        .line-row:hover {
+            background: #fcfdfe !important;
+        }
+        .btn-icon-only {
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .btn-remove {
+            color: var(--status-red-text);
+            background: var(--status-red-bg);
+        }
+        .btn-remove:hover {
+            background: var(--status-red-text);
+            color: white;
+        }
+    </style>
 </head>
 <body class="erp-page">
     <aside class="erp-sidebar">
@@ -47,7 +91,7 @@
                 <input id="searchBox" type="search" placeholder="Global Search..." />
             </div>
             <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 28, 2026</span></div>
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 29, 2026</span></div>
                 <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
                     <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
                 </a>
@@ -58,7 +102,7 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <div>
                     <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Purchase Indent</h1>
-                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Manage and track material requests for procurement.</p>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Create and manage material procurement requests.</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
                     <button id="piNewBtn" class="btn-primary" type="button"><i class="fa-solid fa-plus"></i> New Indent</button>
@@ -71,11 +115,16 @@
             <!-- List View -->
             <section id="piListView" class="erp-card">
                 <div class="erp-card-header">
-                    <h2>All Vouchers (<span id="piCount">0</span>)</h2>
-                    <div class="ims-tabs" style="display: flex; gap: 8px;">
-                        <button class="status-badge status-neutral active" style="cursor:pointer; border:none;">All</button>
-                        <button class="status-badge status-pending" style="cursor:pointer; border:none;">Pending</button>
-                        <button class="status-badge status-approved" style="cursor:pointer; border:none;">Approved</button>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <h2 style="margin: 0;">Indent Register (<span id="piCount">0</span>)</h2>
+                        <div class="ims-tabs" style="display: flex; gap: 8px;">
+                            <button class="status-badge status-neutral active" style="cursor:pointer; border:none;">All</button>
+                            <button class="status-badge status-pending" style="cursor:pointer; border:none;">Pending</button>
+                            <button class="status-badge status-approved" style="cursor:pointer; border:none;">Approved</button>
+                        </div>
+                    </div>
+                    <div class="erp-search" style="width: 200px;">
+                        <input type="text" id="piListSearch" placeholder="Filter indents..." />
                     </div>
                 </div>
                 <div class="erp-card-body">
@@ -83,16 +132,17 @@
                         <table class="erp-table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th style="width: 60px;">#</th>
                                     <th>Date</th>
                                     <th>Indent No</th>
-                                    <th>Items</th>
+                                    <th>Requested By</th>
+                                    <th style="width: 80px;">Items</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th style="width: 100px; text-align: center;">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="piListBody">
-                                <!-- Data will be injected by purchase-indent.js -->
+                                <!-- Data injected by JS -->
                             </tbody>
                         </table>
                     </div>
@@ -102,64 +152,90 @@
             <!-- Form View -->
             <section id="piFormView" class="erp-card" hidden>
                 <div class="erp-card-header">
-                    <h2>Create Purchase Indent</h2>
+                    <h2 id="piFormTitle">Create Purchase Indent</h2>
                     <div style="display: flex; gap: 10px;">
                         <button id="piCancelBtn" class="btn-secondary" type="button">Cancel</button>
                         <button id="piSaveBtn" class="btn-primary" type="button">Save Indent</button>
                     </div>
                 </div>
                 <div class="erp-card-body">
-                    <div class="erp-form-grid">
-                        <div class="erp-field">
-                            <label for="piVoucherNo">Document No.</label>
-                            <input id="piVoucherNo" readonly value="PIU/26-27/0135" />
+                    <!-- Section 1: Document Details -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <i class="fa-solid fa-file-invoice"></i> Document Details
                         </div>
-                        <div class="erp-field">
-                            <label for="piDate">Date</label>
-                            <input id="piDate" type="date" value="2026-10-10" />
-                        </div>
-                        <div class="erp-field">
-                            <label for="piLocation">Warehouse / Location</label>
-                            <select id="piLocation">
-                                <option>Office</option>
-                                <option>Warehouse</option>
-                                <option>Plant</option>
-                            </select>
-                        </div>
-                        <div class="erp-field" style="grid-column: span 2;">
-                            <label for="piNarration">Purpose / Narration</label>
-                            <input id="piNarration" type="text" placeholder="Enter purpose of the request..." />
-                        </div>
-                        <div class="erp-field">
-                            <label for="piRequestedBy">Requested By</label>
-                            <select id="piRequestedBy"></select>
+                        <div class="form-section-body">
+                            <div class="erp-form-grid">
+                                <div class="erp-field">
+                                    <label for="piVoucherNo">Document No.</label>
+                                    <input id="piVoucherNo" readonly />
+                                </div>
+                                <div class="erp-field">
+                                    <label for="piDate">Date</label>
+                                    <input id="piDate" type="date" />
+                                </div>
+                                <div class="erp-field">
+                                    <label for="piLocation">Warehouse / Location</label>
+                                    <select id="piLocation">
+                                        <option value="Office">Office</option>
+                                        <option value="Warehouse">Warehouse</option>
+                                        <option value="Plant">Plant</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="erp-card" style="background: #fcfdfe; border-style: dashed;">
-                        <div class="erp-card-header">
-                            <h2 style="font-size: 14px;"><i class="fa-solid fa-list"></i> Item Details</h2>
+                    <!-- Section 2: Request Details -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <i class="fa-solid fa-user-tag"></i> Request Details
                         </div>
-                        <div class="erp-table-container">
-                            <table class="erp-table" id="piItemTable">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50px;">#</th>
-                                        <th>Item / Brand</th>
-                                        <th>Description</th>
-                                        <th>Unit</th>
-                                        <th>Quantity</th>
-                                        <th>Current Stock</th>
-                                        <th style="width: 50px;"></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="piLinesBody">
-                                    <!-- Dynamic Rows -->
-                                </tbody>
-                            </table>
+                        <div class="form-section-body">
+                            <div class="erp-form-grid">
+                                <div class="erp-field">
+                                    <label for="piRequestedBy">Requested By</label>
+                                    <select id="piRequestedBy"></select>
+                                </div>
+                                <div class="erp-field" style="grid-column: span 2;">
+                                    <label for="piNarration">Purpose / Narration</label>
+                                    <textarea id="piNarration" rows="2" placeholder="Enter detailed purpose of the request..."></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <p id="piMessage" style="margin-top: 15px; font-size: 12px; color: var(--erp-text-muted);"></p>
+
+                    <!-- Section 3: Item Details -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <i class="fa-solid fa-boxes-stacked"></i> Item Details
+                        </div>
+                        <div class="form-section-body">
+                            <div class="erp-table-container">
+                                <table class="erp-table" id="piItemTable">
+                                    <thead>
+                                        <tr class="item-table-header">
+                                            <th style="width: 50px;">#</th>
+                                            <th>Item Description</th>
+                                            <th style="width: 100px;">Unit</th>
+                                            <th style="width: 120px;">Required Qty</th>
+                                            <th style="width: 120px;">Current Stock</th>
+                                            <th style="width: 50px;"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="piLinesBody">
+                                        <!-- Dynamic Rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                                <button id="piAddRowBtn" class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">
+                                    <i class="fa-solid fa-plus"></i> Add Item
+                                </button>
+                                <p id="piMessage" style="margin: 0; font-size: 12px; color: var(--erp-text-muted);"></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>

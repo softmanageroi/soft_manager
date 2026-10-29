@@ -47,7 +47,7 @@
                 <input id="searchBox" type="search" placeholder="Global Search..." />
             </div>
             <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 28, 2026</span></div>
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 29, 2026</span></div>
                 <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
                     <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
                 </a>
@@ -61,63 +61,62 @@
                     <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Track and manage material issues from authorized requisitions.</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <a href="voucher-create.html" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    <a href="voucher-create.html" class="btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
                         <i class="fa-solid fa-plus"></i> New Requisition
                     </a>
                 </div>
             </div>
 
-            <!-- Tabs -->
-            <div style="display: flex; gap: 8px; margin-bottom: 20px;">
-                <button id="tabAllIssue" class="status-badge status-neutral active" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">All Vouchers</button>
-                <button id="tabPendingIssue" class="status-badge status-pending" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">Pending Vouchers</button>
-            </div>
-
-            <!-- All Issues List -->
-            <section id="issueAllView" class="erp-card">
+            <section class="erp-card">
                 <div class="erp-card-header">
-                    <h2 style="font-size: 14px;">All Vouchers (<span id="issueCount">0</span>)</h2>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <h2 style="margin: 0;">Voucher Register (<span id="issueCount">0</span>)</h2>
+                        <div class="ims-tabs" style="display: flex; gap: 8px;">
+                            <button id="tabAllIssue" class="status-badge status-neutral active" style="cursor:pointer; border:none; padding: 6px 12px;">All Vouchers</button>
+                            <button id="tabPendingIssue" class="status-badge status-pending" style="cursor:pointer; border:none; padding: 6px 12px;">Pending Vouchers</button>
+                        </div>
+                    </div>
+                    <div class="erp-search" style="width: 200px;">
+                        <input type="text" id="issueListSearch" placeholder="Filter vouchers..." />
+                    </div>
                 </div>
                 <div class="erp-card-body">
-                    <div class="erp-table-container">
+                    <!-- All Issues List -->
+                    <div id="issueAllView" class="erp-table-container">
                         <table class="erp-table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th style="width: 60px;">#</th>
                                     <th>Voucher No.</th>
                                     <th>Date</th>
                                     <th>Department</th>
                                     <th>Requested By</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th style="width: 100px; text-align: center;">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="issueAllBody">
-                                <!-- Injected by material-issue-list.js -->
+                                <!-- Data injected by JS -->
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </section>
 
-            <!-- Pending Issues List -->
-            <section id="issuePendingView" class="erp-card" hidden>
-                <div class="erp-card-header">
-                    <h2 style="font-size: 14px;">Pending Vouchers (<span id="issuePendingCount">0</span>)</h2>
-                </div>
-                <div class="erp-card-body">
-                    <div class="erp-table-container">
+                    <!-- Pending Issues List -->
+                    <div id="issuePendingView" class="erp-table-container" hidden>
                         <table class="erp-table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th style="width: 60px;">#</th>
                                     <th>Draft/Req No.</th>
                                     <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="issuePendingBody">
-                                    <!-- Injected by material-issue-list.js -->
-                                </tbody>
+                                    <th>Department</th>
+                                    <th>Requested By</th>
+                                    <th style="width: 120px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="issuePendingBody">
+                                <!-- Data injected by JS -->
+                            </tbody>
                         </table>
                     </div>
                 </div>

@@ -324,3 +324,56 @@ body.erp-page {
     padding: 10px;
   }
 }
+
+/* Enterprise Form Sections */
+.form-section {
+    border: 1px solid var(--erp-border);
+    border-radius: 12px;
+    margin-bottom: 24px;
+    background: var(--erp-bg-surface);
+    overflow: hidden;
+}
+
+.form-section-header {
+    background: #f8fafd;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--erp-border);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--erp-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-section-body {
+    padding: 20px;
+}
+
+.btn-icon-only {
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-remove {
+    color: var(--status-red-text);
+    background: var(--status-red-bg);
+}
+
+.btn-remove:hover {
+    background: var(--status-red-text);
+    color: white;
+}
+
+.item-table-header {
+    background: #f1f5f9 !important;
+    font-weight: 700 !important;
+    color: var(--erp-text-main) !important;
+}
+
+.line-row:hover {
+    background: #fcfdfe !important;
+}

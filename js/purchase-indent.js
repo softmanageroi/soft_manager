@@ -1,246 +1,205 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const requiredIds = ['piListView', 'piFormView', 'piNewBtn', 'piListBody', 'piCount', 'piVoucherNo', 'piDate', 'piLinesBody', 'piSaveBtn', 'piCancelBtn', 'piMessage', 'piItemOptions'];
-  const elements = {};
-  requiredIds.forEach((id) => {
-    elements[id] = document.getElementById(id);
-    if (!elements[id]) console.warn(`Purchase Indent: missing #${id}`);
-  });
-  if (requiredIds.some((id) => !elements[id])) return;
-
-  const esc = IMS.esc;
-  const baseRowCount = 5;
-  let editingPiId = null;
-  const requestedByField = document.getElementById('piRequestedBy');
-  IMS.setEmployeeOptions(requestedByField);
-
-  function message(text, error) {
-    elements.piMessage.textContent = text;
-    elements.piMessage.classList.toggle('error', Boolean(error));
-  }
-
-  function renderList() {
-    const vouchers = IMS.piAll().slice().reverse();
-    elements.piListBody.innerHTML = vouchers.length ? vouchers.map((pi, index) => `
-      <tr data-open-pi="${esc(pi.id)}">
-        <td>${vouchers.length - index}</td>
-        <td>${esc(IMS.fmtDate(pi.date))}</td>
-        <td>${esc(pi.no)}</td>
-        <td>${Number((pi.lines || []).length)}</td>
-        <td>${esc(pi.linkStatus || IMS.piStatus(pi))}</td>
-        <td><button class="action-btn has-label" type="button" data-open-pi-button="${esc(pi.id)}">Open</button></td>
-      </tr>`).join('') : '<tr><td colspan="6">No purchase indent vouchers yet.</td></tr>';
-    elements.piCount.textContent = String(vouchers.length);
-  }
-
-  function renderEmptyRow(index) {
-    return `<tr>
-      <td>${index + 1}</td>
-      <td data-line-brand></td>
-      <td><input data-line-item type="text" list="piItemOptions" autocomplete="off" aria-label="Type or select item for row ${index + 1}"></td>
-      <td data-line-description></td>
-      <td data-line-unit></td>
-      <td><input data-line-qty type="number" min="0.01" step="any" aria-label="Quantity for row ${index + 1}"></td>
-      <td data-line-stock></td>
-    </tr>`;
-  }
-
-  function renderRows(count = baseRowCount) {
-    elements.piItemOptions.innerHTML = IMS.items().map((item) =>
-      `<option value="${esc(`${item.name} (${item.code})`)}" label="${esc(`${item.name}${item.brand ? ` — ${item.brand}` : ''}`)}"></option>`
-    ).join('');
-    elements.piLinesBody.innerHTML = Array.from({ length: count }, (_, index) => renderEmptyRow(index)).join('');
-  }
-
-  function clearItemDetails(row) {
-    row.dataset.itemCode = '';
-    row.dataset.itemCategory = '';
-    row.querySelector('[data-line-brand]').textContent = '';
-    row.querySelector('[data-line-description]').textContent = '';
-    row.querySelector('[data-line-unit]').textContent = '';
-    row.querySelector('[data-line-stock]').textContent = '';
-  }
-
-  function fillItemDetails(row) {
-    const itemInput = row.querySelector('[data-line-item]');
-    const value = itemInput.value.trim().toLocaleLowerCase();
-    const matches = IMS.items().filter((entry) =>
-      entry.name.trim().toLocaleLowerCase() === value
-      || entry.code.trim().toLocaleLowerCase() === value
-      || `${entry.name} (${entry.code})`.trim().toLocaleLowerCase() === value
-    );
-    if (!value || matches.length !== 1) {
-      clearItemDetails(row);
-      if (value && matches.length > 1) {
-        message('More than one item has this name. Use a unique item name in Item Master.', true);
-      }
-      return;
-    }
-    const item = matches[0];
-    itemInput.value = item.name;
-    row.dataset.itemCode = item.code;
-    row.dataset.itemCategory = item.category || '';
-    row.querySelector('[data-line-brand]').textContent = item.brand || '';
-    row.querySelector('[data-line-description]').textContent = item.description || '';
-    row.querySelector('[data-line-unit]').textContent = item.unit;
-    row.querySelector('[data-line-stock]').textContent = String(item.stock);
-    message('', false);
-    if (row === elements.piLinesBody.lastElementChild) {
-      elements.piLinesBody.insertAdjacentHTML('beforeend', renderEmptyRow(elements.piLinesBody.rows.length));
-    }
-  }
-
-  function openForm() {
-    editingPiId = null;
-    elements.piSaveBtn.disabled = false;
-    elements.piSaveBtn.title = '';
-    elements.piDate.value = IMS.todayISO();
-    elements.piVoucherNo.value = IMS.peekNo('PIU', elements.piDate.value);
-    document.getElementById('piLocation').value = 'Office';
-    document.getElementById('piNarration').value = '';
-    IMS.setEmployeeOptions(requestedByField);
-    elements.piListView.hidden = true;
-    elements.piFormView.hidden = false;
-    message('', false);
-    renderRows();
-  }
-
-  function openSavedIndent(piId) {
-    const pi = IMS.piAll().find((entry) => String(entry.id) === String(piId));
-    if (!pi) return;
-    editingPiId = pi.id;
-    elements.piDate.value = pi.date || IMS.todayISO();
-    elements.piVoucherNo.value = pi.no;
-    document.getElementById('piLocation').value = pi.location || 'Office';
-    document.getElementById('piNarration').value = pi.narration || '';
-    IMS.setEmployeeOptions(requestedByField, pi.requestedBy || '');
-    elements.piListView.hidden = true;
-    elements.piFormView.hidden = false;
-    const linkedToRfq = IMS.rfqAll().some((rfq) =>
-      (rfq.piId && String(rfq.piId) === String(pi.id))
-      || (!rfq.piId && String(rfq.piNo || '') === String(pi.no || ''))
-    );
-    elements.piSaveBtn.disabled = linkedToRfq;
-    elements.piSaveBtn.title = linkedToRfq ? 'This Purchase Indent is linked to an RFQ and is read-only.' : '';
-    message(linkedToRfq ? 'This Purchase Indent is linked to an RFQ and is open in read-only mode.' : '', linkedToRfq);
-    renderRows(Math.max(baseRowCount, (pi.lines || []).length + 1));
-    (pi.lines || []).forEach((line, index) => {
-      const row = elements.piLinesBody.rows[index];
-      const itemInput = row.querySelector('[data-line-item]');
-      itemInput.value = line.name || '';
-      row.dataset.itemCode = line.code || '';
-      row.dataset.itemCategory = line.category || '';
-      row.querySelector('[data-line-brand]').textContent = line.brand || '';
-      row.querySelector('[data-line-description]').textContent = line.description || '';
-      row.querySelector('[data-line-unit]').textContent = line.unit || '';
-      const masterItem = IMS.items().find((item) => String(item.code) === String(line.code));
-      row.querySelector('[data-line-stock]').textContent = String(masterItem?.stock ?? line.stock ?? '');
-      row.querySelector('[data-line-qty]').value = String(line.qty ?? '');
+    const requiredIds = ['piListView', 'piFormView', 'piNewBtn', 'piListBody', 'piCount', 'piVoucherNo', 'piDate', 'piLinesBody', 'piSaveBtn', 'piCancelBtn', 'piMessage', 'piAddRowBtn', 'piListSearch'];
+    const elements = {};
+    requiredIds.forEach((id) => {
+        elements[id] = document.getElementById(id);
+        if (!elements[id]) console.warn(`Purchase Indent: missing #${id}`);
     });
-  }
+    if (requiredIds.some((id) => !elements[id])) return;
 
-  function closeForm() {
-    editingPiId = null;
-    elements.piSaveBtn.disabled = false;
-    elements.piSaveBtn.title = '';
-    elements.piFormView.hidden = true;
-    elements.piListView.hidden = false;
-    message('', false);
-  }
+    const esc = IMS.esc;
+    const baseRowCount = 3;
+    let editingPiId = null;
+    const requestedByField = document.getElementById('piRequestedBy');
+    IMS.setEmployeeOptions(requestedByField);
 
-  elements.piNewBtn.addEventListener('click', openForm);
-  elements.piCancelBtn.addEventListener('click', closeForm);
-  elements.piListBody.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-open-pi-button]');
-    if (button) openSavedIndent(button.dataset.openPiButton);
-  });
-  elements.piListBody.addEventListener('dblclick', (event) => {
-    if (event.target.closest('button')) return;
-    const row = event.target.closest('[data-open-pi]');
-    if (row) openSavedIndent(row.dataset.openPi);
-  });
-  elements.piDate.addEventListener('change', () => {
-    if (!editingPiId) elements.piVoucherNo.value = IMS.peekNo('PIU', elements.piDate.value);
-  });
-  elements.piLinesBody.addEventListener('input', (event) => {
-    const row = event.target.closest('tr');
-    if (row && event.target.matches('[data-line-item]')) {
-      fillItemDetails(row);
+    function message(text, error) {
+        elements.piMessage.textContent = text;
+        elements.piMessage.style.color = error ? 'var(--status-red-text)' : 'var(--erp-text-muted)';
     }
-  });
-  elements.piLinesBody.addEventListener('keydown', (event) => {
-    if (event.key !== 'Tab' || event.shiftKey || !event.target.matches('[data-line-qty]')) return;
-    const row = event.target.closest('tr');
-    if (row !== elements.piLinesBody.lastElementChild) return;
 
-    event.preventDefault();
-    elements.piLinesBody.insertAdjacentHTML('beforeend', renderEmptyRow(elements.piLinesBody.rows.length));
-    elements.piLinesBody.lastElementChild.querySelector('[data-line-item]')?.focus();
-  });
-  elements.piLinesBody.addEventListener('change', (event) => {
-    const row = event.target.closest('tr');
-    const input = event.target;
-    if (!row || !input.matches('[data-line-item]') || !input.value.trim() || row.dataset.itemCode) return;
-    message('Item not found. Add it with its brand in Item Master, then select it here.', true);
-  });
-  elements.piSaveBtn.addEventListener('click', () => {
-    if (editingPiId) {
-      const linkedPi = IMS.piAll().find((entry) => String(entry.id) === String(editingPiId));
-      if (IMS.rfqAll().some((rfq) =>
-        (rfq.piId && String(rfq.piId) === String(editingPiId))
-        || (!rfq.piId && linkedPi && String(rfq.piNo || '') === String(linkedPi.no || ''))
-      )) {
-        return message('This Purchase Indent is linked to an RFQ and cannot be changed.', true);
-      }
+    function renderList(filter = '') {
+        const vouchers = IMS.piAll().slice().reverse();
+        const filtered = vouchers.filter(pi => 
+            pi.no.toLowerCase().includes(filter.toLowerCase()) || 
+            (pi.requestedBy || '').toLowerCase().includes(filter.toLowerCase())
+        );
+
+        elements.piListBody.innerHTML = filtered.length ? filtered.map((pi, index) => `
+            <tr data-open-pi="${esc(pi.id)}" style="cursor:pointer">
+                <td>${vouchers.length - index}</td>
+                <td>${esc(IMS.fmtDate(pi.date))}</td>
+                <td><strong>${esc(pi.no)}</strong></td>
+                <td>${esc(pi.requestedBy || 'N/A')}</td>
+                <td>${Number((pi.lines || []).length)}</td>
+                <td>${esc(pi.linkStatus || IMS.piStatus(pi))}</td>
+                <td style="text-align:center">
+                    <button class="btn-secondary" style="padding: 4px 12px; font-size: 12px;" type="button" data-open-pi-button="${esc(pi.id)}">Open</button>
+                </td>
+            </tr>`).join('') : '<tr><td colspan="7" style="text-align:center; padding: 20px;">No purchase indent records found.</td></tr>';
+        elements.piCount.textContent = String(filtered.length);
     }
-    const rows = [...elements.piLinesBody.querySelectorAll('tr')];
-    const lines = [];
-    for (const row of rows) {
-      const code = row.querySelector('[data-line-item]').value;
-      if (!code.trim()) continue;
-      const item = IMS.items().find((entry) => entry.code === row.dataset.itemCode);
-      if (!item) return message(`"${code}" is not in Item Master. Add the item and its brand there first.`, true);
-      const qty = Number(row.querySelector('[data-line-qty]').value);
-      if (!Number.isFinite(qty) || qty <= 0) {
-        return message(`Enter a quantity greater than zero for ${item.name}.`, true);
-      }
-      lines.push({
-        code: item.code,
-        name: item.name,
-        category: row.dataset.itemCategory,
-        brand: item.brand,
-        description: item.description,
-        unit: item.unit,
-        stock: item.stock,
-        qty,
-        consumed: 0
-      });
+
+    function renderEmptyRow(index) {
+        return `<tr class="line-row">
+            <td style="text-align:center">${index + 1}</td>
+            <td>
+                <input data-line-item type="text" list="piItemOptions" placeholder="Search Item..." autocomplete="off" style="width:100%; border:none; background:transparent; outline:none;">
+                <datalist id="piItemOptions">${IMS.items().map(i => `<option value="${esc(i.name)}">`).join('')}</datalist>
+            </td>
+            <td data-line-unit style="text-align:center">—</td>
+            <td><input data-line-qty type="number" min="0.01" step="any" placeholder="0.00" style="width:100%; border:none; background:transparent; outline:none; text-align:right;"></td>
+            <td data-line-stock style="text-align:right">0</td>
+            <td style="text-align:center">
+                <button class="btn-icon-only btn-remove" type="button" data-remove-row><i class="fa-solid fa-trash"></i></button>
+            </td>
+        </tr>`;
     }
-    if (!lines.length) return message('Select at least one item before saving.', true);
-    const date = elements.piDate.value;
-    if (!date) return message('Please select a date.', true);
-    const existingPi = editingPiId
-      ? IMS.piAll().find((entry) => String(entry.id) === String(editingPiId))
-      : null;
-    if (editingPiId && !existingPi) return message('This Purchase Indent no longer exists. Refresh the voucher list and try again.', true);
-    const pi = {
-      id: existingPi?.id || IMS.uid(),
-      no: existingPi?.no || IMS.nextNo('PIU', date),
-      date,
-      location: document.getElementById('piLocation').value,
-      narration: document.getElementById('piNarration').value.trim(),
-      requestedBy: document.getElementById('piRequestedBy').value.trim(),
-      lines,
-      linkStatus: 'Pending'
-    };
-    const indentList = IMS.piAll();
-    IMS.piSave(existingPi
-      ? indentList.map((entry) => String(entry.id) === String(existingPi.id) ? pi : entry)
-      : [...indentList, pi]);
-    editingPiId = null;
+
+    function renderRows(count = baseRowCount) {
+        elements.piLinesBody.innerHTML = Array.from({ length: count }, (_, index) => renderEmptyRow(index)).join('');
+        updateRowNumbers();
+    }
+
+    function updateRowNumbers() {
+        [...elements.piLinesBody.querySelectorAll('tr')].forEach((row, i) => {
+            row.cells[0].textContent = i + 1;
+        });
+    }
+
+    function fillItemDetails(row) {
+        const input = row.querySelector('[data-line-item]');
+        const val = input.value.trim().toLowerCase();
+        const item = IMS.items().find(i => i.name.toLowerCase() === val || i.code.toLowerCase() === val);
+        
+        if (item) {
+            input.value = item.name;
+            row.dataset.itemCode = item.code;
+            row.querySelector('[data-line-unit]').textContent = item.unit;
+            row.querySelector('[data-line-stock]').textContent = String(item.stock);
+            message('', false);
+        } else {
+            row.dataset.itemCode = '';
+            row.querySelector('[data-line-unit]').textContent = '—';
+            row.querySelector('[data-line-stock]').textContent = '0';
+        }
+    }
+
+    function openForm(piId = null) {
+        editingPiId = piId;
+        document.getElementById('piFormTitle').textContent = piId ? 'Edit Purchase Indent' : 'Create Purchase Indent';
+        elements.piDate.value = IMS.todayISO();
+        elements.piVoucherNo.value = IMS.peekNo('PIU', elements.piDate.value);
+        document.getElementById('piLocation').value = 'Office';
+        document.getElementById('piNarration').value = '';
+        
+        if (piId) {
+            const pi = IMS.piAll().find(p => String(p.id) === String(piId));
+            if (pi) {
+                elements.piDate.value = pi.date;
+                elements.piVoucherNo.value = pi.no;
+                document.getElementById('piLocation').value = pi.location || 'Office';
+                document.getElementById('piNarration').value = pi.narration || '';
+                IMS.setEmployeeOptions(requestedByField, pi.requestedBy);
+                
+                renderRows(Math.max(baseRowCount, pi.lines.length));
+                pi.lines.forEach((line, i) => {
+                    const row = elements.piLinesBody.rows[i];
+                    const input = row.querySelector('[data-line-item]');
+                    input.value = line.name;
+                    row.dataset.itemCode = line.code;
+                    row.querySelector('[data-line-unit]').textContent = line.unit;
+                    const master = IMS.items().find(item => item.code === line.code);
+                    row.querySelector('[data-line-stock]').textContent = String(master?.stock ?? line.stock);
+                    row.querySelector('[data-line-qty]').value = line.qty;
+                });
+            }
+        } else {
+            IMS.setEmployeeOptions(requestedByField, '');
+            renderRows();
+        }
+
+        elements.piListView.hidden = true;
+        elements.piFormView.hidden = false;
+    }
+
+    function saveIndent() {
+        const lines = [];
+        const rows = [...elements.piLinesBody.querySelectorAll('tr')];
+        
+        for (const row of rows) {
+            const itemCode = row.dataset.itemCode;
+            const qty = parseFloat(row.querySelector('[data-line-qty]').value);
+            if (!itemCode || isNaN(qty) || qty <= 0) continue;
+            
+            const item = IMS.items().find(i => i.code === itemCode);
+            lines.push({
+                code: itemCode,
+                name: item.name,
+                unit: item.unit,
+                qty: qty,
+                stock: item.stock
+            });
+        }
+
+        if (lines.length === 0) return message('Please add at least one valid item with quantity.', true);
+
+        const data = {
+            id: editingPiId || Date.now(),
+            no: elements.piVoucherNo.value,
+            date: elements.piDate.value,
+            location: document.getElementById('piLocation').value,
+            requestedBy: requestedByField.value,
+            narration: document.getElementById('piNarration').value,
+            lines: lines,
+            status: 'Pending'
+        };
+
+        IMS.savePI(data);
+        message('Purchase Indent saved successfully!', false);
+        setTimeout(closeForm, 1000);
+    }
+
+    function closeForm() {
+        elements.piFormView.hidden = true;
+        elements.piListView.hidden = false;
+        renderList();
+    }
+
+    // Listeners
+    elements.piNewBtn.addEventListener('click', () => openForm());
+    elements.piCancelBtn.addEventListener('click', closeForm);
+    elements.piSaveBtn.addEventListener('click', saveIndent);
+    elements.piAddRowBtn.addEventListener('click', () => {
+        elements.piLinesBody.insertAdjacentHTML('beforeend', renderEmptyRow(elements.piLinesBody.rows.length));
+    });
+
+    elements.piListBody.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-open-pi-button]');
+        if (btn) openForm(btn.dataset.openPiButton);
+    });
+
+    elements.piListBody.addEventListener('dblclick', (e) => {
+        const row = e.target.closest('[data-open-pi]');
+        if (row) openForm(row.dataset.openPi);
+    });
+
+    elements.piListSearch.addEventListener('input', (e) => renderList(e.target.value));
+
+    elements.piLinesBody.addEventListener('input', (e) => {
+        if (e.target.matches('[data-line-item]')) {
+            fillItemDetails(e.target.closest('tr'));
+        }
+    });
+
+    elements.piLinesBody.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-remove-row]');
+        if (btn) {
+            const row = btn.closest('tr');
+            row.remove();
+            updateRowNumbers();
+        }
+    });
+
     renderList();
-    closeForm();
-  });
-
-  renderRows();
-  renderList();
 });
