@@ -18,6 +18,8 @@ const scrypt = promisify(scryptCallback);
 const ROOT = __dirname;
 const AUTH_DIRECTORY = path.join(ROOT, '.auth');
 const CREDENTIALS_FILE = path.join(AUTH_DIRECTORY, 'credentials.json');
+const DEFAULT_LOCAL_USERNAME = 'username';
+const DEFAULT_LOCAL_PASSWORD = 'password';
 const HOST = process.env.HOST || '127.0.0.1';
 const PORT = Number(process.env.PORT || 3000);
 const SESSION_DURATION_MS = 8 * 60 * 60 * 1000;
@@ -626,6 +628,17 @@ async function serveFile(request, response, pathname) {
   }
 }
 
+async function buildLocalCredentials(username = DEFAULT_LOCAL_USERNAME, password = DEFAULT_LOCAL_PASSWORD) {
+  const salt = randomBytes(16);
+  const passwordHash = await scrypt(password, salt, 64);
+  return {
+    version: 2,
+    username,
+    salt: salt.toString('hex'),
+    passwordHash: passwordHash.toString('hex')
+  };
+}
+
 async function readCredentials() {
   if (MYSQL_ENABLED) {
     try {
@@ -641,7 +654,14 @@ async function readCredentials() {
     contents = await fs.readFile(CREDENTIALS_FILE, 'utf8');
   } catch (error) {
     if (error.code === 'ENOENT') {
-      throw new Error('No login is configured. Run "node server.js --setup" to create an account.');
+      const defaultCredentials = await buildLocalCredentials();
+      await saveCredentials(defaultCredentials);
+      return {
+        username: defaultCredentials.username,
+        salt: Buffer.from(defaultCredentials.salt, 'hex'),
+        passwordHash: Buffer.from(defaultCredentials.passwordHash, 'hex'),
+        source: 'file'
+      };
     }
     throw error;
   }
@@ -829,18 +849,15 @@ async function setupCredentials() {
     await ensureDatabaseReady();
     const terminal = readline.createInterface({ input: process.stdin, output: process.stdout });
     try {
-      const username = (await terminal.question('Choose a username: ')).trim();
-      terminal.close();
+      const username = DEFAULT_LOCAL_USERNAME;
+      const password = DEFAULT_LOCAL_PASSWORD;
       if (!username || username.length > 128) {
         throw new Error('Username must be between 1 and 128 characters.');
       }
-      const password = await promptHidden('Choose a password (minimum 12 characters): ');
-      const confirmation = await promptHidden('Confirm password: ');
       if (password.length < 12) throw new Error('Password must be at least 12 characters.');
-      if (password !== confirmation) throw new Error('Passwords do not match.');
       const passwordHash = await bcrypt.hash(password, 12);
       await saveDatabaseUser(username, passwordHash);
-      console.log(`MySQL login configured for "${username}".`);
+      console.log('MySQL login configured with the default username/password values.');
     } finally {
       terminal.close();
     }
@@ -854,30 +871,9 @@ async function setupCredentials() {
     if (error.code !== 'ENOENT') throw error;
   }
 
-  const terminal = readline.createInterface({ input: process.stdin, output: process.stdout });
-  try {
-    const username = (await terminal.question('Choose a username: ')).trim();
-    terminal.close();
-    if (!username || username.length > 128) {
-      throw new Error('Username must be between 1 and 128 characters.');
-    }
-    const password = await promptHidden('Choose a password (minimum 12 characters): ');
-    const confirmation = await promptHidden('Confirm password: ');
-    if (password.length < 12) throw new Error('Password must be at least 12 characters.');
-    if (password !== confirmation) throw new Error('Passwords do not match.');
-
-    const salt = randomBytes(16);
-    const passwordHash = await scrypt(password, salt, 64);
-    await saveCredentials({
-      version: 1,
-      username,
-      salt: salt.toString('hex'),
-      passwordHash: passwordHash.toString('hex')
-    });
-    console.log(`Login configured for "${username}". Start the app with "node server.js".`);
-  } finally {
-    terminal.close();
-  }
+  const defaultCredentials = await buildLocalCredentials();
+  await saveCredentials(defaultCredentials);
+  console.log('Local login configured with the default username/password values.');
 }
 
 async function startServer() {
