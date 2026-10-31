@@ -30,7 +30,11 @@
       ...options
     });
     const result = await response.json();
-    if (!response.ok) throw new Error(result.error || `Storage request failed (${response.status}).`);
+    if (!response.ok) {
+      const error = new Error(result.error || `Storage request failed (${response.status}).`);
+      error.code = result.code;
+      throw error;
+    }
     return result;
   }
 
@@ -143,6 +147,18 @@
         body: JSON.stringify({ records: localRecords })
       });
     } catch (error) {
+      const mysqlIsNotConfigured = error.code === 'MYSQL_NOT_CONFIGURED'
+        || error.message === 'MySQL storage is not configured. Set MYSQL_* values in .env and restart the server.';
+      if (mysqlIsNotConfigured && activeUsername) {
+        if (owner && owner !== activeUsername) original.clear.call(storage);
+        original.setItem.call(storage, ownerKey, activeUsername);
+        window.APP_STORAGE = {
+          flush: () => Promise.resolve(),
+          isConnected: false,
+          mode: 'local'
+        };
+        return { imported: false, records: localRecords, storage: 'local' };
+      }
       if (error.message.includes('Authentication required')) {
         window.location.replace('/html/index.html');
       }
@@ -156,6 +172,6 @@
     });
     original.setItem.call(storage, ownerKey, activeUsername);
     installStorageSync();
-    return result;
+    return { ...result, storage: 'mysql' };
   })();
 })();

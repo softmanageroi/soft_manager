@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       window.location.href = `material-issue-list.html?${params.toString()}`;
     } catch (error) {
-      console.error('Could not save material requisition.', error);
+      console.error('Could not save material issue voucher.', error);
       window.alert('Voucher could not be saved. Please check browser storage and try again.');
     } finally {
       setActionBusy(false);
@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
       resetForm();
     }
   } catch (error) {
-    console.error('Could not initialize material requisition.', error);
+    console.error('Could not initialize material issue voucher.', error);
     window.alert('A new voucher could not be created. Please check browser storage.');
   }
 });

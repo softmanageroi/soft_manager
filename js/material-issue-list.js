@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const countSpan = $('issueCount');
   const message = $('issueListMessage');
   const listSearch = $('issueListSearch');
+  const newIssueButton = $('newIssueBtn');
+  const newIssueDialog = $('newIssueDialog');
+  const cancelNewIssueButton = $('cancelNewIssueBtn');
 
   if (!allBody || !pendingBody || !window.IMS) return;
 
@@ -85,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${IMS.esc(v.department)}</td>
         <td>${IMS.esc(v.requestedBy)}</td>
         <td style="text-align:center">
-            <button class="btn-secondary" style="padding: 4px 12px; font-size: 12px;" type="button" data-open-doc="${IMS.esc(v.docNo)}" data-return-to="pending">Open MR Voucher</button>
+            <button class="btn-secondary" style="padding: 4px 12px; font-size: 12px;" type="button" data-open-doc="${IMS.esc(v.docNo)}" data-return-to="pending">Open Issue Voucher</button>
         </td>
       </tr>
     `).join('') : '<tr><td colspan="6" style="text-align:center; padding: 20px;">No pending vouchers.</td></tr>';
@@ -95,6 +98,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   tabAll.addEventListener('click', () => setActiveView('all'));
   tabPending.addEventListener('click', () => setActiveView('pending'));
+  newIssueButton?.addEventListener('click', () => newIssueDialog?.showModal());
+  cancelNewIssueButton?.addEventListener('click', () => newIssueDialog?.close());
+  newIssueDialog?.addEventListener('click', (event) => {
+    if (event.target === newIssueDialog) newIssueDialog.close();
+  });
   
   if (listSearch) {
       listSearch.addEventListener('input', (e) => render(e.target.value));

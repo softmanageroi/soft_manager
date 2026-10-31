@@ -1401,6 +1401,21 @@ body:has(.purchase-indent-shell) #piRequestedBy {
     height: 46px;
 }
 
+body:not(.purchase-voucher-page) .field-group input,
+body:not(.purchase-voucher-page) .field-group select,
+body:not(.purchase-voucher-page) .field-group textarea {
+    box-sizing: border-box;
+    height: 42px;
+    min-height: 42px;
+}
+
+body:not(.purchase-voucher-page) .field-group #piNarration,
+body:not(.purchase-voucher-page) .field-group #orderNotes,
+body:not(.purchase-voucher-page) .field-group #narration {
+    height: 104px;
+    min-height: 104px;
+}
+
 body:has(.purchase-indent-shell) .purchase-table-shell {
     position: relative;
     z-index: 1;

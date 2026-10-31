@@ -55,7 +55,7 @@ The data API requires an authenticated session:
 - `DELETE /api/data?key=<storage-key>` — remove one value
 - `POST /api/data/migrate` — import local data once, only when that user has no stored records
 
-If MySQL is not configured or unavailable, app-data initialization displays an error and does not silently treat browser-only storage as a successful server save.
+If MySQL is not configured, the app continues in local-only mode and stores data in that browser's `localStorage`; data will not sync between browsers or devices. If MySQL is configured but unavailable, app-data initialization displays an error rather than silently treating browser-only storage as a successful server save.
 
 ## Monthly registers
 

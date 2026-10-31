@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Material Issue Vouchers | Soft Manager</title>
-    <link rel="stylesheet" href="../css/common-erp.css" />
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261031-uniform-fields-2" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 <body class="erp-page">
@@ -25,7 +25,6 @@
             <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
             
             <div class="erp-nav-heading">Material Management</div>
-            <a class="erp-nav-link" href="voucher-create.html"><i class="fa-solid fa-box-open"></i><span>Material Requisition</span></a>
             <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
             <a class="erp-nav-link active" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue</span></a>
             
@@ -58,14 +57,25 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <div>
                     <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Material Issue Vouchers</h1>
-                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Track and manage material issues from authorized requisitions.</p>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Create and track material issue vouchers.</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <a href="voucher-create.html" class="btn-primary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    <button id="newIssueBtn" class="btn-primary" type="button" aria-haspopup="dialog">
                         <i class="fa-solid fa-plus"></i> New Material Issue
-                    </a>
+                    </button>
                 </div>
             </div>
+
+            <dialog id="newIssueDialog" class="erp-dialog" aria-labelledby="newIssueTitle">
+                <div class="erp-dialog-content">
+                    <h2 id="newIssueTitle">Create Material Issue</h2>
+                    <p>Start a new material issue voucher.</p>
+                    <div class="erp-dialog-actions">
+                        <button id="cancelNewIssueBtn" class="btn-secondary" type="button">Cancel</button>
+                        <a class="btn-primary" href="voucher-create.html?mode=issue" style="text-decoration: none;">Create Voucher</a>
+                    </div>
+                </div>
+            </dialog>
 
             <section class="erp-card">
                 <div class="erp-card-header">

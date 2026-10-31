@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Material Authorization | Soft Manager</title>
-    <link rel="stylesheet" href="../css/common-erp.css" />
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261031-uniform-fields-2" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 <body class="erp-page">
@@ -25,7 +25,6 @@
             <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
             
             <div class="erp-nav-heading">Material Management</div>
-            <a class="erp-nav-link" href="voucher-create.html"><i class="fa-solid fa-box-open"></i><span>Material Requisition</span></a>
             <a class="erp-nav-link active" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
             <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue</span></a>
             
@@ -58,13 +57,13 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <div>
                     <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Material Authorization</h1>
-                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Review and approve internal material requisitions.</p>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Review and approve material issue vouchers.</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
                     <button id="authorizeSelectedBtn" class="btn-primary" type="button"><i class="fa-solid fa-circle-check"></i> Authorize Selected</button>
                     <button id="refreshAuthorizeBtn" class="btn-secondary" type="button"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
-                    <a href="voucher-create.html" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                        <i class="fa-solid fa-arrow-left"></i> Requisition
+                    <a href="material-issue-list.html" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-arrow-left"></i> Material Issues
                     </a>
                 </div>
             </div>

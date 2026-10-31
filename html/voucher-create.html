@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Material Requisition | Soft Manager</title>
-    <link rel="stylesheet" href="../css/common-erp.css" />
+    <title>Material Issue Voucher | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261031-uniform-fields-2" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 <body class="erp-page">
@@ -25,9 +25,8 @@
             <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
             
             <div class="erp-nav-heading">Material Management</div>
-            <a class="erp-nav-link active" href="voucher-create.html"><i class="fa-solid fa-box-open"></i><span>Material Requisition</span></a>
             <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
-            <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue</span></a>
+            <a class="erp-nav-link active" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue</span></a>
             
             <div class="erp-nav-heading">Inventory & Stock</div>
             <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
@@ -57,11 +56,11 @@
         <main class="erp-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <div>
-                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Material Requisition</h1>
-                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Create internal requests for materials and consumables.</p>
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Material Issue Voucher</h1>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Create a voucher to issue materials from inventory.</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button id="newVoucherBtn" class="btn-primary" type="button"><i class="fa-solid fa-plus"></i> New Material Requisition</button>
+                    <button id="newVoucherBtn" class="btn-primary" type="button"><i class="fa-solid fa-plus"></i> New Issue Voucher</button>
                     <a href="material-issue-list.html" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
                         <i class="fa-solid fa-list"></i> View Vouchers
                     </a>
@@ -70,9 +69,9 @@
 
             <section class="erp-card">
                 <div class="erp-card-header">
-                    <h2 style="font-size: 16px;">Requisition Details</h2>
+                    <h2 style="font-size: 16px;">Issue Voucher Details</h2>
                     <div style="display: flex; gap: 10px;">
-                        <button id="saveVoucherBtn" class="btn-primary" type="button">Save Requisition</button>
+                        <button id="saveVoucherBtn" class="btn-primary" type="button">Save Issue Voucher</button>
                     </div>
                 </div>
                 <div class="erp-card-body">

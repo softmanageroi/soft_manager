@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reports & Registers | Soft Manager</title>
-    <link rel="stylesheet" href="../css/common-erp.css" />
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261031-uniform-fields-2" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 <body class="erp-page">
@@ -25,7 +25,6 @@
             <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
             
             <div class="erp-nav-heading">Material Management</div>
-            <a class="erp-nav-link" href="voucher-create.html"><i class="fa-solid fa-box-open"></i><span>Material Requisition</span></a>
             <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
             <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue</span></a>
             
@@ -58,7 +57,7 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <div>
                     <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Purchase Registers</h1>
-                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Monthly consolidated reports for procurement and requisition activities.</p>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Monthly consolidated reports for procurement and material issues.</p>
                 </div>
                 <div style="display: flex; gap: 10px;">
                     <button id="exportPurchaseItemsBtn" class="btn-secondary" type="button"><i class="fa-solid fa-file-excel"></i> Export CSV</button>
@@ -87,7 +86,7 @@
 
             <!-- Register Tabs -->
             <div style="display: flex; gap: 8px; margin-bottom: 20px;">
-                <button id="tabMaterialRequisition" class="status-badge status-neutral active" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">Material Requisition Register</button>
+                <button id="tabMaterialRequisition" class="status-badge status-neutral active" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">Material Issue Register</button>
                 <button id="tabPurchaseOrder" class="status-badge status-neutral" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">Purchase Order Register</button>
                 <button id="tabItemPurchase" class="status-badge status-neutral" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">Item Purchase Report</button>
             </div>
@@ -96,7 +95,7 @@
             <section id="materialRequisitionRegister" class="erp-card">
                 <div class="erp-card-header">
                     <div>
-                        <h2 style="font-size: 16px;">Material Requisition Register</h2>
+                        <h2 style="font-size: 16px;">Material Issue Register</h2>
                         <p style="margin: 0; font-size: 11px; color: var(--erp-text-muted);">Month: <span data-register-period></span></p>
                     </div>
                     <div style="text-align: right; font-size: 12px; color: var(--erp-text-muted);">

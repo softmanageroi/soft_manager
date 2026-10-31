@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     'mrnPendingPoBody', 'workflowTableBody'
   ];
   const deletableLists = {
-    inventoryTableBody: { storageKey: 'materialRequisitionVouchers', keyName: 'docNo', rowKey: 'docNo', label: 'material requisition' },
-    authorizeTableBody: { storageKey: 'materialRequisitionVouchers', keyName: 'docNo', rowKey: 'openDoc', label: 'material requisition' },
+    inventoryTableBody: { storageKey: 'materialRequisitionVouchers', keyName: 'docNo', rowKey: 'docNo', label: 'material issue voucher' },
+    authorizeTableBody: { storageKey: 'materialRequisitionVouchers', keyName: 'docNo', rowKey: 'openDoc', label: 'material issue voucher' },
     issueAllBody: { storageKey: 'materialRequisitionVouchers', keyName: 'docNo', rowKey: 'docNo', label: 'material issue voucher' },
     issuePendingBody: { storageKey: 'materialRequisitionVouchers', keyName: 'docNo', rowKey: 'docNo', label: 'material issue voucher' },
     piListBody: { storageKey: 'ims_pi', keyName: 'id', rowKey: 'openPi', label: 'purchase indent' },
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mrnPendingPoBody: { storageKey: 'ims_purchase_orders', keyName: 'id', rowKey: 'openPendingPo', label: 'purchase order' }
   };
   const deletableForms = [
-    { inputId: 'docNo', storageKey: 'materialRequisitionVouchers', keyName: 'docNo', numberKey: 'docNo', label: 'material requisition' },
+    { inputId: 'docNo', storageKey: 'materialRequisitionVouchers', keyName: 'docNo', numberKey: 'docNo', label: 'material issue voucher' },
     { inputId: 'piVoucherNo', storageKey: 'ims_pi', keyName: 'id', numberKey: 'no', label: 'purchase indent' },
     { inputId: 'rfqVoucherNo', storageKey: 'ims_rfq', keyName: 'id', numberKey: 'no', label: 'RFQ' },
     { inputId: 'qrVoucherNo', storageKey: 'ims_qr', keyName: 'id', numberKey: 'no', label: 'quotation' },
@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       const materialRequisitionForm = Boolean(document.getElementById('docNo')?.value);
-      if (!['inventoryTableBody', 'authorizeTableBody'].includes(body?.id) && !materialRequisitionForm) return window.alert(`${action === 'approve' ? 'Approve' : 'Hold'} is available for Material Requisition vouchers.`);
+      if (!['inventoryTableBody', 'authorizeTableBody'].includes(body?.id) && !materialRequisitionForm) return window.alert(`${action === 'approve' ? 'Approve' : 'Hold'} is available for Material Issue vouchers.`);
       const checkboxes = [...(body?.querySelectorAll('.voucher-select:checked') || [])];
       const targets = checkboxes.length ? checkboxes.map((input) => input.value) : row?.dataset.docNo ? [row.dataset.docNo] : row?.dataset.openDoc ? [row.dataset.openDoc] : materialRequisitionForm ? [document.getElementById('docNo').value] : [];
       if (!targets.length) return window.alert('Select at least one voucher first.');
@@ -445,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     if (action === 'reject') {
-      if (!['inventoryTableBody', 'authorizeTableBody'].includes(body?.id)) return window.alert('Reject is available for Material Requisition vouchers.');
+      if (!['inventoryTableBody', 'authorizeTableBody'].includes(body?.id)) return window.alert('Reject is available for Material Issue vouchers.');
       const checkboxes = [...(body?.querySelectorAll('.voucher-select:checked') || [])];
       const targets = checkboxes.length ? checkboxes.map((input) => input.value) : row?.dataset.docNo ? [row.dataset.docNo] : row?.dataset.openDoc ? [row.dataset.openDoc] : [];
       if (!targets.length) return window.alert('Select at least one voucher first.');

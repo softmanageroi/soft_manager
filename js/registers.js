@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     message.textContent = `Could not load the register data: ${error.message}`;
     message.hidden = false;
     message.classList.add('error');
-    requisitionBody.innerHTML = '<tr><td colspan="10">Unable to load material requisitions.</td></tr>';
+    requisitionBody.innerHTML = '<tr><td colspan="10">Unable to load material issue vouchers.</td></tr>';
     purchaseOrderBody.innerHTML = '<tr><td colspan="10">Unable to load purchase orders.</td></tr>';
     itemPurchaseBody.innerHTML = '<tr><td colspan="16">Unable to load item purchase details.</td></tr>';
     currentItemPurchaseRows = [];
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderRequisitions(month) {
     const raw = localStorage.getItem('materialRequisitionVouchers');
     const vouchers = raw === null ? [] : JSON.parse(raw);
-    if (!Array.isArray(vouchers)) throw new TypeError('Saved material requisitions must be a list.');
+    if (!Array.isArray(vouchers)) throw new TypeError('Saved material issue vouchers must be a list.');
     const filtered = vouchers.filter((voucher) =>
       voucher && typeof voucher === 'object' && dateInMonth(voucher.date, month)
     ).sort((left, right) => String(left.date).localeCompare(String(right.date))
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${esc(status)}</td>
         <td><button class="action-btn has-label register-open-button" type="button" data-open-requisition="${esc(voucher.docNo || '')}">Open</button></td>
       </tr>`;
-    }).join('') : '<tr><td colspan="10">No material requisitions for this month.</td></tr>';
+    }).join('') : '<tr><td colspan="10">No material issue vouchers for this month.</td></tr>';
     document.getElementById('requisitionCount').textContent = String(filtered.length);
     document.getElementById('requisitionQuantity').textContent = String(quantityTotal);
   }

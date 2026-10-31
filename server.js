@@ -262,7 +262,10 @@ async function handleAppData(request, response, session, requestUrl) {
     return;
   }
   if (!MYSQL_ENABLED) {
-    sendJson(response, 503, { error: 'MySQL storage is not configured. Set MYSQL_* values in .env and restart the server.' });
+    sendJson(response, 503, {
+      code: 'MYSQL_NOT_CONFIGURED',
+      error: 'MySQL storage is not configured. Set MYSQL_* values in .env and restart the server.'
+    });
     return;
   }
   if (!originIsAllowed(request)) {
@@ -610,7 +613,9 @@ async function serveFile(request, response, pathname) {
       file = Buffer.from(html.replace(/<\/head>/i, '<script src="/js/data-store.js"></script></head>'));
     }
     response.writeHead(200, {
-      'Cache-Control': extension === '.html' ? 'no-store' : 'private, max-age=300',
+      'Cache-Control': extension === '.html' || pathname === '/js/data-store.js'
+        ? 'no-store'
+        : 'private, max-age=300',
       'Content-Length': file.length,
       'Content-Type': MIME_TYPES[extension],
       'X-Content-Type-Options': 'nosniff',
