@@ -29,11 +29,11 @@ const sessions = new Map();
 const failedLogins = new Map();
 
 const MYSQL_CONFIG = {
-  host: process.env.MYSQL_HOST || null,
-  port: Number(process.env.MYSQL_PORT || 3306),
-  user: process.env.MYSQL_USER || null,
-  password: process.env.MYSQL_PASSWORD || null,
-  database: process.env.MYSQL_DATABASE || null
+  host: process.env.MYSQL_HOST || process.env.MYSQLHOST || null,
+  port: Number(process.env.MYSQL_PORT || process.env.MYSQLPORT || 3306),
+  user: process.env.MYSQL_USER || process.env.MYSQLUSER || null,
+  password: process.env.MYSQL_PASSWORD || process.env.MYSQLPASSWORD || null,
+  database: process.env.MYSQL_DATABASE || process.env.MYSQLDATABASE || null
 };
 
 function hasUsableMysqlConfig() {
@@ -420,6 +420,15 @@ async function saveDatabaseUser(username, passwordHash) {
   await pool.query('INSERT INTO users (username, password_hash) VALUES (?, ?)', [username, passwordHash]);
 }
 
+async function ensureEnvironmentDatabaseUser(username, password) {
+  if (!MYSQL_ENABLED) return;
+  await ensureDatabaseReady();
+  const pool = getMysqlPool();
+  const [users] = await pool.query('SELECT id FROM users WHERE username = ? LIMIT 1', [username]);
+  if (users.length) return;
+  await saveDatabaseUser(username, await bcrypt.hash(password, 12));
+}
+
 async function readDatabaseCredentials() {
   await ensureDatabaseReady();
   const pool = getMysqlPool();
@@ -655,6 +664,7 @@ async function readCredentials() {
     if (!environmentUsername || !environmentPassword || environmentUsername.length > 128 || environmentPassword.length < 12) {
       throw new Error('APP_USERNAME and APP_PASSWORD must both be set; the username must be at most 128 characters and the password at least 12 characters.');
     }
+    await ensureEnvironmentDatabaseUser(environmentUsername, environmentPassword);
     const salt = randomBytes(16);
     return {
       username: environmentUsername,
