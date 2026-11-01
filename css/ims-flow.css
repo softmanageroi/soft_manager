@@ -6,7 +6,7 @@
 }
 
 .ims-tabs .active {
-    background: #2878a6;
+    background: #6038df;
     color: #ffffff;
 }
 
@@ -50,7 +50,7 @@ body.purchase-voucher-page .voucher-header {
 
 body.purchase-voucher-page .breadcrumb-title {
     margin: 0;
-    color: #477f9e;
+    color: #6038df;
     font-size: 18px;
 }
 
@@ -74,9 +74,9 @@ body.purchase-voucher-page .ims-tabs .tab {
 
 body.purchase-voucher-page .ims-tabs .tab.active,
 body.purchase-voucher-page .ims-tabs .tab:hover {
-    border-bottom-color: #477f9e;
+    border-bottom-color: #6038df;
     background: transparent;
-    color: #477f9e;
+    color: #6038df;
 }
 
 body.purchase-voucher-page .inventory-card,
@@ -96,7 +96,7 @@ body.purchase-voucher-page .voucher-card-header {
 
 body.purchase-voucher-page .inventory-card-header h2,
 body.purchase-voucher-page .voucher-card-header h2 {
-    color: #477f9e;
+    color: #6038df;
     font-size: 16px;
 }
 
@@ -139,7 +139,7 @@ body.purchase-voucher-page .voucher-table td {
 }
 
 body.purchase-voucher-page .voucher-table th {
-    background: #477f9e;
+    background: #6038df;
     color: #fff;
     font-weight: 600;
     text-transform: none;
@@ -208,7 +208,7 @@ body.purchase-voucher-page .field-group textarea {
     min-height: 46px;
     padding: 10px 14px;
     border: 1px solid #c9c9c9;
-    border-left: 2px solid #f06a76;
+    border-left: 2px solid #c8bbff;
     border-radius: 10px;
     background: #fff;
     color: #555;
@@ -366,7 +366,7 @@ body.purchase-voucher-page.material-requisition-page .inventory-table th {
     height: 40px;
     padding: 7px 8px;
     color: #fff;
-    background: #477f9e;
+    background: #6038df;
     font-weight: 600;
     text-transform: none;
     letter-spacing: 0;
@@ -503,7 +503,7 @@ body #pendingQrView .voucher-table th {
     z-index: 2;
     height: 40px;
     padding: 5px 7px;
-    background: #477f9e;
+    background: #6038df;
     color: #fff;
     font-weight: 600;
     text-transform: none;
@@ -621,8 +621,8 @@ body.purchase-voucher-page.po-form-active .po-entry-grid .po-narration-field tex
 
 body.purchase-voucher-page.po-form-active .po-main-tab {
     margin: 0 0 12px;
-    border-bottom-color: #477f9e;
-    color: #477f9e;
+    border-bottom-color: #6038df;
+    color: #6038df;
 }
 
 /* Keep Purchase Order entry styling consistent with the Quotation Receive form. */
@@ -645,7 +645,7 @@ body.purchase-voucher-page.po-form-active .field-group textarea {
     min-height: 46px;
     padding: 10px 14px;
     border: 1px solid #c9c9c9;
-    border-left: 2px solid #f06a76;
+    border-left: 2px solid #c8bbff;
     border-radius: 10px;
     background: #fff;
 }
@@ -684,7 +684,7 @@ body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) td {
 }
 
 body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) th {
-    background: #477f9e;
+    background: #6038df;
     color: #fff;
 }
 
@@ -722,7 +722,7 @@ body.purchase-voucher-page .voucher-table-card:has(#voucherItemsBody) .voucher-t
 body.purchase-voucher-page .voucher-form-card .voucher-table th,
 body.purchase-voucher-page .voucher-table-card:has(#voucherItemsBody) .voucher-table th {
     height: 40px;
-    background: #477f9e;
+    background: #6038df;
     color: #fff;
     font-weight: 600;
     text-transform: none;
@@ -773,7 +773,7 @@ body:has(#piLinesBody) .purchase-table td {
 
 body:has(#piLinesBody) .purchase-table thead th {
     height: 40px;
-    background: #477f9e;
+    background: #6038df;
     color: #fff;
     font-weight: 600;
 }
@@ -840,7 +840,7 @@ body.purchase-voucher-page .po-filter-field {
     gap: 7px;
     min-width: 150px;
     padding: 0 9px;
-    color: #477f9e;
+    color: #6038df;
 }
 
 body.purchase-voucher-page .po-filter-field + .po-filter-field {
@@ -876,7 +876,7 @@ body.purchase-voucher-page .po-ribbon-icon {
     border-left: 1px solid #d1d1d1;
     border-radius: 0 5px 5px 0;
     background: #fff;
-    color: #477f9e;
+    color: #6038df;
     cursor: pointer;
 }
 

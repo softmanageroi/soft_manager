@@ -520,6 +520,7 @@ function isLoginAsset(pathname) {
     '/css/skeuomorphic.css',
     '/images/background.jpg.png',
     '/images/login-wallpaper.png',
+    '/images/login-background.png',
     '/js/login.js'
   ].includes(pathname);
 }
@@ -587,14 +588,17 @@ async function serveFile(request, response, pathname) {
     return;
   }
 
-  const resolvedPath = path.resolve(ROOT, `.${decodedPath}`);
+  const resolvedPath = decodedPath === '/js/vendor/exceljs.min.js'
+    ? path.join(ROOT, 'node_modules', 'exceljs', 'dist', 'exceljs.min.js')
+    : path.resolve(ROOT, `.${decodedPath}`);
   if (!resolvedPath.startsWith(`${ROOT}${path.sep}`)) {
     sendJson(response, 404, { error: 'Not found.' });
     return;
   }
 
-  const allowedDirectory = ['css', 'html', 'images', 'js']
-    .some((directory) => resolvedPath.startsWith(path.join(ROOT, directory) + path.sep));
+  const allowedDirectory = decodedPath === '/js/vendor/exceljs.min.js'
+    || ['css', 'html', 'images', 'js']
+      .some((directory) => resolvedPath.startsWith(path.join(ROOT, directory) + path.sep));
   const extension = path.extname(resolvedPath).toLowerCase();
   if (!allowedDirectory || !MIME_TYPES[extension] || path.basename(resolvedPath).startsWith('.')) {
     sendJson(response, 404, { error: 'Not found.' });

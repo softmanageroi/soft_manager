@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Material Issue Vouchers | Soft Manager</title>
-    <link rel="stylesheet" href="../css/common-erp.css?v=20261031-uniform-fields-2" />
+    <title>Material Issue Slip | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261102-compact-overview-2" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 <body class="erp-page">
@@ -21,12 +21,11 @@
             <a class="erp-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
             <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
             <a class="erp-nav-link" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
-            <a class="erp-nav-link" href="material-receipt-note.html?view=pending"><i class="fa-solid fa-shield-halved"></i><span>PO Authorization</span></a>
             <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
             
             <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link active" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue Slip</span></a>
             <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
-            <a class="erp-nav-link active" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue</span></a>
             
             <div class="erp-nav-heading">Inventory & Stock</div>
             <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
@@ -54,28 +53,27 @@
         </header>
 
         <main class="erp-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                <div>
-                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Material Issue Vouchers</h1>
+            <div class="workflow-page-heading">
+                <div class="workflow-heading-copy">
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Material Issue Slips</h1>
                     <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Create and track material issue vouchers.</p>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <button id="newIssueBtn" class="btn-primary" type="button" aria-haspopup="dialog">
-                        <i class="fa-solid fa-plus"></i> New Material Issue
-                    </button>
-                </div>
-            </div>
-
-            <dialog id="newIssueDialog" class="erp-dialog" aria-labelledby="newIssueTitle">
-                <div class="erp-dialog-content">
-                    <h2 id="newIssueTitle">Create Material Issue</h2>
-                    <p>Start a new material issue voucher.</p>
-                    <div class="erp-dialog-actions">
-                        <button id="cancelNewIssueBtn" class="btn-secondary" type="button">Cancel</button>
-                        <a class="btn-primary" href="voucher-create.html?mode=issue" style="text-decoration: none;">Create Voucher</a>
+                    <div class="workflow-heading-actions">
+                        <a class="btn-primary" href="voucher-create.html?mode=issue" style="text-decoration: none;">
+                            <i class="fa-solid fa-plus"></i> New Material Issue Slip
+                        </a>
                     </div>
                 </div>
-            </dialog>
+                <aside class="workflow-overview-panel" data-workflow-overview="material-issue" aria-label="Material issue overview">
+                    <div class="po-overview-title">
+                        <span class="po-overview-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+                        <span><strong>Material overview</strong><small>Issue voucher activity</small></span>
+                    </div>
+                    <div class="po-overview-stats">
+                        <div><strong data-overview-primary>0</strong><span>Issue vouchers</span></div>
+                        <div><strong data-overview-secondary>0</strong><span>Pending authorization</span></div>
+                    </div>
+                </aside>
+            </div>
 
             <section class="erp-card">
                 <div class="erp-card-header">
@@ -138,6 +136,7 @@
     <script src="../js/searchText.js"></script>
     <script src="../js/header-user.js"></script>
     <script src="../js/material-issue-list.js"></script>
-    <script src="../js/voucher-toolbar.js"></script>
+    <script src="../js/workflow-overview.js?v=20261101-overview-cards"></script>
+    <script src="../js/voucher-toolbar.js?v=20261102-filter-fields"></script>
 </body>
 </html>

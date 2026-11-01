@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const formPanel = document.getElementById('itemFormPanel');
   const itemSearch = document.getElementById('itemSearch');
   const statusMessage = document.getElementById('statusMessage');
+  const importStockButton = document.getElementById('importStockBtn');
+  const stockImportFile = document.getElementById('stockImportFile');
+  const downloadStockTemplateButton = document.getElementById('downloadStockTemplateBtn');
   const addMasterRecordButton = document.getElementById('addMasterRecordBtn');
   const gstSelect = document.getElementById('itemGst');
   const priceInput = document.getElementById('itemPrice');
@@ -68,8 +71,14 @@ document.addEventListener('DOMContentLoaded', function () {
     "'": '&#39;'
   })[character]);
 
+  function setHidden(element, isHidden) {
+    element.hidden = isHidden;
+    element.classList.toggle('hidden', isHidden);
+  }
+
   function showMessage(message, isError) {
     statusMessage.textContent = message;
+    statusMessage.hidden = !message;
     statusMessage.classList.toggle('error', Boolean(isError));
     statusMessage.classList.toggle('visible', Boolean(message));
   }
@@ -139,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const active = key === master;
       entry.tab.classList.toggle('active', active);
       entry.tab.setAttribute('aria-selected', String(active));
-      entry.panel.classList.toggle('hidden', !active);
+      setHidden(entry.panel, !active);
     });
     document.getElementById('masterBreadcrumb').textContent = master === 'item' ? 'Item' : master === 'account' ? 'Account' : master === 'department' ? 'Department' : master === 'warehouse' ? 'Warehouse' : 'Employee';
     document.getElementById('masterTitle').textContent = selected.title;
@@ -168,15 +177,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('categoryCount').textContent = String(categories.length);
     document.getElementById('allItemsCount').textContent = String(items.length);
-    categoryList.innerHTML = categories.map((category) => {
+    categoryList.innerHTML = `<button class="category-option${activeCategory === 'all' ? ' active' : ''}" type="button" data-category="all">
+      <span>All items</span><span id="allItemsCount" class="category-count">${items.length}</span>
+    </button>${categories.map((category) => {
       const count = items.filter((item) => item.category === category).length;
       return `<button class="category-option${activeCategory === category ? ' active' : ''}" type="button" data-category="${escapeHtml(category)}">
         <span>${escapeHtml(category)}</span><span class="category-count">${count}</span>
       </button>`;
-    }).join('');
-
-    document.querySelector('.category-option[data-category="all"]')
-      .classList.toggle('active', activeCategory === 'all');
+    }).join('')}`;
   }
 
   function renderItems() {
@@ -202,10 +210,153 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('#emptyState p').textContent = noItems
       ? 'Add an item to start building your catalogue.'
       : 'Try another search or choose a different category.';
-    emptyState.classList.toggle('visible', visibleItems.length === 0);
+    setHidden(emptyState, visibleItems.length !== 0);
     document.getElementById('itemsSummary').textContent =
       `Showing ${visibleItems.length} of ${items.length} ${items.length === 1 ? 'item' : 'items'}`;
     renderCategories();
+  }
+
+  function normalizeImportHeader(value) {
+    return String(value || '').replace(/^\uFEFF/, '').trim().toLocaleLowerCase().replace(/[\s_-]+/g, '');
+  }
+
+  function cellText(cell) {
+    const value = cell.value;
+    if (value === null || value === undefined) return '';
+    if (typeof value === 'object') {
+      if (Array.isArray(value.richText)) return value.richText.map((part) => part.text || '').join('').trim();
+      throw new Error(`Cell ${cell.address} must contain a plain value, not a formula or object.`);
+    }
+    return String(value).trim();
+  }
+
+  async function readStockImport(file) {
+    if (!window.ExcelJS?.Workbook) throw new Error('The local Excel reader did not load. Refresh the page and try again.');
+    if (file.size > 10 * 1024 * 1024) throw new Error('Choose a file smaller than 10 MB.');
+    const extension = file.name.split('.').pop()?.toLocaleLowerCase();
+    const workbook = new ExcelJS.Workbook();
+    if (extension === 'xlsx') {
+      await workbook.xlsx.load(await file.arrayBuffer());
+    } else if (extension === 'csv') {
+      const text = await file.text();
+      const worksheet = workbook.addWorksheet('Stock Import');
+      const rows = [];
+      let row = [];
+      let value = '';
+      let quoted = false;
+      for (let index = 0; index < text.length; index += 1) {
+        const character = text[index];
+        if (character === '"' && quoted && text[index + 1] === '"') {
+          value += '"';
+          index += 1;
+        } else if (character === '"') {
+          quoted = !quoted;
+        } else if (character === ',' && !quoted) {
+          row.push(value);
+          value = '';
+        } else if ((character === '\n' || character === '\r') && !quoted) {
+          if (character === '\r' && text[index + 1] === '\n') index += 1;
+          row.push(value);
+          rows.push(row);
+          row = [];
+          value = '';
+        } else {
+          value += character;
+        }
+      }
+      if (quoted) throw new Error('The CSV file has an unmatched quote.');
+      if (value || row.length) {
+        row.push(value);
+        rows.push(row);
+      }
+      rows.forEach((values) => worksheet.addRow(values));
+    } else {
+      throw new Error('Unsupported file type. Choose an .xlsx or .csv file.');
+    }
+
+    const worksheet = workbook.worksheets[0];
+    if (!worksheet) throw new Error('The selected workbook has no worksheet.');
+    let headerRow;
+    worksheet.eachRow({ includeEmpty: false }, (row) => {
+      if (!headerRow && row.values.some((value) => value !== null && value !== undefined && String(value).trim())) {
+        headerRow = row;
+      }
+    });
+    if (!headerRow) throw new Error('The selected sheet is empty.');
+
+    let codeColumn = 0;
+    let quantityColumn = 0;
+    headerRow.eachCell({ includeEmpty: true }, (cell, column) => {
+      const header = normalizeImportHeader(cellText(cell));
+      if (['itemcode', 'materialcode', 'code'].includes(header)) codeColumn = column;
+      if (['quantity', 'qty', 'stock', 'stockqty', 'currentstock', 'availableqty'].includes(header)) quantityColumn = column;
+    });
+    if (!codeColumn || !quantityColumn) {
+      throw new Error('The first non-empty row must include Item Code and Quantity (or Stock) column headers.');
+    }
+
+    const additions = new Map();
+    worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+      if (rowNumber <= headerRow.number) return;
+      const codeCell = row.getCell(codeColumn);
+      const quantityCell = row.getCell(quantityColumn);
+      const code = cellText(codeCell);
+      const quantityText = cellText(quantityCell);
+      if (!code && !quantityText) return;
+      if (!code) throw new Error(`Row ${rowNumber}: Item Code is missing.`);
+      if (!quantityText) throw new Error(`Row ${rowNumber}: Quantity is missing for item ${code}.`);
+      const quantity = typeof quantityCell.value === 'number'
+        ? quantityCell.value
+        : Number(quantityText.replace(/,/g, ''));
+      if (!Number.isFinite(quantity) || quantity < 0) {
+        throw new Error(`Row ${rowNumber}: Quantity for ${code} must be a non-negative number.`);
+      }
+      const key = code.toLocaleLowerCase();
+      additions.set(key, (additions.get(key) || 0) + quantity);
+    });
+    if (!additions.size || [...additions.values()].every((quantity) => quantity === 0)) {
+      throw new Error('No positive stock quantities were found in the selected file.');
+    }
+    return additions;
+  }
+
+  async function importStockFile(file) {
+    try {
+      const additions = await readStockImport(file);
+      const itemsByCode = new Map();
+      items.forEach((item) => {
+        const key = String(item.code || '').trim().toLocaleLowerCase();
+        if (!key) return;
+        if (itemsByCode.has(key)) throw new Error(`Item code "${item.code}" is duplicated in Item Master. Fix the duplicate before importing.`);
+        itemsByCode.set(key, item);
+      });
+
+      const unmatched = [...additions.keys()].filter((code) => !itemsByCode.has(code));
+      if (unmatched.length) {
+        const sample = unmatched.slice(0, 5).join(', ');
+        throw new Error(`${unmatched.length} item code${unmatched.length === 1 ? '' : 's'} not found in Item Master${sample ? `: ${sample}` : ''}. No stock was changed.`);
+      }
+
+      const updatedItems = items.map((item) => {
+        const increment = additions.get(String(item.code || '').trim().toLocaleLowerCase());
+        if (increment === undefined) return item;
+        const stock = Number(item.stock) || 0;
+        const nextStock = stock + increment;
+        if (!Number.isFinite(nextStock)) throw new Error(`Stock total for ${item.code} is too large.`);
+        return { ...item, stock: nextStock };
+      });
+      const totalAdded = [...additions.values()].reduce((total, quantity) => total + quantity, 0);
+      const summary = `${additions.size} item${additions.size === 1 ? '' : 's'}, ${totalAdded} total units`;
+      if (!window.confirm(`Add stock from "${file.name}"?\n\n${summary}\n\nQuantities will be added to current Item Master stock.`)) return;
+      if (!persistItems(updatedItems)) return;
+      renderItems();
+      showMessage(`Stock import complete: ${summary} added.`, false);
+    } catch (error) {
+      console.error('Could not import warehouse stock from the selected spreadsheet.', error);
+      showMessage(`Stock import failed: ${error.message}`, true);
+    } finally {
+      stockImportFile.value = '';
+    }
   }
 
   function setActiveTab(panelId) {
@@ -215,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function () {
       tab.setAttribute('aria-selected', String(selected));
     });
     document.querySelectorAll('.tab-panel').forEach((panel) => {
-      panel.classList.toggle('hidden', panel.id !== panelId);
+      setHidden(panel, panel.id !== panelId);
     });
   }
 
@@ -250,16 +401,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     setActiveTab('generalPanel');
-    itemsView.classList.add('hidden');
-    formPanel.classList.remove('hidden');
+    setHidden(itemsView, true);
+    setHidden(formPanel, false);
     showMessage('', false);
     updateGstPreview();
     document.getElementById('itemName').focus();
   }
 
   function closeForm() {
-    formPanel.classList.add('hidden');
-    itemsView.classList.remove('hidden');
+    setHidden(formPanel, true);
+    setHidden(itemsView, false);
     editingId = null;
     showMessage('', false);
   }
@@ -291,7 +442,7 @@ document.addEventListener('DOMContentLoaded', function () {
     emptyState.querySelector('p').textContent = noAccounts
       ? 'Add a vendor account to use its details when creating purchase orders.'
       : 'Try another search.';
-    emptyState.classList.toggle('visible', visibleAccounts.length === 0);
+    setHidden(emptyState, visibleAccounts.length !== 0);
     document.getElementById('accountsSummary').textContent =
       `Showing ${visibleAccounts.length} of ${accounts.length} ${accounts.length === 1 ? 'account' : 'accounts'}`;
   }
@@ -339,7 +490,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function closeEmployeeForm() {
     employeeForm.reset();
-    employeeForm.classList.add('hidden');
+    setHidden(employeeForm, true);
     editingEmployeeName = null;
   }
 
@@ -349,7 +500,7 @@ document.addEventListener('DOMContentLoaded', function () {
     employeeNameInput.value = name;
     document.getElementById('saveEmployeeBtn').innerHTML =
       `<i class="fa-solid fa-check" aria-hidden="true"></i> ${name ? 'Save changes' : 'Add employee'}`;
-    employeeForm.classList.remove('hidden');
+    setHidden(employeeForm, false);
     employeeNameInput.focus();
   }
 
@@ -375,13 +526,13 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById(id).value = warehouse[key] || '';
       });
     }
-    warehouseForm.classList.remove('hidden');
+    setHidden(warehouseForm, false);
     newWarehouseInput.focus();
   }
 
   function closeWarehouseForm() {
     warehouseForm.reset();
-    warehouseForm.classList.add('hidden');
+    setHidden(warehouseForm, true);
     editingWarehouseName = null;
   }
 
@@ -409,16 +560,16 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('accountPaymentTerms').value = account.paymentTerms || 'Net 30';
     }
 
-    accountsView.classList.add('hidden');
-    accountFormPanel.classList.remove('hidden');
+    setHidden(accountsView, true);
+    setHidden(accountFormPanel, false);
     showMessage('', false);
     document.getElementById('accountName').focus();
   }
 
   function closeAccountForm() {
     if (!accountFormPanel) return;
-    accountFormPanel.classList.add('hidden');
-    accountsView.classList.remove('hidden');
+    setHidden(accountFormPanel, true);
+    setHidden(accountsView, false);
     editingAccountId = null;
   }
 
@@ -441,6 +592,26 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   itemSearch.addEventListener('input', renderItems);
+  importStockButton.addEventListener('click', () => {
+    if (!itemsStorageReady) {
+      showMessage('Stock import is unavailable because Item Master data could not be loaded.', true);
+      return;
+    }
+    stockImportFile.click();
+  });
+  stockImportFile.addEventListener('change', () => {
+    const [file] = stockImportFile.files || [];
+    if (file) importStockFile(file);
+  });
+  downloadStockTemplateButton.addEventListener('click', () => {
+    const template = new Blob(['Item Code,Quantity\r\n'], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(template);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'warehouse-stock-template.csv';
+    link.click();
+    URL.revokeObjectURL(url);
+  });
   priceInput.addEventListener('input', updateGstPreview);
   gstSelect.addEventListener('change', updateGstPreview);
   itemNameInput.addEventListener('input', () => {
@@ -702,6 +873,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('[data-add-item]').forEach((button) => {
       button.disabled = true;
     });
+    importStockButton.disabled = true;
   }
   try {
     accounts = loadAccounts();

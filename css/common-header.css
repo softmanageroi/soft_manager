@@ -1,8 +1,8 @@
 :root {
-  --brand-blue: #477a98;
-  --action-blue: #2878a6;
-  --action-blue-hover: #20668e;
-  --page-background: #f3f6fa;
+  --brand-blue: #11172d;
+  --action-blue: #6038df;
+  --action-blue-hover: #4d27c5;
+  --page-background: #f3f2fa;
 }
 
 body {
@@ -35,7 +35,7 @@ body {
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
-  border: 1px solid #2878a6;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   color: #fff;
   font-size: 18px;
@@ -45,7 +45,7 @@ body {
 }
 
 .brand i {
-  color: #c8e6f4;
+  color: #cfc2ff;
   font-size: 21px;
 }
 
@@ -386,8 +386,8 @@ body .filter-dialog .filter-field select {
 }
 
 .filter-actions .page-btn:not(.filter-clear-btn):not(:last-child) {
-  border-color: #2878a6;
-  background: #2878a6;
+  border-color: #6038df;
+  background: #6038df;
   color: #fff;
 }
 

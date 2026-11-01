@@ -14,9 +14,9 @@
     { label: 'Quotation Receive', href: 'quotation-receive.html' },
     { label: 'Purchase Orders', href: 'purchase-order-creation.html?view=all' },
     { label: 'Material Receipt Note', href: 'material-receipt-note.html' },
-    { label: 'Material Issue Vouchers', href: 'material-issue-list.html' },
+    { label: 'Material Issue Slip', href: 'material-issue-list.html' },
+    { label: 'Material Authorization', href: 'material-authorize.html' },
     { label: 'Stock Ledger', href: 'stock-ledger.html' },
-    { label: 'Material Authorize', href: 'material-authorize.html' },
     { label: 'Registers and Monthly Reports', href: 'registers.html' },
   ];
 

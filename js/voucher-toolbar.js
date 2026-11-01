@@ -29,18 +29,22 @@ document.addEventListener('DOMContentLoaded', () => {
     { inputId: 'poNo', storageKey: 'ims_purchase_orders', keyName: 'id', numberKey: 'no', label: 'purchase order' },
     { inputId: 'mrnNo', storageKey: 'ims_mrn', keyName: 'id', numberKey: 'no', label: 'material receipt note' }
   ];
-  const host = document.querySelector('.inventory-actions, .page-header-tools, .voucher-header .voucher-actions');
-  if (!host || host.querySelector('[data-shared-voucher-action]')) return;
-
   const nativeToolbarActions = {
     new: ['createVoucherBtn', 'newVoucherBtn', 'piNewBtn', 'newOrderBtn', 'newWorkflowBtn'],
     save: ['saveVoucherBtn', 'saveOrderTopBtn', 'piSaveBtn', 'rfqSaveBtn', 'qrSaveBtn', 'saveOrderBtn', 'saveWorkflowBtn'],
     delete: ['deleteSelectedBtn'],
-    print: ['printBtn', 'printVoucherBtn'],
+    print: ['printBtn', 'printVoucherBtn', 'printPoListBtn'],
     approve: ['authorizeBtn', 'authorizeSelectedBtn', 'approveVoucherBtn'],
     refresh: ['refreshBtn', 'refreshAuthorizeBtn', 'refreshOrdersBtn'],
-    filter: ['filterBtn']
+    filter: ['filterBtn', 'togglePoFiltersBtn'],
+    export: []
   };
+  const fixedHost = document.querySelector('.inventory-actions, .page-header-tools, .voucher-header .voucher-actions');
+  const visibleListBody = () => listBodies.map((id) => document.getElementById(id))
+    .find((body) => body && !body.closest('[hidden]'));
+  let host = fixedHost || visibleListBody()?.closest('.erp-card')?.querySelector('.erp-card-header');
+  if (!host || host.querySelector('[data-shared-voucher-action]')) return;
+
   const hasList = listBodies.some((id) => {
     const body = document.getElementById(id);
     return body && !body.closest('[hidden]');
@@ -56,14 +60,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const actions = [
     ['new', 'fa-plus', 'New voucher'],
     ['save', 'fa-floppy-disk', 'Save voucher'],
+    ['filter', 'fa-filter', 'Filter list'],
     ['delete', 'fa-trash-can', 'Delete selected voucher'],
-    ['print', 'fa-print', 'Print'],
     ['approve', 'fa-circle-check', 'Authorize selected'],
     ['refresh', 'fa-arrows-rotate', 'Refresh list'],
-    ['filter', 'fa-filter', 'Filter or search']
+    ['print', 'fa-print', 'Print list'],
+    ['export', 'fa-file-csv', 'Export list to CSV']
   ].filter(([action]) => {
     if (action === 'delete') return hasDeletableList || hasDeletableForm || nativeToolbarActions.delete.some((id) => host.querySelector(`#${id}`));
     if (action === 'filter') return hasList || nativeToolbarActions.filter.some((id) => host.querySelector(`#${id}`));
+    if (['refresh', 'print', 'export'].includes(action)) return hasList || nativeToolbarActions[action].some((id) => host.querySelector(`#${id}`));
     return nativeToolbarActions[action].some((id) => host.querySelector(`#${id}`));
   });
   if (!actions.length) return;
@@ -75,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
   bar.innerHTML = actions.map(([action, icon, label]) =>
     `<button type="button" class="shared-voucher-action" data-shared-voucher-action="${action}" title="${label}" aria-label="${label}"${action === 'filter' ? ' aria-expanded="false"' : ''}><i class="fa-solid ${icon}" aria-hidden="true"></i></button>`
   ).join('');
-  if (actions.some(([action]) => action === 'filter') && !nativeToolbarActions.filter.some((id) => host.querySelector(`#${id}`))) {
+  if (actions.some(([action]) => action === 'filter') && !host.querySelector('#filterBtn')) {
     const filterPanel = document.createElement('div');
     filterPanel.className = 'shared-voucher-filter-panel filter-modal';
     filterPanel.hidden = true;
@@ -93,9 +99,33 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="filter-divider"></div>
         <div class="filter-dialog-body">
           <div class="filter-row">
-            <label class="filter-field wide" for="sharedVoucherFilter">
-              <span>Filter this list</span>
-              <input id="sharedVoucherFilter" type="search" placeholder="Type to filter rows" autocomplete="off">
+            <label class="filter-field" for="sharedFilterStartDate">
+              <span>Start Date</span>
+              <input id="sharedFilterStartDate" type="date">
+            </label>
+            <label class="filter-field" for="sharedFilterEndDate">
+              <span>End Date</span>
+              <input id="sharedFilterEndDate" type="date">
+            </label>
+          </div>
+          <div class="filter-row">
+            <label class="filter-field" for="sharedFilterWarehouse">
+              <span>Warehouse</span>
+              <select id="sharedFilterWarehouse"><option value="">All</option></select>
+            </label>
+            <label class="filter-field" for="sharedFilterLocation">
+              <span>Location</span>
+              <select id="sharedFilterLocation"><option value="">All</option></select>
+            </label>
+          </div>
+          <div class="filter-row">
+            <label class="filter-field" for="sharedFilterBrand">
+              <span>Brand</span>
+              <select id="sharedFilterBrand"><option value="">All</option></select>
+            </label>
+            <label class="filter-field" for="sharedFilterItem">
+              <span>Item</span>
+              <select id="sharedFilterItem"><option value="">All</option></select>
             </label>
           </div>
           <div class="filter-actions">
@@ -107,14 +137,15 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>`;
     bar.append(filterPanel);
   }
-  host.prepend(bar);
+  if (fixedHost) host.prepend(bar);
+  else host.append(bar);
 
-  Object.entries(nativeToolbarActions).forEach(([action, ids]) => {
-    ids.forEach((id) => {
-      const nativeButton = host.querySelector(`#${id}`);
-      if (nativeButton) nativeButton.classList.add('shared-voucher-native-hidden');
+  const setNativeButtonsHidden = (target, isHidden) => {
+    Object.values(nativeToolbarActions).flat().forEach((id) => {
+      target.querySelector(`#${id}`)?.classList.toggle('shared-voucher-native-hidden', isHidden);
     });
-  });
+  };
+  setNativeButtonsHidden(host, true);
 
   const clickExisting = (...ids) => {
     const target = ids.map((id) => document.getElementById(id))
@@ -125,36 +156,186 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const getRows = () => listBodies.map((id) => document.getElementById(id))
     .find((body) => body && !body.closest('[hidden]'));
+
+  if (!fixedHost) {
+    const syncToolbarHost = () => {
+      const currentBody = getRows();
+      const nextHost = currentBody?.closest('.erp-card')?.querySelector('.erp-card-header');
+      if (!nextHost) {
+        bar.hidden = true;
+        return;
+      }
+      bar.hidden = false;
+      if (nextHost === host) return;
+      setNativeButtonsHidden(host, false);
+      host = nextHost;
+      host.append(bar);
+      setNativeButtonsHidden(host, true);
+    };
+    new MutationObserver(syncToolbarHost).observe(document.body, {
+      attributes: true,
+      attributeFilter: ['hidden'],
+      subtree: true
+    });
+  }
+
   const selectedRow = () => getRows()?.querySelector('tr.shared-voucher-selected');
   const filterPanel = host.querySelector('.shared-voucher-filter-panel');
-  const filterInput = filterPanel?.querySelector('input');
+  const filterControls = {
+    startDate: filterPanel?.querySelector('#sharedFilterStartDate'),
+    endDate: filterPanel?.querySelector('#sharedFilterEndDate'),
+    warehouse: filterPanel?.querySelector('#sharedFilterWarehouse'),
+    location: filterPanel?.querySelector('#sharedFilterLocation'),
+    brand: filterPanel?.querySelector('#sharedFilterBrand'),
+    item: filterPanel?.querySelector('#sharedFilterItem')
+  };
+  const filterListConfigs = {
+    ...deletableLists,
+    pendingPiBody: { storageKey: 'ims_pi', keyName: 'id', rowKey: 'openPi' },
+    pendingRfqBody: { storageKey: 'ims_rfq', keyName: 'id', rowKey: 'openPendingRfq' },
+    pendingQrBody: { storageKey: 'ims_qr', keyName: 'id', rowKey: 'openPendingQr' },
+    mrnPendingPoBody: { storageKey: 'ims_purchase_orders', keyName: 'id', rowKey: 'openPendingPo' }
+  };
+  const normalizeDate = (value) => {
+    const text = String(value || '').trim();
+    const isoDate = text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (isoDate) return `${isoDate[1]}-${isoDate[2].padStart(2, '0')}-${isoDate[3].padStart(2, '0')}`;
+    const localDate = text.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);
+    if (localDate) return `${localDate[3]}-${localDate[2].padStart(2, '0')}-${localDate[1].padStart(2, '0')}`;
+    return '';
+  };
+  const uniqueValues = (values) => [...new Map(values
+    .map((value) => String(value || '').trim())
+    .filter(Boolean)
+    .map((value) => [value.toLocaleLowerCase(), value])).values()]
+    .sort((left, right) => left.localeCompare(right));
+  const rowRecord = (row, body, records) => {
+    const config = filterListConfigs[body.id];
+    if (!config) return null;
+    const key = row.dataset[config.rowKey];
+    return key ? records.find((record) => String(record?.[config.keyName] || '') === key) || null : null;
+  };
+  const readFilterRecords = (body) => {
+    const config = filterListConfigs[body?.id];
+    if (!config) return [];
+    try {
+      const records = JSON.parse(localStorage.getItem(config.storageKey) || '[]');
+      if (!Array.isArray(records)) throw new TypeError(`Saved ${config.storageKey} data must be a list.`);
+      return records;
+    } catch (error) {
+      console.error('Could not read voucher data for filtering.', error);
+      window.alert('Filter options could not be loaded from saved vouchers.');
+      return null;
+    }
+  };
+  const lineItems = (record) => {
+    const lines = record?.lines || record?.items || [];
+    return Array.isArray(lines) ? lines : [];
+  };
+  const rowCell = (row, body, pattern) => {
+    const headers = [...(body.closest('table')?.querySelectorAll('thead th') || [])];
+    const index = headers.findIndex((header) => pattern.test(header.textContent || ''));
+    return index >= 0 ? row?.cells[index]?.textContent.trim() || '' : '';
+  };
+  const rowFacts = (row, body, record) => {
+    const authorization = record?.authorizationDetails || {};
+    const printDetails = record?.printDetails || {};
+    const lines = lineItems(record);
+    return {
+      date: normalizeDate(record?.date || record?.createdDate || record?.voucherDate || rowCell(row, body, /date/i)),
+      warehouse: String(record?.warehouse || authorization.warehouse || printDetails.warehouse || rowCell(row, body, /warehouse/i)).trim(),
+      location: String(record?.location || authorization.location || printDetails.location || rowCell(row, body, /location|site/i)).trim(),
+      brands: [
+        ...lines.map((line) => String(line?.brand || '').trim()),
+        rowCell(row, body, /^brand$/i)
+      ].filter(Boolean),
+      items: [
+        ...lines.map((line) => String(line?.name || line?.itemName || line?.item || line?.description || line?.code || '').trim()),
+        rowCell(row, body, /^(item|item name|material|description)$/i)
+      ].filter(Boolean)
+    };
+  };
+  const populateFilterOptions = () => {
+    const body = getRows();
+    if (!body) return;
+    const records = readFilterRecords(body);
+    if (!records) return;
+    const facts = [
+      ...records.map((record) => rowFacts(null, body, record)),
+      ...[...body.rows].map((row) => rowFacts(row, body, rowRecord(row, body, records)))
+    ];
+    const warehouseOptions = facts.map((item) => item.warehouse);
+    const locationOptions = facts.map((item) => item.location);
+    const brandOptions = facts.flatMap((item) => item.brands);
+    const itemOptions = facts.flatMap((item) => item.items);
+    [
+      [filterControls.warehouse, warehouseOptions],
+      [filterControls.location, locationOptions],
+      [filterControls.brand, brandOptions],
+      [filterControls.item, itemOptions]
+    ].forEach(([select, values]) => {
+      if (!select) return;
+      const selected = select.value;
+      select.replaceChildren(new Option('All', ''));
+      uniqueValues(values).forEach((value) => select.add(new Option(value, value)));
+      select.value = [...select.options].some((option) => option.value === selected) ? selected : '';
+    });
+  };
   const setSharedFilterOpen = (isOpen) => {
     if (!filterPanel) return;
+    if (isOpen) populateFilterOptions();
     filterPanel.hidden = !isOpen;
     const trigger = host.querySelector('[data-shared-voucher-action="filter"]');
     trigger?.setAttribute('aria-expanded', String(isOpen));
-    if (isOpen) filterInput?.focus();
+    if (isOpen) filterControls.startDate?.focus();
     else trigger?.focus();
   };
   const applyRowFilter = () => {
     const currentBody = getRows();
-    const query = (filterInput?.value || '').trim().toLocaleLowerCase();
-    currentBody && [...currentBody.rows].forEach((item) => {
-      item.hidden = Boolean(query) && !item.innerText.toLocaleLowerCase().includes(query);
+    if (!currentBody) return false;
+    const startDate = filterControls.startDate?.value || '';
+    const endDate = filterControls.endDate?.value || '';
+    if (startDate && endDate && startDate > endDate) {
+      window.alert('Start Date must be on or before End Date.');
+      return false;
+    }
+    const selected = Object.fromEntries(
+      ['warehouse', 'location', 'brand', 'item'].map((key) => [key, String(filterControls[key]?.value || '').toLocaleLowerCase()])
+    );
+    const records = readFilterRecords(currentBody);
+    if (!records) return false;
+    [...currentBody.rows].forEach((item) => {
+      if (item.cells.length <= 1 && !item.dataset.docNo && !item.dataset.openDoc) {
+        item.hidden = false;
+        return;
+      }
+      const record = rowRecord(item, currentBody, records);
+      const facts = rowFacts(item, currentBody, record);
+      const matches = (!startDate || Boolean(facts.date) && facts.date >= startDate)
+        && (!endDate || Boolean(facts.date) && facts.date <= endDate)
+        && (!selected.warehouse || facts.warehouse.toLocaleLowerCase() === selected.warehouse)
+        && (!selected.location || facts.location.toLocaleLowerCase() === selected.location)
+        && (!selected.brand || facts.brands.some((value) => value.toLocaleLowerCase() === selected.brand))
+        && (!selected.item || facts.items.some((value) => value.toLocaleLowerCase() === selected.item));
+      item.hidden = !matches;
       if (item.hidden) {
         item.classList.remove('shared-voucher-selected');
         item.querySelectorAll('input[type="checkbox"]').forEach((input) => { input.checked = false; });
       }
     });
+    return true;
   };
-  filterInput?.addEventListener('input', applyRowFilter);
   filterPanel?.querySelector('[data-shared-filter-clear]')?.addEventListener('click', () => {
-    if (filterInput) filterInput.value = '';
+    Object.values(filterControls).forEach((control) => {
+      if (control) control.value = '';
+    });
     applyRowFilter();
-    filterInput?.focus();
+    filterControls.startDate?.focus();
   });
-  filterPanel?.querySelectorAll('[data-shared-filter-close], [data-shared-filter-apply]')
-    .forEach((button) => button.addEventListener('click', () => setSharedFilterOpen(false)));
+  filterPanel?.querySelector('[data-shared-filter-apply]')?.addEventListener('click', () => {
+    if (applyRowFilter()) setSharedFilterOpen(false);
+  });
+  filterPanel?.querySelector('[data-shared-filter-close]')?.addEventListener('click', () => setSharedFilterOpen(false));
   filterPanel?.addEventListener('click', (event) => {
     if (event.target === filterPanel) setSharedFilterOpen(false);
   });

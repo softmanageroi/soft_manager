@@ -44,7 +44,7 @@ body {
 
 .ims-tabs .tab.active,
 .ims-tabs .tab:hover {
-    background: #2878a6;
+    background: #6038df;
     color: #ffffff;
 }
 
@@ -89,7 +89,7 @@ body {
 .nav-link:hover,
 .top-btn:hover {
     background: #eff5ff;
-    color: #2878a6;
+    color: #6038df;
 }
 
 .voucher-form-card,
@@ -114,8 +114,8 @@ body {
 .po-main-tab {
     width: fit-content;
     margin: -2px 0 18px;
-    border-bottom: 3px solid #2878a6;
-    color: #2878a6;
+    border-bottom: 3px solid #6038df;
+    color: #6038df;
     font-size: 16px;
     font-weight: 600;
     padding: 0 8px 7px;
@@ -155,7 +155,7 @@ body {
 }
 
 .po-form-active .voucher-header .breadcrumb-title {
-    color: #477f9f;
+    color: #6038df;
     font-size: 18px;
     margin: 0;
 }
@@ -260,7 +260,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 1;
-    background: #477f9f;
+    background: #6038df;
     color: #ffffff;
 }
 
@@ -828,7 +828,7 @@ body.po-printing > #poPrintView {
 
 .voucher-table th {
     background: #f8fbff;
-    color: #2878a6;
+    color: #6038df;
     font-weight: 700;
 }
 
@@ -867,7 +867,7 @@ body .voucher-table-wrapper:has(#orderTableBody) .voucher-table th {
     z-index: 2;
     height: 40px;
     padding: 5px 7px;
-    background: #477f9e;
+    background: #6038df;
     color: #fff;
     font-weight: 600;
     text-transform: none;
@@ -1258,7 +1258,7 @@ body:has(.purchase-indent-shell) .purchase-page-header {
 }
 
 body:has(.purchase-indent-shell) .page-header-title-wrap h1 {
-    color: #477f9e;
+    color: #6038df;
     font-size: 18px;
     font-weight: 700;
 }
@@ -1281,14 +1281,14 @@ body:has(.purchase-indent-shell) .page-header-tools .toolbar-btn {
 body:has(.purchase-indent-shell) .page-header-tools a.toolbar-btn {
     width: auto;
     padding: 0 8px;
-    color: #477f9e;
+    color: #6038df;
     font-size: 13px;
     text-decoration: none;
 }
 
 body:has(.purchase-indent-shell) .page-header-tools .toolbar-btn:hover {
     background: #f2f6f8;
-    color: #477f9e;
+    color: #6038df;
 }
 
 body:has(.purchase-indent-shell) .purchase-form-card {
@@ -1334,7 +1334,7 @@ body:has(.purchase-indent-shell) .top-grid::before {
     height: 36px;
     padding: 4px 7px;
     border-bottom: 1px solid #d1d1d1;
-    color: #477f9e;
+    color: #6038df;
     content: "Main";
     font-size: 15px;
 }
@@ -1344,7 +1344,7 @@ body:has(.purchase-indent-shell) .top-grid::after {
     top: 44px;
     left: 7px;
     width: 42px;
-    border-bottom: 2px solid #477f9e;
+    border-bottom: 2px solid #6038df;
     content: "";
 }
 
@@ -1372,7 +1372,7 @@ body:has(.purchase-indent-shell) .field-group input,
 body:has(.purchase-indent-shell) .field-group select {
     min-height: 46px;
     border: 1px solid #c9c9c9;
-    border-left: 2px solid #f06a76;
+    border-left: 2px solid #c8bbff;
     border-radius: 3px;
     padding: 10px 14px;
     background: #fff;
@@ -1389,7 +1389,7 @@ body:has(.purchase-indent-shell) .field-group select {
 
 body:has(.purchase-indent-shell) .field-group input:focus,
 body:has(.purchase-indent-shell) .field-group select:focus {
-    border-color: #477f9e;
+    border-color: #6038df;
     box-shadow: 0 0 0 1px rgba(71, 127, 158, 0.15);
 }
 
@@ -1441,7 +1441,7 @@ body:has(.purchase-indent-shell) .purchase-table td {
 
 body:has(.purchase-indent-shell) .purchase-table thead th {
     height: 40px;
-    background: #477f9e;
+    background: #6038df;
     font-weight: 600;
 }
 

@@ -141,9 +141,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const filterPanel = document.getElementById('filterPanel');
   const openFilterButton = document.getElementById('filterBtn');
-  const warehouseFilter = document.getElementById('filterWarehouse');
-  [...new Set(readVouchers().map((voucher) => String(voucher.warehouse || '').trim()).filter(Boolean))]
-    .forEach((warehouse) => warehouseFilter?.insertAdjacentHTML('beforeend', `<option value="${escapeHtml(warehouse.toLowerCase())}">${escapeHtml(warehouse)}</option>`));
+  const filterFields = {
+    startDate: document.getElementById('filterStartDate'),
+    endDate: document.getElementById('filterEndDate'),
+    warehouse: document.getElementById('filterWarehouse'),
+    location: document.getElementById('filterLocation'),
+    brand: document.getElementById('filterBrand'),
+    item: document.getElementById('filterItem')
+  };
+  const populateFilterOptions = () => {
+    const vouchers = readVouchers();
+    const items = vouchers.flatMap((voucher) => Array.isArray(voucher?.items) ? voucher.items : []);
+    const values = {
+      warehouse: vouchers.map((voucher) => voucher?.warehouse),
+      location: vouchers.map((voucher) => voucher?.location),
+      brand: items.map((item) => item?.brand),
+      item: items.map((item) => item?.item)
+    };
+    Object.entries(values).forEach(([key, entries]) => {
+      const select = filterFields[key];
+      if (!select) return;
+      const selected = select.value;
+      const options = [...new Map(entries
+        .map((value) => String(value || '').trim())
+        .filter(Boolean)
+        .map((value) => [value.toLocaleLowerCase(), value])).values()]
+        .sort((left, right) => left.localeCompare(right));
+      select.replaceChildren(new Option('All', ''));
+      options.forEach((value) => select.add(new Option(value, value)));
+      select.value = options.some((value) => value.toLocaleLowerCase() === selected.toLocaleLowerCase()) ? selected : '';
+    });
+  };
   const closeFilter = () => {
     filterPanel?.classList.add('hidden');
     openFilterButton?.setAttribute('aria-expanded', 'false');
@@ -151,12 +179,19 @@ document.addEventListener('DOMContentLoaded', function () {
   };
   openFilterButton?.setAttribute('aria-expanded', 'false');
   openFilterButton?.addEventListener('click', () => {
+    populateFilterOptions();
     filterPanel?.classList.remove('hidden');
     openFilterButton?.setAttribute('aria-expanded', 'true');
     document.querySelector('[data-shared-voucher-action="filter"]')?.setAttribute('aria-expanded', 'true');
   });
   document.getElementById('closeFilterBtn')?.addEventListener('click', closeFilter);
-  document.getElementById('clearFilterBtn')?.addEventListener('click', closeFilter);
+  document.getElementById('clearFilterBtn')?.addEventListener('click', () => {
+    Object.values(filterFields).forEach((field) => {
+      if (field) field.value = '';
+    });
+    currentPage = 1;
+    renderVouchers();
+  });
   filterPanel?.addEventListener('click', (event) => {
     if (event.target === filterPanel) closeFilter();
   });
@@ -164,23 +199,26 @@ document.addEventListener('DOMContentLoaded', function () {
     if (event.key === 'Escape' && !filterPanel?.classList.contains('hidden')) closeFilter();
   });
   document.getElementById('applyFilterBtn')?.addEventListener('click', () => {
-    const selectedFilterText = (id) => {
-      const field = document.getElementById(id);
-      if (!field?.value) return '';
-      return field?.tagName === 'SELECT'
-        ? String(field.options[field.selectedIndex]?.textContent || '').trim().toLowerCase()
-        : String(field?.value || '').trim().toLowerCase();
-    };
-    const warehouse = selectedFilterText('filterWarehouse');
-    const location = selectedFilterText('filterLocation');
-    const brand = (document.getElementById('filterBrand')?.value || '').trim().toLowerCase();
-    const item = (document.getElementById('filterItem')?.value || '').trim().toLowerCase();
+    const startDate = filterFields.startDate?.value || '';
+    const endDate = filterFields.endDate?.value || '';
+    if (startDate && endDate && startDate > endDate) {
+      window.alert('Start Date must be on or before End Date.');
+      return;
+    }
+    const selectedFilterText = (key) => String(filterFields[key]?.value || '').trim().toLocaleLowerCase();
+    const warehouse = selectedFilterText('warehouse');
+    const location = selectedFilterText('location');
+    const brand = selectedFilterText('brand');
+    const item = selectedFilterText('item');
     const filtered = readVouchers().filter((voucher) => {
-      const itemText = (voucher.items || []).map((entry) => `${entry.brand || ''} ${entry.item || ''}`).join(' ').toLowerCase();
-      return (!warehouse || String(voucher.warehouse || '').toLowerCase() === warehouse)
-        && (!location || String(voucher.location || '').toLowerCase() === location)
-        && (!brand || itemText.includes(brand))
-        && (!item || itemText.includes(item));
+      const voucherDate = String(voucher?.date || voucher?.createdDate || '');
+      const voucherItems = Array.isArray(voucher?.items) ? voucher.items : [];
+      return (!startDate || Boolean(voucherDate) && voucherDate >= startDate)
+        && (!endDate || Boolean(voucherDate) && voucherDate <= endDate)
+        && (!warehouse || String(voucher?.warehouse || '').toLocaleLowerCase() === warehouse)
+        && (!location || String(voucher?.location || '').toLocaleLowerCase() === location)
+        && (!brand || voucherItems.some((entry) => String(entry?.brand || '').toLocaleLowerCase() === brand))
+        && (!item || voucherItems.some((entry) => String(entry?.item || '').toLocaleLowerCase() === item));
     });
     currentPage = 1;
     renderVouchers(filtered);

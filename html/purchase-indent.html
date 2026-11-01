@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Purchase Indent | Soft Manager</title>
-    <link rel="stylesheet" href="../css/common-erp.css?v=20261031-uniform-fields-2" />
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261102-compact-overview-2" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <style>
         /* Module Specific Extensions */
@@ -29,7 +29,7 @@
             padding: 20px;
         }
         .item-table-header {
-            background: #f1f5f9 !important;
+            background: #f4f1ff !important;
             font-weight: 700 !important;
             color: var(--erp-text-main) !important;
         }
@@ -65,12 +65,11 @@
             <a class="erp-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
             <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
             <a class="erp-nav-link" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
-            <a class="erp-nav-link" href="material-receipt-note.html?view=pending"><i class="fa-solid fa-shield-halved"></i><span>PO Authorization</span></a>
             <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
             
             <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue Slip</span></a>
             <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
-            <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue</span></a>
             
             <div class="erp-nav-heading">Inventory & Stock</div>
             <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
@@ -98,17 +97,24 @@
         </header>
 
         <main class="erp-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                <div>
+            <div class="workflow-page-heading">
+                <div class="workflow-heading-copy">
                     <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Purchase Indent</h1>
                     <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Create and manage material procurement requests.</p>
+                    <div class="workflow-heading-actions">
+                        <button id="piNewBtn" class="btn-primary" type="button"><i class="fa-solid fa-plus"></i> New Indent</button>
+                    </div>
                 </div>
-                <div style="display: flex; gap: 10px;">
-                    <button id="piNewBtn" class="btn-primary" type="button"><i class="fa-solid fa-plus"></i> New Indent</button>
-                    <a href="request-for-quotation.html" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                        <i class="fa-solid fa-file-signature"></i> Create RFQ
-                    </a>
-                </div>
+                <aside class="workflow-overview-panel" data-workflow-overview="purchase-indent" aria-label="Purchase indent overview">
+                    <div class="po-overview-title">
+                        <span class="po-overview-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+                        <span><strong>Procurement overview</strong><small>Indent activity</small></span>
+                    </div>
+                    <div class="po-overview-stats">
+                        <div><strong data-overview-primary>0</strong><span>Purchase indents</span></div>
+                        <div><strong data-overview-secondary>0</strong><span>Open requests</span></div>
+                    </div>
+                </aside>
             </div>
 
             <!-- List View -->
@@ -219,7 +225,6 @@
                                             <th style="width: 100px;">Unit</th>
                                             <th style="width: 120px;">Required Qty</th>
                                             <th style="width: 120px;">Current Stock</th>
-                                            <th style="width: 50px;"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="piLinesBody">
@@ -244,6 +249,7 @@
     <script src="../js/searchText.js"></script>
     <script src="../js/header-user.js"></script>
     <script src="../js/purchase-indent.js"></script>
-    <script src="../js/voucher-toolbar.js"></script>
+    <script src="../js/workflow-overview.js?v=20261101-overview-cards"></script>
+    <script src="../js/voucher-toolbar.js?v=20261102-filter-fields"></script>
 </body>
 </html>

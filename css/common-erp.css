@@ -1,8 +1,8 @@
 :root {
   /* Color Palette */
-  --erp-sidebar: #10233f;
-  --erp-sidebar-hover: #1a335a;
-  --erp-sidebar-active: linear-gradient(100deg, #1682ff, #1265ec);
+  --erp-sidebar: #11172d;
+  --erp-sidebar-hover: #24213f;
+  --erp-sidebar-active: linear-gradient(100deg, #7045ed, #542bd5);
   --erp-sidebar-text: #c3d0e2;
   --erp-sidebar-muted: #8196b2;
   
@@ -13,8 +13,8 @@
   --erp-text-main: #17243b;
   --erp-text-muted: #74839b;
   
-  --erp-primary: #1677f9;
-  --erp-primary-hover: #0756c3;
+  --erp-primary: #6038df;
+  --erp-primary-hover: #4d27c5;
   
   /* Status Colors */
   --status-green-bg: #e6faf2;
@@ -117,7 +117,7 @@ body.erp-page {
   background: var(--erp-sidebar-active);
   color: #fff;
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(22, 130, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(96, 56, 223, 0.32);
 }
 
 .erp-main {
@@ -168,6 +168,400 @@ body.erp-page {
   box-sizing: border-box;
 }
 
+.workflow-page-heading,
+.po-page-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(380px, 600px);
+  align-items: start;
+  gap: 24px;
+  margin-bottom: 8px;
+}
+
+.workflow-heading-copy,
+.po-heading-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.workflow-heading-copy .po-tabs-ribbon,
+.po-heading-copy .po-tabs-ribbon {
+  margin: 0;
+}
+
+.workflow-heading-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.workflow-overview-panel,
+.po-overview-panel {
+  display: grid;
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 18px 22px;
+  border: 1px solid #e8e0ff;
+  border-radius: 18px;
+  background: linear-gradient(120deg, #f4f0ff, #fff 76%);
+  box-shadow: 0 10px 28px rgba(96, 56, 223, .08);
+}
+
+.workflow-overview-panel {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.workflow-overview-panel .po-overview-title {
+  gap: 10px;
+}
+
+.workflow-overview-panel .po-overview-icon {
+  width: 38px;
+  height: 38px;
+  flex-basis: 38px;
+  border-radius: 11px;
+  font-size: 16px;
+}
+
+.workflow-overview-panel .po-overview-title strong {
+  font-size: 16px;
+}
+
+.workflow-overview-panel .po-overview-title small {
+  margin-top: 1px;
+  font-size: 12px;
+}
+
+.workflow-overview-panel .po-overview-stats {
+  gap: 10px;
+}
+
+.workflow-overview-panel .po-overview-stats > div + div {
+  padding-left: 10px;
+}
+
+.workflow-overview-panel .po-overview-stats strong {
+  font-size: 21px;
+}
+
+.workflow-overview-panel .po-overview-stats span {
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.po-overview-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.po-overview-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  place-items: center;
+  border-radius: 16px;
+  background: var(--status-purple-bg);
+  color: var(--status-purple-text);
+  font-size: 21px;
+}
+
+.po-overview-title strong,
+.po-overview-title small,
+.po-overview-stats span {
+  display: block;
+}
+
+.po-overview-title strong {
+  color: var(--erp-text-main);
+  font-size: 20px;
+}
+
+.po-overview-title small {
+  margin-top: 4px;
+  color: var(--erp-text-muted);
+  font-size: 15px;
+}
+
+.po-overview-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.po-overview-stats > div + div {
+  padding-left: 20px;
+  border-left: 1px solid #e9e3f7;
+}
+
+.po-overview-stats strong {
+  display: block;
+  color: var(--erp-text-main);
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.po-overview-stats span {
+  margin-top: 6px;
+  color: var(--erp-text-muted);
+  font-size: 15px;
+}
+
+.po-vendor-account-details:not([hidden]) {
+  display: grid;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid #e8e0ff;
+  border-radius: 8px;
+  background: #faf8ff;
+  color: var(--erp-text-muted);
+  font-size: 11px;
+}
+
+.po-vendor-account-details strong {
+  color: var(--erp-text-main);
+  font-size: 12px;
+}
+
+.po-vendor-account-message:not([hidden]) {
+  margin: 6px 0 0;
+  color: var(--erp-text-muted);
+  font-size: 11px;
+}
+
+.erp-card-header > .shared-voucher-toolbar {
+  margin-left: auto;
+}
+
+.shared-voucher-toolbar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.shared-voucher-action {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--erp-border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--erp-text-main);
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.shared-voucher-action:hover,
+.shared-voucher-action:focus-visible {
+  border-color: #d7cdf8;
+  background: var(--status-purple-bg);
+  color: var(--erp-primary);
+  outline: none;
+}
+
+.shared-voucher-action[data-shared-voucher-action="delete"]:hover {
+  border-color: #f3c6cb;
+  background: var(--status-red-bg);
+  color: var(--status-red-text);
+}
+
+.shared-voucher-action i {
+  font-size: 13px;
+}
+
+.shared-voucher-native-hidden {
+  display: none !important;
+}
+
+.shared-voucher-selected,
+.shared-voucher-selected td {
+  background: #f4f0ff !important;
+}
+
+.shared-voucher-filter-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(17, 23, 45, .42);
+}
+
+.shared-voucher-filter-panel[hidden] {
+  display: none !important;
+}
+
+.shared-voucher-filter-panel .filter-dialog {
+  width: min(920px, 100%);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  border: 1px solid var(--erp-border);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 20px 60px rgba(16, 35, 63, .22);
+}
+
+.shared-voucher-filter-panel .filter-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--erp-border);
+}
+
+.shared-voucher-filter-panel .filter-title {
+  color: var(--erp-text-main);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.shared-voucher-filter-panel .filter-subtitle {
+  margin-top: 3px;
+  color: var(--erp-text-muted);
+  font-size: 11px;
+}
+
+.shared-voucher-filter-panel .filter-close-btn {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: #f5f6f9;
+  color: var(--erp-text-muted);
+  cursor: pointer;
+}
+
+.shared-voucher-filter-panel .filter-dialog-body {
+  padding: 20px;
+}
+
+.shared-voucher-filter-panel .filter-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.shared-voucher-filter-panel .filter-field {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+}
+
+.shared-voucher-filter-panel .filter-field > span {
+  color: var(--erp-text-main);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.shared-voucher-filter-panel .filter-field input,
+.shared-voucher-filter-panel .filter-field select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 9px 11px;
+  border: 1px solid var(--erp-border);
+  border-radius: 8px;
+  color: var(--erp-text-main);
+  font: inherit;
+  font-size: 13px;
+}
+
+body .shared-voucher-filter-panel .filter-field input,
+body .shared-voucher-filter-panel .filter-field select {
+  height: 44px;
+  min-height: 44px;
+  padding: 9px 11px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.shared-voucher-filter-panel .filter-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.shared-voucher-filter-panel .filter-actions .page-btn {
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 1px solid var(--erp-border);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--erp-text-main);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.shared-voucher-filter-panel .filter-actions .page-btn:last-child {
+  border-color: var(--erp-primary);
+  background: var(--erp-primary);
+  color: #fff;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.status-message {
+  margin: 0 0 16px;
+  padding: 11px 14px;
+  border: 1px solid #bfe3ce;
+  border-radius: 8px;
+  background: #effaf3;
+  color: #27633e;
+  font-size: 13px;
+}
+
+.status-message[hidden] {
+  display: none !important;
+}
+
+.status-message.error {
+  border-color: #f2c5c5;
+  background: #fff3f2;
+  color: #9b3030;
+}
+
+@media (max-width: 600px) {
+  .shared-voucher-filter-panel {
+    padding: 12px;
+  }
+
+  .shared-voucher-filter-panel .filter-dialog-body,
+  .shared-voucher-filter-panel .filter-dialog-header {
+    padding: 16px;
+  }
+
+  .shared-voucher-filter-panel .filter-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+}
+
 /* Professional Components */
 .erp-card {
   background: var(--erp-bg-surface);
@@ -211,10 +605,10 @@ body.erp-page {
 }
 
 .erp-table th {
-  background: #f8fafd;
+  background: #f4f1ff;
   padding: 12px 16px;
   font-weight: 600;
-  color: var(--erp-text-muted);
+  color: #514376;
   border-bottom: 2px solid var(--erp-border);
   white-space: nowrap;
 }
@@ -273,11 +667,12 @@ body.erp-page {
   height: 42px;
   min-height: 42px;
   padding: 10px 12px;
-  border: 1px solid var(--erp-border);
-  border-radius: 8px;
+  border: 1px solid #dcd8ed;
+  border-radius: 9px;
   font-size: 13px;
   background: #fff;
-  transition: border-color .2s ease;
+  color: var(--erp-text-main);
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
 
 .erp-field textarea {
@@ -301,10 +696,33 @@ body.erp-page {
   min-height: 42px;
 }
 
-.erp-field input:focus {
+.erp-field input:focus,
+.erp-field select:focus,
+.erp-field textarea:focus {
   outline: none;
   border-color: var(--erp-primary);
-  box-shadow: 0 0 0 3px rgba(22, 119, 249, 0.1);
+  box-shadow: 0 0 0 3px rgba(96, 56, 223, 0.12);
+}
+
+.erp-table input:not([type="checkbox"]):not([type="radio"]),
+.erp-table select,
+.erp-table textarea {
+  border: 1px solid #dcd8ed;
+  border-radius: 7px;
+  padding: 8px 10px;
+}
+
+.erp-table input:not([type="checkbox"]):not([type="radio"]):focus,
+.erp-table select:focus,
+.erp-table textarea:focus {
+  outline: none;
+  border-color: var(--erp-primary);
+  box-shadow: 0 0 0 2px rgba(96, 56, 223, 0.1);
+}
+
+.status-badge.active {
+  background: var(--status-purple-bg);
+  color: var(--status-purple-text);
 }
 
 /* Buttons */
@@ -385,6 +803,56 @@ body.erp-page {
   .erp-nav-link {
     justify-content: center;
     padding: 10px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .workflow-page-heading,
+  .po-page-heading {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .workflow-page-heading,
+  .po-page-heading {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .workflow-overview-panel,
+  .po-overview-panel {
+    min-height: 0;
+    padding: 18px;
+  }
+
+  .workflow-overview-panel {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px 14px;
+  }
+
+  .po-overview-title strong {
+    font-size: 17px;
+  }
+
+  .po-overview-title small,
+  .po-overview-stats span {
+    font-size: 13px;
+  }
+
+  .po-overview-stats strong {
+    font-size: 24px;
+  }
+
+  .erp-card-header {
+    flex-wrap: wrap;
+  }
+
+  .erp-card-header > .shared-voucher-toolbar {
+    width: 100%;
+    justify-content: flex-end;
+    margin-left: 0;
   }
 }
 

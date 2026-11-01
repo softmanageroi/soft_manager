@@ -9,9 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const countSpan = $('issueCount');
   const message = $('issueListMessage');
   const listSearch = $('issueListSearch');
-  const newIssueButton = $('newIssueBtn');
-  const newIssueDialog = $('newIssueDialog');
-  const cancelNewIssueButton = $('cancelNewIssueBtn');
 
   if (!allBody || !pendingBody || !window.IMS) return;
 
@@ -98,11 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   tabAll.addEventListener('click', () => setActiveView('all'));
   tabPending.addEventListener('click', () => setActiveView('pending'));
-  newIssueButton?.addEventListener('click', () => newIssueDialog?.showModal());
-  cancelNewIssueButton?.addEventListener('click', () => newIssueDialog?.close());
-  newIssueDialog?.addEventListener('click', (event) => {
-    if (event.target === newIssueDialog) newIssueDialog.close();
-  });
   
   if (listSearch) {
       listSearch.addEventListener('input', (e) => render(e.target.value));

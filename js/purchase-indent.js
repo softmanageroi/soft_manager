@@ -49,10 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </td>
             <td data-line-unit style="text-align:center">—</td>
             <td><input data-line-qty type="number" min="0.01" step="any" placeholder="0.00" style="width:100%; border:none; background:transparent; outline:none; text-align:right;"></td>
-            <td data-line-stock style="text-align:right">0</td>
-            <td style="text-align:center">
-                <button class="btn-icon-only btn-remove" type="button" data-remove-row><i class="fa-solid fa-trash"></i></button>
-            </td>
+            <td style="text-align:right"><output data-line-stock aria-label="Current stock" aria-readonly="true">0</output></td>
         </tr>`;
     }
 
@@ -189,15 +186,6 @@ document.addEventListener('DOMContentLoaded', function () {
     elements.piLinesBody.addEventListener('input', (e) => {
         if (e.target.matches('[data-line-item]')) {
             fillItemDetails(e.target.closest('tr'));
-        }
-    });
-
-    elements.piLinesBody.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-remove-row]');
-        if (btn) {
-            const row = btn.closest('tr');
-            row.remove();
-            updateRowNumbers();
         }
     });
 
