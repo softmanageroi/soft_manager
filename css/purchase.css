@@ -1194,6 +1194,61 @@ body:has(.purchase-indent-shell) .purchase-table td select {
     min-width: 120px;
 }
 
+.po-orders-table {
+    min-width: 1100px;
+    table-layout: fixed;
+}
+
+.po-orders-table th:nth-child(1),
+.po-orders-table td:nth-child(1) { width: 4%; }
+.po-orders-table th:nth-child(2),
+.po-orders-table td:nth-child(2) { width: 11%; }
+.po-orders-table th:nth-child(3),
+.po-orders-table td:nth-child(3) { width: 10%; }
+.po-orders-table th:nth-child(4),
+.po-orders-table td:nth-child(4) { width: 15%; }
+.po-orders-table th:nth-child(5),
+.po-orders-table td:nth-child(5) { width: 11%; }
+.po-orders-table th:nth-child(6),
+.po-orders-table td:nth-child(6) { width: 11%; }
+.po-orders-table th:nth-child(7),
+.po-orders-table td:nth-child(7) { width: 8%; }
+.po-orders-table th:nth-child(8),
+.po-orders-table td:nth-child(8) { width: 13%; }
+.po-orders-table th:nth-child(9),
+.po-orders-table td:nth-child(9) { width: 4%; }
+.po-orders-table th:nth-child(10),
+.po-orders-table td:nth-child(10) { width: 13%; }
+
+.po-orders-table td:nth-child(1),
+.po-orders-table td:nth-child(2),
+.po-orders-table td:nth-child(3),
+.po-orders-table td:nth-child(5),
+.po-orders-table td:nth-child(6),
+.po-orders-table td:nth-child(9) {
+    white-space: nowrap;
+}
+
+.po-orders-table td:last-child {
+    white-space: nowrap;
+}
+
+.po-orders-table td:last-child .action-btn {
+    min-height: 30px;
+    padding: 5px 8px;
+}
+
+.po-row-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 5px;
+}
+
+.po-row-actions .action-btn {
+    flex: 0 0 auto;
+}
+
 body.po-printing > #poPrintView {
     box-sizing: border-box;
     color: #15283e;

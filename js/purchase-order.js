@@ -121,8 +121,10 @@ document.addEventListener('DOMContentLoaded', function () {
         <td>${esc(order.authorizationStatus || 'Pending Authorization')}</td>
         <td>${Number((order.lines || []).length)}</td>
         <td>
-          <button class="action-btn has-label" type="button" data-open-po="${esc(order.id)}">Open</button>
-          <button class="action-btn has-label" type="button" data-print-po="${esc(order.id)}" aria-label="Print purchase order ${esc(order.no)}"><i class="fa-solid fa-print" aria-hidden="true"></i><span>Print</span></button>
+          <div class="po-row-actions">
+            <button class="action-btn has-label" type="button" data-open-po="${esc(order.id)}">Open</button>
+            <button class="action-btn has-label" type="button" data-print-po="${esc(order.id)}" aria-label="Print purchase order ${esc(order.no)}"><i class="fa-solid fa-print" aria-hidden="true"></i><span>Print</span></button>
+          </div>
         </td>
       </tr>`).join('') : `<tr><td colspan="10">${allOrders.length ? 'No vouchers match these filters.' : 'No purchase order vouchers yet.'}</td></tr>`;
     poCount.textContent = String(orders.length);
