@@ -20,7 +20,7 @@ const AUTH_DIRECTORY = path.join(ROOT, '.auth');
 const CREDENTIALS_FILE = path.join(AUTH_DIRECTORY, 'credentials.json');
 const DEFAULT_LOCAL_USERNAME = 'username';
 const DEFAULT_LOCAL_PASSWORD = 'password';
-const HOST = process.env.HOST || '127.0.0.1';
+const HOST = process.env.HOST || (process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1');
 const PORT = Number(process.env.PORT || 3000);
 const SESSION_DURATION_MS = 8 * 60 * 60 * 1000;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
@@ -649,6 +649,21 @@ async function buildLocalCredentials(username = DEFAULT_LOCAL_USERNAME, password
 }
 
 async function readCredentials() {
+  const environmentUsername = process.env.APP_USERNAME;
+  const environmentPassword = process.env.APP_PASSWORD;
+  if (environmentUsername !== undefined || environmentPassword !== undefined) {
+    if (!environmentUsername || !environmentPassword || environmentUsername.length > 128 || environmentPassword.length < 12) {
+      throw new Error('APP_USERNAME and APP_PASSWORD must both be set; the username must be at most 128 characters and the password at least 12 characters.');
+    }
+    const salt = randomBytes(16);
+    return {
+      username: environmentUsername,
+      salt,
+      passwordHash: await scrypt(environmentPassword, salt, 64),
+      source: 'environment'
+    };
+  }
+
   if (MYSQL_ENABLED) {
     try {
       const credentials = await readDatabaseCredentials();
