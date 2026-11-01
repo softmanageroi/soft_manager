@@ -317,7 +317,7 @@ body {
 }
 
 @page {
-    size: A4 landscape;
+    size: A4 portrait;
     margin: 7mm;
 }
 
@@ -1206,7 +1206,7 @@ body.po-printing .po-print-document {
     border: 1px solid #163554;
     background: #fff;
     color: #17283e;
-    min-height: 195mm;
+    min-height: 283mm;
     padding: 3mm;
     width: 100%;
 }
@@ -1214,10 +1214,10 @@ body.po-printing .po-print-document {
 body.po-printing .po-print-masthead {
     align-items: center;
     display: grid;
-    grid-template-columns: 45mm minmax(0, 1fr) 92mm;
-    gap: 5mm;
-    min-height: 19mm;
-    margin-bottom: 4mm;
+    grid-template-columns: 40mm minmax(0, 1fr);
+    gap: 4mm;
+    min-height: 18mm;
+    margin-bottom: 3mm;
 }
 
 body.po-printing .po-print-brand {
@@ -1251,21 +1251,45 @@ body.po-printing .po-print-company > strong {
     font-size: 10pt;
 }
 
-body.po-printing .po-print-masthead h1 {
+body.po-printing .po-print-titlebar {
+    align-items: center;
+    display: grid;
+    gap: 4mm;
+    grid-template-columns: 1.2fr 0.9fr;
+    margin-bottom: 3mm;
+}
+
+body.po-printing .po-print-titlebar h1 {
     background: #153655;
     color: #fff;
-    font-size: 21pt;
+    font-size: 18pt;
     margin: 0;
-    padding: 5mm 3mm;
-    text-align: center;
+    padding: 3mm 5mm;
     text-transform: uppercase;
+}
+
+body.po-printing .po-print-titlebar > strong {
+    background: #d7e8f7;
+    border-radius: 1mm;
+    color: #15283e;
+    font-size: 10pt;
+    padding: 3mm;
+    text-align: center;
+}
+
+body.po-printing .po-print-titlebar > strong span {
+    font-weight: 500;
 }
 
 body.po-printing .po-print-cards {
     display: grid;
-    gap: 5mm;
-    grid-template-columns: 1.12fr 0.96fr 0.9fr;
-    margin-bottom: 4mm;
+    gap: 3mm;
+    grid-template-columns: 1.08fr 0.92fr;
+    margin-bottom: 3mm;
+}
+
+body.po-printing .po-print-address-cards {
+    grid-template-columns: 1.08fr 0.92fr;
 }
 
 body.po-printing .po-print-card {
@@ -1313,17 +1337,11 @@ body.po-printing .po-print-address-body > span {
     overflow-wrap: anywhere;
 }
 
-body.po-printing .po-print-side-cards {
-    display: grid;
-    gap: 2mm;
-    grid-template-rows: 1fr auto;
-}
-
 body.po-printing .po-print-address-body {
     display: grid;
     font-size: 7.5pt;
     gap: 1mm 2mm;
-    grid-template-columns: 18mm minmax(0, 1fr);
+    grid-template-columns: 19mm minmax(0, 1fr);
     padding: 2mm 2.5mm;
 }
 
@@ -1348,10 +1366,10 @@ body.po-printing .po-print-table .po-col-net { width: 9%; }
 body.po-printing .po-print-table th,
 body.po-printing .po-print-table td {
     border: 1px solid #aebdcb;
-    font-size: 7pt;
+    font-size: 6.2pt;
     line-height: 1.15;
     overflow-wrap: anywhere;
-    padding: 1.6mm 1mm;
+    padding: 1.3mm 0.7mm;
     vertical-align: middle;
 }
 
@@ -1367,7 +1385,7 @@ body.po-printing .po-print-table tbody tr:nth-child(even) {
 
 body.po-printing .po-print-table .numeric {
     text-align: right;
-    white-space: nowrap;
+    white-space: normal;
 }
 
 body.po-printing .po-print-table tfoot th {
@@ -1379,15 +1397,15 @@ body.po-printing .po-print-table tfoot th {
 body.po-printing .po-print-bottom {
     align-items: stretch;
     display: grid;
-    gap: 5mm;
-    grid-template-columns: minmax(0, 1fr) 91mm;
-    margin: 4mm 0 2mm;
+    gap: 3mm;
+    grid-template-columns: minmax(0, 1.05fr) minmax(61mm, 0.95fr);
+    margin: 3mm 0 2mm;
 }
 
 body.po-printing .po-print-left-summary {
     display: grid;
-    gap: 2.5mm;
-    grid-template-rows: minmax(25mm, 1fr) auto;
+    gap: 2mm;
+    grid-template-rows: minmax(29mm, 1fr) auto;
     min-width: 0;
 }
 
@@ -1396,7 +1414,7 @@ body.po-printing .po-print-narration {
     border-radius: 2mm;
     display: block;
     font-size: 8pt;
-    min-height: 25mm;
+    min-height: 29mm;
     padding: 0;
 }
 
@@ -1444,9 +1462,9 @@ body.po-printing .po-print-totals .po-print-total {
 
 body.po-printing .po-print-terms {
     display: grid;
-    gap: 5mm;
-    grid-template-columns: 1.2fr 1fr;
-    margin-top: 3mm;
+    gap: 3mm;
+    grid-template-columns: 1.1fr 0.9fr;
+    margin-top: 2mm;
 }
 
 body.po-printing .po-print-terms > div:first-child {
@@ -1497,7 +1515,7 @@ body.po-printing .po-print-signatures {
 
 @media print {
     body.po-printing .po-print-document {
-        min-height: 195mm;
+        min-height: 283mm;
     }
 
     body.po-printing .po-print-table thead {

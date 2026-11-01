@@ -543,7 +543,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const paise = rounded % 100;
       return `${integerWords(rupees)}${paise ? ` AND ${integerWords(paise)} PAISE` : ''} ONLY`;
     };
-    const vendorAddress = [vendor?.address, vendor?.city, vendor?.state, vendor?.pincode].filter(Boolean).join(', ');
+    const vendorAddress = vendor?.address || '';
     const warehouseAddress = resolveShippingAddress(warehouse, details.warehouseAddress);
     const billingAddress = details.billingAddress
       || [warehouse?.address, warehouse?.city, warehouse?.state, warehouse?.pincode].filter(Boolean).join(', ');
@@ -610,7 +610,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const renderPrintFields = (fields) => fields.map(([label, value]) => `
       <div class="po-print-field"><strong>${esc(label)}</strong><span>:</span><span>${esc(value || '-')}</span></div>
     `).join('');
-    const companyAddress = 'C - 619, 6th Floor, Spectrum Metro Mall Tower-C, Noida, Uttar Pradesh, 201301, Sector-75';
+    const companyAddress = 'C - 619, 6th Floor, Spectrum Metro Mall Tower-C, Sector-75, Noida, Uttar Pradesh, 201301';
     const totalQty = lines.reduce((sum, line) => sum + (Number(line.qty) || 0), 0);
 
     poPrintView.innerHTML = `
@@ -622,9 +622,12 @@ document.addEventListener('DOMContentLoaded', function () {
           <span>${companyAddress}</span>
           <span>GSTIN: 09AACCU6261C1ZF&nbsp;&nbsp; | &nbsp;&nbsp;PAN: AACCU6261C</span>
         </div>
-        <h1>Purchase Order</h1>
       </header>
-      <section class="po-print-cards">
+      <header class="po-print-titlebar">
+        <h1>Purchase Order</h1>
+        <strong>PO NO. : <span>${esc(order.no || '-')}</span></strong>
+      </header>
+      <section class="po-print-cards po-print-detail-cards">
         <div class="po-print-card po-print-supplier">
           <h2>Supplier Details</h2>
           <div class="po-print-card-body">${renderPrintFields(supplierFields)}</div>
@@ -633,21 +636,21 @@ document.addEventListener('DOMContentLoaded', function () {
           <h2>PO Details</h2>
           <div class="po-print-card-body">${renderPrintFields(poFields)}</div>
         </div>
-        <div class="po-print-side-cards">
-          <div class="po-print-card">
-            <h2>Shipping / Billing Address</h2>
-            <div class="po-print-address-body">
-              <strong>Billing:</strong><span>${esc(billingAddress || companyAddress)}</span>
-              <strong>Shipping:</strong><span>${esc(warehouseAddress || billingAddress || companyAddress)}</span>
-              ${warehouseState ? `<strong>State:</strong><span>${esc(warehouseState)}</span>` : ''}
-            </div>
+      </section>
+      <section class="po-print-cards po-print-address-cards">
+        <div class="po-print-card">
+          <h2>Shipping / Billing Address</h2>
+          <div class="po-print-address-body">
+            <strong>Address:</strong><span>${esc(warehouseAddress || billingAddress || companyAddress)}</span>
+            <strong>Billing:</strong><span>${esc(billingAddress || companyAddress)}</span>
+            ${warehouseState ? `<strong>State:</strong><span>${esc(warehouseState)}</span>` : ''}
           </div>
-          <div class="po-print-card">
-            <h2>Contact Details</h2>
-            <div class="po-print-card-body">
-              <div class="po-print-field"><strong>Purchase Mobile No.</strong><span>:</span><span>${esc(vendor?.phone || '-')}</span></div>
-              <div class="po-print-field"><strong>Store Mobile No.</strong><span>:</span><span>${esc(details.storeMobile || warehouse?.phone || '-')}</span></div>
-            </div>
+        </div>
+        <div class="po-print-card">
+          <h2>Contact Details</h2>
+          <div class="po-print-card-body">
+            <div class="po-print-field"><strong>Purchase Mobile No.</strong><span>:</span><span>${esc(details.purchaseMobile || '-')}</span></div>
+            <div class="po-print-field"><strong>Store Mobile No.</strong><span>:</span><span>${esc(details.storeMobile || warehouse?.phone || '-')}</span></div>
           </div>
         </div>
       </section>
