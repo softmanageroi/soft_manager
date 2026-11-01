@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <td>${Number((order.lines || []).length)}</td>
         <td>
           <button class="action-btn has-label" type="button" data-open-po="${esc(order.id)}">Open</button>
-          <button class="action-btn" type="button" data-print-po="${esc(order.id)}" aria-label="Print purchase order ${esc(order.no)}"><i class="fa-solid fa-print" aria-hidden="true"></i></button>
+          <button class="action-btn has-label" type="button" data-print-po="${esc(order.id)}" aria-label="Print purchase order ${esc(order.no)}"><i class="fa-solid fa-print" aria-hidden="true"></i><span>Print</span></button>
         </td>
       </tr>`).join('') : `<tr><td colspan="10">${allOrders.length ? 'No vouchers match these filters.' : 'No purchase order vouchers yet.'}</td></tr>`;
     poCount.textContent = String(orders.length);
@@ -204,6 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
     editingOrderId = null;
+    document.getElementById('printOrderBtn').hidden = true;
     orderId.value = IMS.uid();
     orderDate.value = today;
     poNo.value = IMS.peekNo('PO', today);
@@ -236,6 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!order) return;
 
     editingOrderId = order.id;
+    document.getElementById('printOrderBtn').hidden = false;
     orderId.value = order.id;
     poNo.value = order.no;
     orderDate.value = order.date || '';
@@ -713,6 +715,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     const button = event.target.closest('[data-print-po]');
     if (button) printOrder(button.dataset.printPo);
+  });
+  document.getElementById('printOrderBtn')?.addEventListener('click', () => {
+    if (editingOrderId) printOrder(editingOrderId);
   });
   allPoBody.addEventListener('dblclick', (event) => {
     if (event.target.closest('button')) return;
