@@ -317,8 +317,8 @@ body {
 }
 
 @page {
-    size: A4 portrait;
-    margin: 10mm;
+    size: A4 landscape;
+    margin: 7mm;
 }
 
 body.po-printing > *:not(#poPrintView) {
@@ -1192,6 +1192,324 @@ body:has(.purchase-indent-shell) .purchase-table td select {
 
 .action-btn-inline {
     min-width: 120px;
+}
+
+body.po-printing > #poPrintView {
+    box-sizing: border-box;
+    color: #15283e;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+}
+
+body.po-printing .po-print-document {
+    box-sizing: border-box;
+    border: 1px solid #163554;
+    background: #fff;
+    color: #17283e;
+    min-height: 195mm;
+    padding: 3mm;
+    width: 100%;
+}
+
+body.po-printing .po-print-masthead {
+    align-items: center;
+    display: grid;
+    grid-template-columns: 45mm minmax(0, 1fr) 92mm;
+    gap: 5mm;
+    min-height: 19mm;
+    margin-bottom: 4mm;
+}
+
+body.po-printing .po-print-brand {
+    align-items: center;
+    background: #e71920;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    font-size: 15pt;
+    font-weight: 800;
+    justify-content: center;
+    line-height: 1.05;
+    min-height: 16mm;
+    text-align: center;
+}
+
+body.po-printing .po-print-brand span {
+    font-size: 11pt;
+}
+
+body.po-printing .po-print-company {
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    font-size: 8pt;
+    gap: 1mm;
+    padding: 0;
+}
+
+body.po-printing .po-print-company > strong {
+    font-size: 10pt;
+}
+
+body.po-printing .po-print-masthead h1 {
+    background: #153655;
+    color: #fff;
+    font-size: 21pt;
+    margin: 0;
+    padding: 5mm 3mm;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+body.po-printing .po-print-cards {
+    display: grid;
+    gap: 5mm;
+    grid-template-columns: 1.12fr 0.96fr 0.9fr;
+    margin-bottom: 4mm;
+}
+
+body.po-printing .po-print-card {
+    border: 1px solid #9aabba;
+    border-radius: 2mm;
+    min-width: 0;
+    overflow: hidden;
+}
+
+body.po-printing .po-print-card h2,
+body.po-printing .po-print-totals h2,
+body.po-printing .po-print-narration h2,
+body.po-printing .po-print-terms h2 {
+    background: #173a5d;
+    color: #fff;
+    font-size: 9pt;
+    margin: 0;
+    padding: 1.6mm 2.5mm;
+}
+
+body.po-printing .po-print-card-body {
+    padding: 1.5mm 2.5mm;
+}
+
+body.po-printing .po-print-field {
+    align-items: baseline;
+    border-bottom: 1px solid #e1e6eb;
+    display: grid;
+    font-size: 7.5pt;
+    gap: 1mm;
+    grid-template-columns: minmax(23mm, 0.8fr) 2mm minmax(0, 1.2fr);
+    padding: 1mm 0;
+}
+
+body.po-printing .po-print-field:last-child {
+    border-bottom: 0;
+}
+
+body.po-printing .po-print-field > strong {
+    font-weight: 700;
+}
+
+body.po-printing .po-print-field > span:last-child,
+body.po-printing .po-print-address-body > span {
+    overflow-wrap: anywhere;
+}
+
+body.po-printing .po-print-side-cards {
+    display: grid;
+    gap: 2mm;
+    grid-template-rows: 1fr auto;
+}
+
+body.po-printing .po-print-address-body {
+    display: grid;
+    font-size: 7.5pt;
+    gap: 1mm 2mm;
+    grid-template-columns: 18mm minmax(0, 1fr);
+    padding: 2mm 2.5mm;
+}
+
+body.po-printing .po-print-table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+body.po-printing .po-print-table .po-col-sno { width: 3%; }
+body.po-printing .po-print-table .po-col-code { width: 7%; }
+body.po-printing .po-print-table .po-col-description { width: 23%; }
+body.po-printing .po-print-table .po-col-qty { width: 6%; }
+body.po-printing .po-print-table .po-col-uom { width: 5%; }
+body.po-printing .po-print-table .po-col-rate { width: 7%; }
+body.po-printing .po-print-table .po-col-gross { width: 8%; }
+body.po-printing .po-print-table .po-col-discount { width: 5%; }
+body.po-printing .po-print-table .po-col-taxable { width: 9%; }
+body.po-printing .po-print-table .po-col-gst { width: 6%; }
+body.po-printing .po-print-table .po-col-net { width: 9%; }
+
+body.po-printing .po-print-table th,
+body.po-printing .po-print-table td {
+    border: 1px solid #aebdcb;
+    font-size: 7pt;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+    padding: 1.6mm 1mm;
+    vertical-align: middle;
+}
+
+body.po-printing .po-print-table thead th {
+    background: #1d3d64 !important;
+    color: #fff !important;
+    text-align: center;
+}
+
+body.po-printing .po-print-table tbody tr:nth-child(even) {
+    background: #f3f7fb;
+}
+
+body.po-printing .po-print-table .numeric {
+    text-align: right;
+    white-space: nowrap;
+}
+
+body.po-printing .po-print-table tfoot th {
+    background: #c9def1 !important;
+    color: #15283e !important;
+    font-weight: 700;
+}
+
+body.po-printing .po-print-bottom {
+    align-items: stretch;
+    display: grid;
+    gap: 5mm;
+    grid-template-columns: minmax(0, 1fr) 91mm;
+    margin: 4mm 0 2mm;
+}
+
+body.po-printing .po-print-left-summary {
+    display: grid;
+    gap: 2.5mm;
+    grid-template-rows: minmax(25mm, 1fr) auto;
+    min-width: 0;
+}
+
+body.po-printing .po-print-narration {
+    border: 1px solid #9aabba;
+    border-radius: 2mm;
+    display: block;
+    font-size: 8pt;
+    min-height: 25mm;
+    padding: 0;
+}
+
+body.po-printing .po-print-narration p {
+    margin: 2mm 3mm;
+    overflow-wrap: anywhere;
+}
+
+body.po-printing .po-print-words {
+    background: #d7e8f7;
+    border: 1px solid #b1c8dc;
+    border-radius: 2mm;
+    font-size: 8pt;
+    margin: 0;
+    min-height: 0;
+    padding: 2.5mm 3mm;
+}
+
+body.po-printing .po-print-totals {
+    align-self: stretch;
+    border: 1px solid #9aabba;
+    border-radius: 2mm;
+    font-size: 7.5pt;
+    overflow: hidden;
+    padding: 0 2mm 1mm;
+}
+
+body.po-printing .po-print-totals h2 {
+    margin: 0 -2mm 1mm;
+}
+
+body.po-printing .po-print-totals > div {
+    border-bottom: 1px solid #e1e6eb;
+    margin: 0;
+    padding: 1mm 1mm;
+}
+
+body.po-printing .po-print-totals .po-print-total {
+    background: #1d3d64;
+    border: 0;
+    color: #fff;
+    margin: 0 -2mm -1mm;
+    padding: 2mm 3mm;
+}
+
+body.po-printing .po-print-terms {
+    display: grid;
+    gap: 5mm;
+    grid-template-columns: 1.2fr 1fr;
+    margin-top: 3mm;
+}
+
+body.po-printing .po-print-terms > div:first-child {
+    border-right: 1px solid #9aabba;
+    padding-right: 4mm;
+}
+
+body.po-printing .po-print-terms h2 {
+    background: transparent;
+    color: #17283e;
+    padding: 0 0 1mm;
+}
+
+body.po-printing .po-print-terms ol {
+    font-size: 7pt;
+    margin: 0;
+    padding-left: 5mm;
+}
+
+body.po-printing .po-print-terms li {
+    margin: 0.5mm 0;
+}
+
+body.po-printing .po-print-signature {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 8pt;
+    justify-content: flex-end;
+    padding-bottom: 2mm;
+    text-align: center;
+}
+
+body.po-printing .po-print-signature > span {
+    border-bottom: 1px solid #27384a;
+    height: 13mm;
+    margin-top: 2mm;
+    width: 52mm;
+}
+
+body.po-printing .po-print-signatures {
+    border-top: 1px solid #aebdcb;
+    font-size: 6.5pt;
+    margin: 2mm 0 0;
+    padding-top: 1.5mm;
+    text-align: center;
+}
+
+@media print {
+    body.po-printing .po-print-document {
+        min-height: 195mm;
+    }
+
+    body.po-printing .po-print-table thead {
+        display: table-header-group;
+    }
+
+    body.po-printing .po-print-table tr,
+    body.po-printing .po-print-bottom,
+    body.po-printing .po-print-terms {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
 }
 
 .ims-message {

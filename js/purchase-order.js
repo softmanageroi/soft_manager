@@ -510,6 +510,9 @@ document.addEventListener('DOMContentLoaded', function () {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
+    const quantity = (value) => (Number(value) || 0).toLocaleString('en-IN', {
+      maximumFractionDigits: 3
+    });
     const amountInWords = (amount) => {
       const ones = ['ZERO', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE',
         'TEN', 'ELEVEN', 'TWELVE', 'THIRTEEN', 'FOURTEEN', 'FIFTEEN', 'SIXTEEN', 'SEVENTEEN', 'EIGHTEEN', 'NINETEEN'];
@@ -540,9 +543,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const paise = rounded % 100;
       return `${integerWords(rupees)}${paise ? ` AND ${integerWords(paise)} PAISE` : ''} ONLY`;
     };
-    const field = (label, value, className = '') => value
-      ? `<div class="po-print-meta ${className}"><strong>${esc(label)}</strong><span>${esc(value)}</span></div>`
-      : '';
     const vendorAddress = [vendor?.address, vendor?.city, vendor?.state, vendor?.pincode].filter(Boolean).join(', ');
     const warehouseAddress = resolveShippingAddress(warehouse, details.warehouseAddress);
     const billingAddress = details.billingAddress
@@ -565,6 +565,7 @@ document.addEventListener('DOMContentLoaded', function () {
       sum.total += taxable + cgst + sgst + igst;
       return sum;
     }, { gross: 0, discount: 0, freight: 0, taxable: 0, cgst: 0, sgst: 0, igst: 0, tax: 0, total: 0 });
+    const roundedTotal = Math.round(totals.total);
     const rows = lines.map((line, index) => {
       const qty = Number(line.qty) || 0;
       const rate = Number(line.rate) || 0;
@@ -572,110 +573,139 @@ document.addEventListener('DOMContentLoaded', function () {
       const discount = Number(line.discount) || 0;
       const freight = Number(line.freightCharges) || 0;
       const taxable = gross - discount + freight;
-      const taxValue = (Number(line.cgst) || 0) + (Number(line.sgst) || 0) + (Number(line.igst) || 0);
-      const masterItem = IMS.items().find((item) => String(item.code) === String(line.code));
-      const savedGstRate = line.gstRate ?? masterItem?.gst;
-      const gstRate = savedGstRate == null
-        ? (taxable ? taxValue / taxable * 100 : 0)
-        : Number(savedGstRate) || 0;
       return `<tr>
         <td>${index + 1}</td>
-        <td>${esc(line.brand || line.brandName || '')}</td>
         <td>${esc(line.code)}</td>
         <td>${esc([line.name, line.description].filter(Boolean).join(' — '))}</td>
-        <td class="numeric">${money(qty)}</td>
+        <td class="numeric">${quantity(qty)}</td>
         <td>${esc(line.unit)}</td>
         <td class="numeric">${money(rate)}</td>
         <td class="numeric">${money(gross)}</td>
         <td class="numeric">${money(discount)}</td>
         <td class="numeric">${money(taxable)}</td>
-        <td class="numeric">${money(gstRate)}</td>
         <td class="numeric">${money(line.cgst)}</td>
         <td class="numeric">${money(line.sgst)}</td>
         <td class="numeric">${money(line.igst)}</td>
-        <td class="numeric">${money((Number(line.cgst) || 0) + (Number(line.sgst) || 0) + (Number(line.igst) || 0))}</td>
-        <td class="numeric">${money(gross - discount + freight + (Number(line.cgst) || 0) + (Number(line.sgst) || 0) + (Number(line.igst) || 0))}</td>
+        <td class="numeric">${money(taxable + (Number(line.cgst) || 0) + (Number(line.sgst) || 0) + (Number(line.igst) || 0))}</td>
       </tr>`;
     }).join('');
 
+    const poFields = [
+      ['Purchase Order No.', order.no],
+      ['PO Date', formatPrintDate(order.date)],
+      ['Vendor Code', vendor?.code],
+      ['Quotation Ref No.', order.quotationNo],
+      ['Quotation Ref Date', formatPrintDate(details.quotationDate || quotation?.date)],
+      ['Payment Terms', details.paymentTerms || vendor?.paymentTerms]
+    ];
+    const supplierFields = [
+      ['Name', order.supplier],
+      ['Address', vendorAddress],
+      ['City', vendor?.city],
+      ['State', vendor?.state],
+      ['GSTIN', vendor?.gstin],
+      ['PIN', vendor?.pincode],
+      ['Mobile', vendor?.phone]
+    ];
+    const renderPrintFields = (fields) => fields.map(([label, value]) => `
+      <div class="po-print-field"><strong>${esc(label)}</strong><span>:</span><span>${esc(value || '-')}</span></div>
+    `).join('');
+    const companyAddress = 'C - 619, 6th Floor, Spectrum Metro Mall Tower-C, Noida, Uttar Pradesh, 201301, Sector-75';
+    const totalQty = lines.reduce((sum, line) => sum + (Number(line.qty) || 0), 0);
+
     poPrintView.innerHTML = `
       <article class="po-print-document">
-      <header class="po-print-heading"><h1>Purchase Order</h1></header>
-      <section class="po-print-top">
+      <header class="po-print-masthead">
+        <div class="po-print-brand">SPECTRUM<span>@METRO</span></div>
         <div class="po-print-company">
-          <strong class="po-print-company-name">${esc(warehouse?.name || details.warehouse || 'Warehouse')}</strong>
-          ${billingAddress ? `<div class="po-print-address po-print-billing"><strong>Billing Address :</strong><span>${esc(billingAddress)}</span></div>` : ''}
-          <div class="po-print-company-ids">${warehouseState ? `<span><strong>STATE :</strong> ${esc(warehouseState)}</span>` : ''}
-          </div>
-          <div class="po-print-company-ids">
-            ${details.warehouseGstin || warehouse?.gstin ? `<span><strong>GSTIN :</strong> ${esc(details.warehouseGstin || warehouse.gstin)}</span>` : ''}
-            ${details.warehousePan || warehouse?.pan ? `<span><strong>PAN :</strong> ${esc(details.warehousePan || warehouse.pan)}</span>` : ''}
-          </div>
-          ${warehouseAddress ? `<div class="po-print-address po-print-shipping"><strong>Shipping Address :</strong><span>${esc(warehouseAddress)}</span></div>` : ''}
+          <strong>Umbrella Facility Management Services Pvt Ltd</strong>
+          <span>${companyAddress}</span>
+          <span>GSTIN: 09AACCU6261C1ZF&nbsp;&nbsp; | &nbsp;&nbsp;PAN: AACCU6261C</span>
         </div>
-        <div class="po-print-order-details">
-          ${field('PURCHASE ORDER NO. :', order.no, 'po-print-order-no')}
-          ${field('DATED :', formatPrintDate(order.date))}
-          ${field('VENDOR CODE :', vendor?.code)}
-          ${field('QUOTATION REF NO. :', order.quotationNo)}
-          ${field('QUOTATION REF DATE :', formatPrintDate(details.quotationDate || quotation?.date))}
-          ${field('SUPPLIER REF NO. :', details.supplierRefNo)}
-          ${field('SUPPLIER REF DATE :', formatPrintDate(details.supplierRefDate))}
-          ${field('PAYMENT TERMS :', details.paymentTerms || vendor?.paymentTerms, 'po-print-payment')}
-          ${field('PURCHASE MOBILE NO. :', details.storeMobile || warehouse?.phone)}
+        <h1>Purchase Order</h1>
+      </header>
+      <section class="po-print-cards">
+        <div class="po-print-card po-print-supplier">
+          <h2>Supplier Details</h2>
+          <div class="po-print-card-body">${renderPrintFields(supplierFields)}</div>
         </div>
-      </section>
-      <section class="po-print-supplier">
-        <h2>Supplier Details</h2>
-        <div class="po-print-supplier-body">
-          <div>
-            <div><strong>NAME :</strong><span>${esc(order.supplier)}</span></div>
-            ${vendorAddress ? `<div><strong>ADDRESS :</strong><span>${esc(vendorAddress)}</span></div>` : ''}
-            ${vendor?.contact ? `<div><strong>CONTACT :</strong><span>${esc(vendor.contact)}</span></div>` : ''}
-            ${vendor?.city ? `<div><strong>CITY :</strong><span>${esc(vendor.city)}</span></div>` : ''}
+        <div class="po-print-card po-print-order">
+          <h2>PO Details</h2>
+          <div class="po-print-card-body">${renderPrintFields(poFields)}</div>
+        </div>
+        <div class="po-print-side-cards">
+          <div class="po-print-card">
+            <h2>Shipping / Billing Address</h2>
+            <div class="po-print-address-body">
+              <strong>Billing:</strong><span>${esc(billingAddress || companyAddress)}</span>
+              <strong>Shipping:</strong><span>${esc(warehouseAddress || billingAddress || companyAddress)}</span>
+              ${warehouseState ? `<strong>State:</strong><span>${esc(warehouseState)}</span>` : ''}
+            </div>
           </div>
-          <div>
-            ${vendor?.pincode ? `<div><strong>PINCODE :</strong><span>${esc(vendor.pincode)}</span></div>` : ''}
-            ${vendor?.state || details.placeOfSupply ? `<div><strong>STATE NAME :</strong><span>${esc(vendor?.state || details.placeOfSupply)}</span></div>` : ''}
-            ${vendor?.gstin ? `<div><strong>GSTIN :</strong><span>${esc(vendor.gstin)}</span></div>` : ''}
-            ${vendor?.pan ? `<div><strong>PAN :</strong><span>${esc(vendor.pan)}</span></div>` : ''}
-            ${vendor?.phone ? `<div><strong>MOBILE NO. :</strong><span>${esc(vendor.phone)}</span></div>` : ''}
+          <div class="po-print-card">
+            <h2>Contact Details</h2>
+            <div class="po-print-card-body">
+              <div class="po-print-field"><strong>Purchase Mobile No.</strong><span>:</span><span>${esc(vendor?.phone || '-')}</span></div>
+              <div class="po-print-field"><strong>Store Mobile No.</strong><span>:</span><span>${esc(details.storeMobile || warehouse?.phone || '-')}</span></div>
+            </div>
           </div>
         </div>
       </section>
       <table class="po-print-table">
-        <thead><tr>
-          <th>#</th><th>Brand</th><th>Item Code</th><th>Description of Goods</th><th>Qty</th><th>UOM</th>
-          <th>Rate</th><th>Gross &#8377;</th><th>Discount</th><th>Taxable Amount</th><th>GST %</th>
-          <th>CGST</th><th>SGST</th><th>IGST</th><th>GST Value</th><th>Net Amount</th>
-        </tr></thead>
-        <tbody>${rows || '<tr><td colspan="16">No items</td></tr>'}</tbody>
+        <colgroup>
+          <col class="po-col-sno"><col class="po-col-code"><col class="po-col-description"><col class="po-col-qty">
+          <col class="po-col-uom"><col class="po-col-rate"><col class="po-col-gross"><col class="po-col-discount">
+          <col class="po-col-taxable"><col class="po-col-gst"><col class="po-col-gst"><col class="po-col-gst"><col class="po-col-net">
+        </colgroup>
+        <thead>
+          <tr>
+            <th rowspan="2">#</th><th rowspan="2">Item Code</th><th rowspan="2">Description of Goods</th>
+            <th rowspan="2">Qty</th><th rowspan="2">UOM</th><th rowspan="2">Rate (&#8377;)</th>
+            <th rowspan="2">Gross Amount (&#8377;)</th><th rowspan="2">Disc. (&#8377;)</th>
+            <th rowspan="2">Taxable Amount (&#8377;)</th><th colspan="3">GST (&#8377;)</th><th rowspan="2">Net Amount (&#8377;)</th>
+          </tr>
+          <tr><th>CGST</th><th>SGST</th><th>IGST</th></tr>
+        </thead>
+        <tbody>${rows || '<tr><td colspan="13">No items</td></tr>'}</tbody>
         <tfoot><tr>
-          <th colspan="4">Total</th><th class="numeric">${money(lines.reduce((sum, line) => sum + (Number(line.qty) || 0), 0))}</th><th></th>
+          <th colspan="3">Total</th><th class="numeric">${quantity(totalQty)}</th><th></th>
           <th></th><th class="numeric">${money(totals.gross)}</th><th class="numeric">${money(totals.discount)}</th>
-          <th class="numeric">${money(totals.taxable)}</th><th></th>
+          <th class="numeric">${money(totals.taxable)}</th>
           <th class="numeric">${money(totals.cgst)}</th><th class="numeric">${money(totals.sgst)}</th>
-          <th class="numeric">${money(totals.igst)}</th><th class="numeric">${money(totals.tax)}</th>
-          <th class="numeric">${money(totals.total)}</th>
+          <th class="numeric">${money(totals.igst)}</th><th class="numeric">${money(roundedTotal)}</th>
         </tr></tfoot>
       </table>
       <section class="po-print-bottom">
-        <div class="po-print-narration"><strong>NARRATION :</strong><span>${esc(order.notes || '')}</span></div>
+        <div class="po-print-left-summary">
+          <div class="po-print-narration"><h2>Narration / Remarks</h2><p>${esc(order.notes || '-')}</p></div>
+          <div class="po-print-words"><strong>Amount in Words :</strong> ${esc(amountInWords(roundedTotal))}</div>
+        </div>
         <div class="po-print-totals">
-          <div><strong>Taxable Value</strong><span>${money(totals.taxable)}</span></div>
+          <h2>Amount Summary</h2>
+          <div><strong>Taxable Value</strong><span>&#8377; ${money(totals.gross - totals.discount)}</span></div>
           <div><strong>Freight</strong><span>${money(totals.freight)}</span></div>
-          <div><strong>Total Taxable Value</strong><span>${money(totals.taxable)}</span></div>
+          <div><strong>Total Taxable Value</strong><span>&#8377; ${money(totals.taxable)}</span></div>
           <div><strong>CGST</strong><span>${money(totals.cgst)}</span></div>
           <div><strong>SGST</strong><span>${money(totals.sgst)}</span></div>
           <div><strong>IGST</strong><span>${money(totals.igst)}</span></div>
-          <div class="po-print-total"><strong>Total Value (Rounded)</strong><span>${money(totals.total)}</span></div>
+          <div class="po-print-total"><strong>Total Value (Rounded)</strong><span>&#8377; ${money(roundedTotal)}</span></div>
         </div>
       </section>
-      <div class="po-print-words"><strong>INVOICE VALUE (IN WORDS) :</strong> ${esc(amountInWords(totals.total))}</div>
+      <section class="po-print-terms">
+        <div><h2>Terms &amp; Conditions</h2><ol>
+          <li>Material should be supplied as per the approved specification and quality.</li>
+          <li>Delivery should be made within the agreed period.</li>
+          <li>Invoice must mention PO number and GST details.</li>
+          <li>Payments will be released as per agreed terms.</li>
+        </ol></div>
+        <div class="po-print-signature">
+          <strong>For Umbrella Facility Management Services Pvt Ltd</strong>
+          <span></span>
+          <b>Authorised Signatory</b>
+        </div>
+      </section>
       <footer class="po-print-signatures">
-        <span>For&nbsp; ${esc(warehouse?.name || details.warehouse || 'Warehouse')}</span>
-        <span>AUTHORISED SIGNATORY</span>
-        <span class="po-print-generated">This is computer generated invoice signature not required</span>
+        This is a computer-generated purchase order.
       </footer>
       </article>
     `;
