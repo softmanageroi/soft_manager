@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Purchase Order Creation</title>
+  <style>
+    :root { color-scheme: light; font-family: Arial, sans-serif; color: #172033; background: #f4f6f9; }
+    body { margin: 0; } main { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
+    h1 { margin: 0; font-size: 1.5rem; } .subtitle { color: #5b6472; margin-top: .3rem; }
+    .card { background: #fff; border: 1px solid #dce1e8; border-radius: .6rem; padding: 1.25rem; box-shadow: 0 1px 2px #1720330d; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    label { display: grid; gap: .4rem; font-weight: 600; font-size: .9rem; } input, textarea { box-sizing: border-box; width: 100%; border: 1px solid #aeb8c6; border-radius: .35rem; padding: .65rem; font: inherit; } textarea { resize: vertical; }
+    fieldset { margin: 1.25rem 0 0; border: 1px solid #dce1e8; border-radius: .45rem; padding: 1rem; } legend { font-weight: 700; padding: 0 .35rem; }
+    .voucher-entry { display: flex; gap: .6rem; } .voucher-entry input { flex: 1; }
+    button, .button { border: 0; border-radius: .35rem; padding: .65rem .9rem; font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; }
+    button, .button.primary { background: #1769aa; color: #fff; } .button.secondary, .remove { background: #e9edf2; color: #172033; }
+    #voucherList { list-style: none; margin: .85rem 0 0; padding: 0; display: grid; gap: .45rem; } #voucherList li { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: #f4f6f9; padding: .55rem .7rem; border-radius: .3rem; } .empty { color: #5b6472; font-style: italic; }
+    .actions { display: flex; justify-content: flex-end; gap: .7rem; margin-top: 1.25rem; } #message { min-height: 1.2rem; color: #137333; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <main>
+    <header><div><h1>Purchase Order</h1><div class="subtitle">Create a purchase order and attach its vouchers.</div></div><a class="button secondary" href="purchase-order-list.html">View purchase orders</a></header>
+    <form id="purchaseOrderForm" class="card">
+      <div class="grid">
+        <label>PO No.<input id="poNo" required placeholder="e.g. PO-1001"></label>
+        <label>PO Date<input id="poDate" type="date" required></label>
+        <label>Supplier<input id="supplier" required placeholder="Supplier name"></label>
+        <label>Total Amount<input id="totalAmount" type="number" min="0" step="0.01" required placeholder="0.00"></label>
+      </div>
+      <fieldset><legend>Vouchers</legend>
+        <p class="subtitle">Add every voucher associated with this purchase order. Attached vouchers are shown below and will also appear in the purchase-order list.</p>
+        <div class="voucher-entry"><input id="voucherInput" aria-label="Voucher number" placeholder="Enter voucher number"><button type="button" id="addVoucher">Add voucher</button></div>
+        <ul id="voucherList" aria-live="polite"></ul>
+      </fieldset>
+      <div class="actions"><span id="message" role="status"></span><button type="submit">Save purchase order</button></div>
+    </form>
+  </main>
+  <script>
+    const vouchers = [];
+    const list = document.querySelector('#voucherList');
+    const voucherInput = document.querySelector('#voucherInput');
+    function renderVouchers() {
+      list.replaceChildren();
+      if (!vouchers.length) { const item = document.createElement('li'); item.className = 'empty'; item.textContent = 'No vouchers attached yet.'; list.append(item); return; }
+      vouchers.forEach((voucher, index) => { const item = document.createElement('li'); const name = document.createElement('span'); name.textContent = voucher; const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'remove'; remove.textContent = 'Remove'; remove.addEventListener('click', () => { vouchers.splice(index, 1); renderVouchers(); }); item.append(name, remove); list.append(item); });
+    }
+    function addVoucher() { const value = voucherInput.value.trim(); if (!value || vouchers.includes(value)) return; vouchers.push(value); voucherInput.value = ''; renderVouchers(); voucherInput.focus(); }
+    document.querySelector('#addVoucher').addEventListener('click', addVoucher);
+    voucherInput.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); addVoucher(); } });
+    const poNoInput = document.querySelector('#poNo');
+    const poDateInput = document.querySelector('#poDate');
+    const supplierInput = document.querySelector('#supplier');
+    const totalAmountInput = document.querySelector('#totalAmount');
+    document.querySelector('#purchaseOrderForm').addEventListener('submit', event => { event.preventDefault(); const order = { id: crypto.randomUUID(), poNo: poNoInput.value.trim(), poDate: poDateInput.value, supplier: supplierInput.value.trim(), totalAmount: Number(totalAmountInput.value), vouchers: [...vouchers] }; const orders = JSON.parse(localStorage.getItem('purchaseOrders') || '[]'); const existing = orders.findIndex(item => item.poNo === order.poNo); if (existing >= 0) orders[existing] = order; else orders.push(order); localStorage.setItem('purchaseOrders', JSON.stringify(orders)); document.querySelector('#message').textContent = 'Purchase order saved.'; });
+    poDateInput.valueAsDate = new Date(); renderVouchers();
+  </script>
+</body>
+</html>

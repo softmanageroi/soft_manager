@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Purchase Orders</title>
+  <style>
+    :root { font-family: Arial, sans-serif; color: #172033; background: #f4f6f9; } body { margin: 0; } main { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; } header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.25rem; } h1 { margin: 0; font-size: 1.5rem; } .subtitle { color: #5b6472; margin-top: .3rem; } .button { background: #1769aa; color: #fff; border-radius: .35rem; padding: .65rem .9rem; text-decoration: none; font-weight: 700; white-space: nowrap; } .card { overflow-x: auto; background: #fff; border: 1px solid #dce1e8; border-radius: .6rem; } table { width: 100%; border-collapse: collapse; } th, td { padding: .8rem 1rem; text-align: left; border-bottom: 1px solid #e7ebf0; vertical-align: top; } th { background: #f4f6f9; font-size: .85rem; } .vouchers { margin: 0; padding-left: 1.2rem; } .empty { text-align: center; color: #5b6472; padding: 2rem; }
+  </style>
+</head>
+<body><main>
+  <header><div><h1>Purchase Orders</h1><div class="subtitle">All purchase orders and their attached vouchers.</div></div><a class="button" href="purchase-order-creation.html">New purchase order</a></header>
+  <div class="card"><table><thead><tr><th>PO No.</th><th>Date</th><th>Supplier</th><th>Total Amount</th><th>Vouchers</th></tr></thead><tbody id="orders"></tbody></table></div>
+</main><script>
+  const body = document.querySelector('#orders');
+  const orders = JSON.parse(localStorage.getItem('purchaseOrders') || '[]');
+  if (!orders.length) body.innerHTML = '<tr><td class="empty" colspan="5">No purchase orders have been saved.</td></tr>';
+  else orders.forEach(order => { const row = document.createElement('tr'); const vouchers = Array.isArray(order.vouchers) ? order.vouchers : []; row.innerHTML = `<td></td><td></td><td></td><td></td><td></td>`; const cells = row.querySelectorAll('td'); cells[0].textContent = order.poNo; cells[1].textContent = order.poDate; cells[2].textContent = order.supplier; cells[3].textContent = Number(order.totalAmount).toFixed(2); if (vouchers.length) { const ul = document.createElement('ul'); ul.className = 'vouchers'; vouchers.forEach(voucher => { const li = document.createElement('li'); li.textContent = voucher; ul.append(li); }); cells[4].append(ul); } else cells[4].textContent = '—'; body.append(row); });
+</script></body></html>
