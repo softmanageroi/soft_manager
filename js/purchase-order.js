@@ -122,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function () {
         <td>${Number((order.lines || []).length)}</td>
         <td>
           <div class="po-row-actions">
-            <button class="action-btn has-label" type="button" data-open-po="${esc(order.id)}">Open</button>
             <button class="action-btn has-label" type="button" data-print-po="${esc(order.id)}" aria-label="Print purchase order ${esc(order.no)}"><i class="fa-solid fa-print" aria-hidden="true"></i><span>Print</span></button>
           </div>
         </td>
@@ -743,11 +742,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (button) openForm(button.dataset.createPoFromQuotation);
   });
   allPoBody.addEventListener('click', (event) => {
-    const openButton = event.target.closest('[data-open-po]');
-    if (openButton) {
-      openSavedOrder(openButton.dataset.openPo);
-      return;
-    }
     const button = event.target.closest('[data-print-po]');
     if (button) printOrder(button.dataset.printPo);
   });
