@@ -1206,7 +1206,7 @@ body.po-printing .po-print-document {
     border: 1px solid #163554;
     background: #fff;
     color: #17283e;
-    min-height: 283mm;
+    min-height: auto;
     padding: 3mm;
     width: 100%;
 }
@@ -1514,10 +1514,6 @@ body.po-printing .po-print-signatures {
 }
 
 @media print {
-    body.po-printing .po-print-document {
-        min-height: 283mm;
-    }
-
     body.po-printing .po-print-table thead {
         display: table-header-group;
     }
