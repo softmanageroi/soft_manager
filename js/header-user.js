@@ -48,6 +48,14 @@ document.addEventListener('DOMContentLoaded', function () {
   const topUserLabel = document.getElementById('topUserLabel');
   if (!topUserLink || !topUserLabel) return;
 
+  if (window.location.hostname.endsWith('.github.io')) {
+    topUserLabel.textContent = 'Local data';
+    topUserLink.href = 'data-backup.html';
+    topUserLink.title = 'Saved only in this browser. Click to back up or restore data.';
+    topUserLink.setAttribute('aria-label', 'Back up or restore local browser data');
+    return;
+  }
+
   topUserLabel.textContent = 'Checking session…';
   fetch('/api/auth/session', { credentials: 'same-origin' })
     .then(async (response) => {

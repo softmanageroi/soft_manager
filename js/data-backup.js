@@ -116,6 +116,13 @@
   });
 
   updateSummary();
+  if (window.location.hostname.endsWith('.github.io')) {
+    const backLink = document.querySelector('a[href="index.html"]');
+    if (backLink) {
+      backLink.href = 'dashboard.html';
+      backLink.textContent = 'Back to app';
+    }
+  }
   if (window.APP_STORAGE_READY) {
     window.APP_STORAGE_READY.then(updateSummary, (error) => {
       showMessage(`Database startup failed; backup and restore will use this browser only. ${error.message}`, true);

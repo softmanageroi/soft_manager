@@ -1,4 +1,9 @@
 window.addEventListener('DOMContentLoaded', function () {
+  if (window.location.hostname.endsWith('.github.io')) {
+    window.location.replace('dashboard.html');
+    return;
+  }
+
   const loginForm = document.getElementById('loginForm');
   const loginMessage = document.getElementById('loginMessage');
   const loginButton = document.getElementById('LoginButton');
