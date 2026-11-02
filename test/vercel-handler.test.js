@@ -57,7 +57,7 @@ test('Vercel handler routes requests and signs sessions across requests', async 
   assert.equal(invalidSession.status, 401);
 });
 
-test('missing Vercel credentials return an error without creating local credentials', () => {
+test('public Vercel routes work without credentials and login fails explicitly without writing locally', () => {
   const environment = { ...process.env, VERCEL: '1', DOTENV_CONFIG_PATH: '/nonexistent/.env' };
   for (const name of ['APP_USERNAME', 'APP_PASSWORD', 'SESSION_SECRET', 'MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'MYSQLHOST', 'MYSQLPORT', 'MYSQLUSER', 'MYSQLPASSWORD', 'MYSQLDATABASE']) {
     delete environment[name];
@@ -69,16 +69,23 @@ test('missing Vercel credentials return an error without creating local credenti
     fs.promises.mkdir = async () => { mkdirCalls += 1; };
     console.error = () => {};
     const vercelHandler = require('./server');
-    const response = {
-      headersSent: false,
-      writeHead(statusCode) { this.statusCode = statusCode; },
-      end(body) { this.body = body; },
-      destroy() {}
-    };
-    const request = { url: '/api/index?__path=%2F', headers: { host: 'example.test' } };
-    vercelHandler(request, response).then(() => {
-      const body = JSON.parse(response.body);
-      console.log(response.statusCode, mkdirCalls, body.error);
+    async function run(url, method = 'GET') {
+      const currentResponse = {
+        headersSent: false,
+        writeHead(statusCode, headers = {}) { this.statusCode = statusCode; this.headers = headers; },
+        end(body) { this.body = body; },
+        destroy() {}
+      };
+      await vercelHandler({ url, method, headers: { host: 'example.test' } }, currentResponse);
+      return currentResponse;
+    }
+    Promise.all([
+      run('/api/index?__path=%2Fhealthz'),
+      run('/api/index?__path=%2F'),
+      run('/api/index?__path=%2Fapi%2Fauth%2Flogin', 'POST')
+    ]).then(([health, home, login]) => {
+      const body = JSON.parse(login.body);
+      console.log(health.statusCode, home.statusCode, login.statusCode, mkdirCalls, body.error);
     });
   `;
   const result = spawnSync(process.execPath, ['-e', script], {
@@ -88,5 +95,5 @@ test('missing Vercel credentials return an error without creating local credenti
   });
 
   assert.equal(result.status, 0, result.stderr);
-  assert.match(result.stdout, /^500 0 /);
+  assert.match(result.stdout, /^200 302 500 0 Vercel requires APP_USERNAME and APP_PASSWORD/);
 });

@@ -878,15 +878,19 @@ async function vercelHandler(request, response) {
     }
 
     vercelCredentialsPromise ||= Promise.resolve().then(() => {
-      getSessionSecret();
       return readCredentials();
     });
-    const credentials = await vercelCredentialsPromise;
+    const routeUrl = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
+    const needsCredentials = routeUrl.pathname === '/api/auth/login' && request.method === 'POST';
+    const credentials = needsCredentials ? await vercelCredentialsPromise : null;
     await handleRequest(request, response, credentials);
   } catch (error) {
     console.error('Vercel request could not be completed.', error);
     if (!response.headersSent) {
-      sendJson(response, 500, { error: 'The request could not be completed. Check the deployment configuration and logs.' });
+      const message = error.message.startsWith('Vercel requires ')
+        ? error.message
+        : 'The request could not be completed. Check the deployment configuration and logs.';
+      sendJson(response, 500, { error: message });
     } else {
       response.destroy();
     }
