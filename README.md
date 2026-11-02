@@ -5,6 +5,26 @@
 - Node.js 20 or newer
 - A running MySQL server
 
+## Project structure
+
+```text
+soft_manager/
+├── config/
+├── api/
+├── db/
+├── html/
+│   ├── css/
+│   ├── images/
+│   └── standalone/
+├── js/
+├── server.js
+├── supabase-connection.js
+└── package.json
+```
+
+The HTML pages, stylesheets, and images are grouped under `html/`. Static asset
+URLs used by existing pages continue to work through the server.
+
 ## Configure MySQL with MySQL Workbench
 
 1. Start the local MySQL Server service and open MySQL Workbench.

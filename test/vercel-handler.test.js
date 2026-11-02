@@ -16,7 +16,7 @@ const vercelHandler = require('../server');
 
 test('Vercel bundles assets for the server.js function entrypoint', () => {
   const includeFiles = vercelConfig.functions['server.js'].includeFiles;
-  for (const directory of ['html/**', 'css/**', 'js/**', 'images/**']) {
+  for (const directory of ['html/**', 'js/**']) {
     assert.ok(includeFiles.includes(directory));
   }
 });
@@ -68,9 +68,19 @@ test('Vercel handler routes requests and signs sessions across requests', async 
   assert.equal(loginPage.status, 200);
   assert.match(await loginPage.text(), /IMS Login/);
 
+  const protectedStyles = await request('/html/css/dashboard.css');
+  assert.equal(protectedStyles.status, 401);
+  const authenticatedStyles = await request('/html/css/dashboard.css', {
+    headers: { Cookie: sessionCookie }
+  });
+  assert.equal(authenticatedStyles.status, 200);
+
   const loginStyles = await request('/css/index.css');
   assert.equal(loginStyles.status, 200);
   assert.match(loginStyles.headers.get('content-type'), /text\/css/);
+
+  const loginImage = await request('/images/login-background.png');
+  assert.equal(loginImage.status, 200);
 
   const loginScript = await request('/js/login.js');
   assert.equal(loginScript.status, 200);

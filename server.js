@@ -574,6 +574,11 @@ function isLoginAsset(pathname) {
     '/images/background.jpg.png',
     '/images/login-wallpaper.png',
     '/images/login-background.png',
+    '/html/css/index.css',
+    '/html/css/skeuomorphic.css',
+    '/html/images/background.jpg.png',
+    '/html/images/login-wallpaper.png',
+    '/html/images/login-background.png',
     '/js/login.js'
   ].includes(pathname);
 }
@@ -643,14 +648,18 @@ async function serveFile(request, response, pathname) {
 
   const resolvedPath = decodedPath === '/js/vendor/exceljs.min.js'
     ? path.join(ROOT, 'node_modules', 'exceljs', 'dist', 'exceljs.min.js')
-    : path.resolve(ROOT, `.${decodedPath}`);
+    : path.resolve(ROOT, `.${decodedPath.startsWith('/css/')
+      ? decodedPath.replace('/css/', '/html/css/')
+      : decodedPath.startsWith('/images/')
+        ? decodedPath.replace('/images/', '/html/images/')
+        : decodedPath}`);
   if (!resolvedPath.startsWith(`${ROOT}${path.sep}`)) {
     sendJson(response, 404, { error: 'Not found.' });
     return;
   }
 
   const allowedDirectory = decodedPath === '/js/vendor/exceljs.min.js'
-    || ['css', 'html', 'images', 'js']
+    || ['html', 'js']
       .some((directory) => resolvedPath.startsWith(path.join(ROOT, directory) + path.sep));
   const extension = path.extname(resolvedPath).toLowerCase();
   if (!allowedDirectory || !MIME_TYPES[extension] || path.basename(resolvedPath).startsWith('.')) {
@@ -856,7 +865,8 @@ async function handleRequest(request, response, credentials) {
 
   const isProtectedPage = pathname.startsWith('/html/') && pathname.endsWith('.html')
     && pathname !== '/html/index.html';
-  const isProtectedAsset = ['/css/', '/images/', '/js/'].some((prefix) => pathname.startsWith(prefix))
+  const isProtectedAsset = ['/css/', '/images/', '/html/css/', '/html/images/', '/js/']
+    .some((prefix) => pathname.startsWith(prefix))
     && !isLoginAsset(pathname);
   if ((isProtectedPage || isProtectedAsset) && !session) {
     if (isProtectedPage) redirect(response, '/html/index.html');
