@@ -2,6 +2,7 @@ const { createServer } = require('node:http');
 const { promises: fs } = require('node:fs');
 const path = require('node:path');
 const {
+  createHmac,
   randomBytes,
   scrypt: scryptCallback,
   timingSafeEqual
@@ -18,6 +19,7 @@ const scrypt = promisify(scryptCallback);
 const ROOT = __dirname;
 const AUTH_DIRECTORY = path.join(ROOT, '.auth');
 const CREDENTIALS_FILE = path.join(AUTH_DIRECTORY, 'credentials.json');
+const IS_VERCEL = process.env.VERCEL === '1';
 const DEFAULT_LOCAL_USERNAME = 'username';
 const DEFAULT_LOCAL_PASSWORD = 'password';
 const HOST = process.env.HOST || (process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1');
@@ -78,8 +80,23 @@ function sendJson(response, statusCode, body, headers = {}) {
 }
 
 function sessionCookie(token, maxAge) {
-  const secure = process.env.COOKIE_SECURE === '1' ? '; Secure' : '';
+  const secure = IS_VERCEL || process.env.COOKIE_SECURE === '1' ? '; Secure' : '';
   return `soft_manager_session=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${maxAge}${secure}`;
+}
+
+function getSessionSecret() {
+  const secret = process.env.SESSION_SECRET || (IS_VERCEL ? process.env.APP_PASSWORD : null);
+  if (!secret || (process.env.SESSION_SECRET && secret.length < 32)) {
+    throw new Error('Vercel requires SESSION_SECRET (at least 32 characters) or APP_PASSWORD (at least 12 characters) to sign login sessions.');
+  }
+  return secret;
+}
+
+function createSessionToken(username, expiresAt) {
+  if (!IS_VERCEL) return randomBytes(32).toString('base64url');
+  const payload = Buffer.from(JSON.stringify({ username, expiresAt })).toString('base64url');
+  const signature = createHmac('sha256', getSessionSecret()).update(payload).digest('base64url');
+  return `${payload}.${signature}`;
 }
 
 function getSession(request) {
@@ -88,6 +105,29 @@ function getSession(request) {
     .find((part) => part.startsWith('soft_manager_session='))
     ?.slice('soft_manager_session='.length);
   if (!token) return null;
+
+  if (IS_VERCEL) {
+    const [payload, signature, extra] = token.split('.');
+    if (!payload || !signature || extra) return null;
+    const expectedSignature = createHmac('sha256', getSessionSecret()).update(payload).digest();
+    let suppliedSignature;
+    try {
+      suppliedSignature = Buffer.from(signature, 'base64url');
+    } catch {
+      return null;
+    }
+    if (suppliedSignature.length !== expectedSignature.length
+        || !timingSafeEqual(suppliedSignature, expectedSignature)) return null;
+    try {
+      const session = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+      if (typeof session.username !== 'string'
+          || !Number.isFinite(session.expiresAt)
+          || session.expiresAt <= Date.now()) return null;
+      return { username: session.username, expiresAt: session.expiresAt };
+    } catch {
+      return null;
+    }
+  }
 
   const session = sessions.get(token);
   if (!session || session.expiresAt <= Date.now()) {
@@ -108,6 +148,14 @@ function originIsAllowed(request) {
 }
 
 async function readJsonBody(request, maximumSize = 16 * 1024) {
+  if (request.body !== undefined) {
+    const body = Buffer.isBuffer(request.body)
+      ? request.body
+      : Buffer.from(typeof request.body === 'string' ? request.body : JSON.stringify(request.body));
+    if (body.length > maximumSize) throw new Error('Request body is too large.');
+    return JSON.parse(body.toString('utf8'));
+  }
+
   const chunks = [];
   let size = 0;
   for await (const chunk of request) {
@@ -475,11 +523,9 @@ async function login(request, response, credentials) {
       return;
     }
     failedLogins.delete(getRateLimitKey(request));
-    const token = randomBytes(32).toString('base64url');
-    sessions.set(token, {
-      username: user.username,
-      expiresAt: Date.now() + SESSION_DURATION_MS
-    });
+    const expiresAt = Date.now() + SESSION_DURATION_MS;
+    const token = createSessionToken(user.username, expiresAt);
+    if (!IS_VERCEL) sessions.set(token, { username: user.username, expiresAt });
     sendJson(response, 200, { username: user.username }, {
       'Set-Cookie': sessionCookie(token, SESSION_DURATION_MS / 1000)
     });
@@ -496,11 +542,9 @@ async function login(request, response, credentials) {
   }
 
   failedLogins.delete(getRateLimitKey(request));
-  const token = randomBytes(32).toString('base64url');
-  sessions.set(token, {
-    username: credentials.username,
-    expiresAt: Date.now() + SESSION_DURATION_MS
-  });
+  const expiresAt = Date.now() + SESSION_DURATION_MS;
+  const token = createSessionToken(credentials.username, expiresAt);
+  if (!IS_VERCEL) sessions.set(token, { username: credentials.username, expiresAt });
   sendJson(response, 200, { username: credentials.username }, {
     'Set-Cookie': sessionCookie(token, SESSION_DURATION_MS / 1000)
   });
@@ -512,7 +556,7 @@ async function logout(request, response) {
     return;
   }
   const session = getSession(request);
-  if (session) sessions.delete(session.token);
+  if (session && !IS_VERCEL) sessions.delete(session.token);
   sendJson(response, 200, { ok: true }, {
     'Set-Cookie': sessionCookie('', 0)
   });
@@ -679,8 +723,15 @@ async function readCredentials() {
       const credentials = await readDatabaseCredentials();
       return credentials;
     } catch (error) {
+      if (IS_VERCEL) {
+        throw new Error(`Could not load MySQL login credentials for Vercel. Configure APP_USERNAME and APP_PASSWORD, or make the configured MySQL database reachable. ${error.message}`);
+      }
       console.warn('MySQL auth is configured but unavailable; falling back to the local credentials file.', error.message);
     }
+  }
+
+  if (IS_VERCEL) {
+    throw new Error('Vercel requires APP_USERNAME and APP_PASSWORD (at least 12 characters), or a configured MySQL login. Local .auth credentials cannot be created on Vercel.');
   }
 
   let contents;
@@ -816,6 +867,32 @@ async function handleRequest(request, response, credentials) {
   await serveFile(request, response, pathname);
 }
 
+let vercelCredentialsPromise;
+async function vercelHandler(request, response) {
+  try {
+    const requestUrl = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
+    const originalPath = requestUrl.searchParams.get('__path');
+    if (originalPath) {
+      requestUrl.searchParams.delete('__path');
+      request.url = `${originalPath}${requestUrl.search ? requestUrl.search : ''}`;
+    }
+
+    vercelCredentialsPromise ||= Promise.resolve().then(() => {
+      getSessionSecret();
+      return readCredentials();
+    });
+    const credentials = await vercelCredentialsPromise;
+    await handleRequest(request, response, credentials);
+  } catch (error) {
+    console.error('Vercel request could not be completed.', error);
+    if (!response.headersSent) {
+      sendJson(response, 500, { error: 'The request could not be completed. Check the deployment configuration and logs.' });
+    } else {
+      response.destroy();
+    }
+  }
+}
+
 function promptHidden(promptText) {
   return new Promise((resolve, reject) => {
     if (!process.stdin.isTTY || typeof process.stdin.setRawMode !== 'function') {
@@ -927,21 +1004,25 @@ async function startServer() {
   });
 }
 
-const command = process.argv[2];
-if (command === '--setup') {
-  setupCredentials()
-    .then(() => process.stdin.unref())
-    .catch((error) => {
+if (require.main === module) {
+  const command = process.argv[2];
+  if (command === '--setup') {
+    setupCredentials()
+      .then(() => process.stdin.unref())
+      .catch((error) => {
+        console.error(error.message);
+        process.stdin.unref();
+        process.exitCode = 1;
+      });
+  } else if (command) {
+    console.error('Usage: node server.js [--setup]');
+    process.exitCode = 1;
+  } else {
+    startServer().catch((error) => {
       console.error(error.message);
-      process.stdin.unref();
       process.exitCode = 1;
     });
-} else if (command) {
-  console.error('Usage: node server.js [--setup]');
-  process.exitCode = 1;
+  }
 } else {
-  startServer().catch((error) => {
-    console.error(error.message);
-    process.exitCode = 1;
-  });
+  module.exports = { vercelHandler };
 }

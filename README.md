@@ -42,6 +42,12 @@ npm start
 
 Open [http://localhost:3000](http://localhost:3000) on the computer running the app. The server listens only on this computer; do not open HTML files directly with `file://`. Use `Ctrl+C` to stop the server. Sessions expire after eight hours or when the server stops.
 
+## Deploying to Vercel
+
+The Vercel function routes requests through the app's authentication and static-file handler. In the Vercel project settings, configure `APP_USERNAME` and `APP_PASSWORD` (at least 12 characters). If using MySQL-backed accounts instead, configure the `MYSQL_*` connection values and set `SESSION_SECRET` to a random secret of at least 32 characters. `APP_PASSWORD` is used to sign sessions when `SESSION_SECRET` is not set. MySQL must be reachable from Vercel; a local `localhost` database will not work.
+
+Vercel's filesystem is read-only, so the app does not create local `.auth` credentials there. Configure one of the authentication options above before deploying. Without valid configuration, requests return an explicit configuration error rather than attempting to write under `.auth`. Session cookies are signed and expire after eight hours so they work across serverless function instances.
+
 ## App data storage and migration
 
 On protected pages, the app migrates existing browser `localStorage` records into MySQL the first time that MySQL account has no saved app data. It then hydrates the browser cache from that account's MySQL data and sends later browser storage changes to MySQL. Data is scoped by MySQL user account. A browser owner marker prevents one logged-in account's local cache from being automatically imported into another account.
