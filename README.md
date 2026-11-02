@@ -83,6 +83,12 @@ The data API requires an authenticated session:
 
 If MySQL is not configured, the app continues in local-only mode and stores data in that browser's `localStorage`; data will not sync between browsers or devices. If MySQL is configured but unavailable, app-data initialization displays an error rather than silently treating browser-only storage as a successful server save.
 
+## Importing stock balances
+
+Open **Item Master → Upload Stock Excel** and choose an `.xlsx` or `.csv` file. To set current balances, include `Item Name` (with the existing item code such as `ITM2605` at the end of the name), `Unit`, and `Balance Quantity` columns. The import replaces stock only for listed items; zero balances are allowed, while negative balances, duplicate codes, and codes missing from Item Master are rejected without changing stock. Correct any rejected rows and upload again.
+
+The existing `Item Code` + `Quantity` (or `Stock`) import format remains available for adding quantities to current stock.
+
 ## Monthly registers
 
 Open **Registers & Monthly Reports** from the dashboard, select a month, and switch between the Material Requisition Register and Purchase Order Register. Use **Print / Save PDF** to print the selected monthly register or save it as a PDF from the browser print dialog. Register rows can open their source voucher.

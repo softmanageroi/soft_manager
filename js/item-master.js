@@ -285,25 +285,33 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!headerRow) throw new Error('The selected sheet is empty.');
 
     let codeColumn = 0;
+    let itemNameColumn = 0;
     let quantityColumn = 0;
+    let quantityMode = 'add';
     headerRow.eachCell({ includeEmpty: true }, (cell, column) => {
       const header = normalizeImportHeader(cellText(cell));
       if (['itemcode', 'materialcode', 'code'].includes(header)) codeColumn = column;
-      if (['quantity', 'qty', 'stock', 'stockqty', 'currentstock', 'availableqty'].includes(header)) quantityColumn = column;
+      if (['itemname', 'materialname', 'name'].includes(header)) itemNameColumn = column;
+      if (['quantity', 'qty', 'stock', 'stockqty', 'currentstock', 'availableqty', 'balancequantity', 'balanceqty'].includes(header)) {
+        quantityColumn = column;
+        quantityMode = ['balancequantity', 'balanceqty'].includes(header) ? 'replace' : 'add';
+      }
     });
-    if (!codeColumn || !quantityColumn) {
-      throw new Error('The first non-empty row must include Item Code and Quantity (or Stock) column headers.');
+    if ((!codeColumn && !itemNameColumn) || !quantityColumn) {
+      throw new Error('The first non-empty row must include Item Code (or Item Name with code at the end) and Quantity, Stock, or Balance Quantity column headers.');
     }
 
-    const additions = new Map();
+    const quantities = new Map();
     worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
       if (rowNumber <= headerRow.number) return;
-      const codeCell = row.getCell(codeColumn);
       const quantityCell = row.getCell(quantityColumn);
-      const code = cellText(codeCell);
+      const itemName = itemNameColumn ? cellText(row.getCell(itemNameColumn)) : '';
+      const code = codeColumn
+        ? cellText(row.getCell(codeColumn))
+        : itemName.match(/\b(ITM\d+)$/i)?.[1] || '';
       const quantityText = cellText(quantityCell);
-      if (!code && !quantityText) return;
-      if (!code) throw new Error(`Row ${rowNumber}: Item Code is missing.`);
+      if (!code && !quantityText && !itemName) return;
+      if (!code) throw new Error(`Row ${rowNumber}: Item Code is missing, or Item Name does not end with an ITM code.`);
       if (!quantityText) throw new Error(`Row ${rowNumber}: Quantity is missing for item ${code}.`);
       const quantity = typeof quantityCell.value === 'number'
         ? quantityCell.value
@@ -312,17 +320,21 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error(`Row ${rowNumber}: Quantity for ${code} must be a non-negative number.`);
       }
       const key = code.toLocaleLowerCase();
-      additions.set(key, (additions.get(key) || 0) + quantity);
+      if (quantityMode === 'replace' && quantities.has(key)) {
+        throw new Error(`Row ${rowNumber}: Item code ${code} appears more than once in a balance file.`);
+      }
+      quantities.set(key, (quantities.get(key) || 0) + quantity);
     });
-    if (!additions.size || [...additions.values()].every((quantity) => quantity === 0)) {
+    if (!quantities.size) throw new Error('No stock records were found in the selected file.');
+    if (quantityMode === 'add' && [...quantities.values()].every((quantity) => quantity === 0)) {
       throw new Error('No positive stock quantities were found in the selected file.');
     }
-    return additions;
+    return { quantities, mode: quantityMode };
   }
 
   async function importStockFile(file) {
     try {
-      const additions = await readStockImport(file);
+      const { quantities, mode } = await readStockImport(file);
       const itemsByCode = new Map();
       items.forEach((item) => {
         const key = String(item.code || '').trim().toLocaleLowerCase();
@@ -331,26 +343,31 @@ document.addEventListener('DOMContentLoaded', function () {
         itemsByCode.set(key, item);
       });
 
-      const unmatched = [...additions.keys()].filter((code) => !itemsByCode.has(code));
+      const unmatched = [...quantities.keys()].filter((code) => !itemsByCode.has(code));
       if (unmatched.length) {
         const sample = unmatched.slice(0, 5).join(', ');
         throw new Error(`${unmatched.length} item code${unmatched.length === 1 ? '' : 's'} not found in Item Master${sample ? `: ${sample}` : ''}. No stock was changed.`);
       }
 
       const updatedItems = items.map((item) => {
-        const increment = additions.get(String(item.code || '').trim().toLocaleLowerCase());
-        if (increment === undefined) return item;
+        const quantity = quantities.get(String(item.code || '').trim().toLocaleLowerCase());
+        if (quantity === undefined) return item;
+        if (mode === 'replace') return { ...item, stock: quantity };
         const stock = Number(item.stock) || 0;
-        const nextStock = stock + increment;
+        const nextStock = stock + quantity;
         if (!Number.isFinite(nextStock)) throw new Error(`Stock total for ${item.code} is too large.`);
         return { ...item, stock: nextStock };
       });
-      const totalAdded = [...additions.values()].reduce((total, quantity) => total + quantity, 0);
-      const summary = `${additions.size} item${additions.size === 1 ? '' : 's'}, ${totalAdded} total units`;
-      if (!window.confirm(`Add stock from "${file.name}"?\n\n${summary}\n\nQuantities will be added to current Item Master stock.`)) return;
+      const totalQuantity = [...quantities.values()].reduce((total, quantity) => total + quantity, 0);
+      const summary = `${quantities.size} item${quantities.size === 1 ? '' : 's'}, ${totalQuantity} total units`;
+      const action = mode === 'replace' ? 'Set stock balances' : 'Add stock';
+      const effect = mode === 'replace'
+        ? 'Listed items will be set to these balances. Items not in the file will stay unchanged.'
+        : 'Quantities will be added to current Item Master stock.';
+      if (!window.confirm(`${action} from "${file.name}"?\n\n${summary}\n\n${effect}`)) return;
       if (!persistItems(updatedItems)) return;
       renderItems();
-      showMessage(`Stock import complete: ${summary} added.`, false);
+      showMessage(`Stock import complete: ${summary} ${mode === 'replace' ? 'set' : 'added'}.`, false);
     } catch (error) {
       console.error('Could not import warehouse stock from the selected spreadsheet.', error);
       showMessage(`Stock import failed: ${error.message}`, true);
