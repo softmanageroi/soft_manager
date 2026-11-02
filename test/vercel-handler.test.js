@@ -2,6 +2,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { createServer } = require('node:http');
 const { spawnSync } = require('node:child_process');
+const vercelConfig = require('../vercel.json');
 
 process.env.VERCEL = '1';
 process.env.APP_USERNAME = 'test-admin';
@@ -12,6 +13,13 @@ for (const name of ['MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 
 }
 
 const vercelHandler = require('../server');
+
+test('Vercel bundles assets for the server.js function entrypoint', () => {
+  const includeFiles = vercelConfig.functions['server.js'].includeFiles;
+  for (const directory of ['html/**', 'css/**', 'js/**', 'images/**']) {
+    assert.ok(includeFiles.includes(directory));
+  }
+});
 
 test('Vercel handler routes requests and signs sessions across requests', async (context) => {
   const server = createServer(vercelHandler);
