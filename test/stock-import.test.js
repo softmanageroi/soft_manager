@@ -1,7 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const ExcelJS = require('exceljs');
-const { read } = require('../js/stock-import');
+const { read, applyToItems } = require('../js/stock-import');
 
 function makeFile(name, contents) {
   const buffer = Buffer.isBuffer(contents) ? contents : Buffer.from(contents);
@@ -26,6 +26,11 @@ test('reads reordered stock headers after title rows and always adds duplicate i
   const result = await read(file, ExcelJS);
   assert.equal(result.mode, 'add');
   assert.equal(result.quantities.get('itm1'), 10);
+  assert.equal(result.records.get('itm1').name, 'Item one');
+  const applied = applyToItems([{ id: 1, code: 'ITM1', name: 'Existing', stock: 5 }], result);
+  assert.equal(applied.items[0].stock, 15);
+  assert.equal(applied.createdCount, 0);
+  assert.equal(applied.updatedCount, 1);
 });
 
 test('reads semicolon-delimited CSV and common SKU/On Hand headers', async () => {
@@ -46,6 +51,38 @@ test('accepts item name, punctuated item-code headers, and localized quantity nu
   const result = await read(file, ExcelJS);
   assert.equal(result.quantities.get('itm-1'), 1234.5);
   assert.equal(result.mode, 'add');
+});
+
+test('creates missing items from item name, code, unit, and quantity', async () => {
+  const file = makeFile('items.csv', 'Item Name,Item Code,Unit,Quantity\nNew item,ITM-NEW,Kg,2.5\n');
+  const importData = await read(file, ExcelJS);
+  const applied = applyToItems([], importData);
+
+  assert.equal(applied.createdCount, 1);
+  assert.equal(applied.updatedCount, 0);
+  assert.deepEqual(applied.items[0], {
+    id: 1,
+    createdDate: applied.items[0].createdDate,
+    name: 'New item',
+    code: 'ITM-NEW',
+    type: 'Finished goods',
+    category: '',
+    brand: '',
+    unit: 'Kg',
+    stock: 2.5,
+    price: 0,
+    gst: 18,
+    description: ''
+  });
+});
+
+test('rejects a missing item without a name and leaves original items unchanged', async () => {
+  const file = makeFile('items.csv', 'Item Code,Quantity\nITM-NEW,2\n');
+  const importData = await read(file, ExcelJS);
+  const existing = [{ id: 1, code: 'ITM-1', stock: 3 }];
+
+  assert.throws(() => applyToItems(existing, importData), /has no Item Name/);
+  assert.equal(existing[0].stock, 3);
 });
 
 test('supports standard thousands separators in quantity cells', async () => {

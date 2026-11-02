@@ -19,6 +19,7 @@
     'totalquantity', 'totalqty', 'count', 'physicalquantity', 'stockinhand'
   ]);
   const NAME_HEADERS = new Set(['itemname', 'itemdescription', 'materialname', 'productname', 'name', 'description']);
+  const UNIT_HEADERS = new Set(['unit', 'uom', 'unitofmeasure', 'measureunit']);
   const QUANTITY_SUFFIXES = ['pieces', 'piece', 'units', 'unit', 'nos', 'no', 'pcs', 'pc', 'kgs', 'kg', 'litres', 'liters', 'ltr', 'l', 'ea'];
   const MAX_FILE_SIZE = 10 * 1024 * 1024;
   const MAX_HEADER_ROWS = 50;
@@ -126,13 +127,15 @@
       let codeColumn = 0;
       let quantityColumn = 0;
       let itemNameColumn = 0;
+      let unitColumn = 0;
       row.eachCell({ includeEmpty: true }, (cell, column) => {
         const header = normalizeHeader(cellText(cell));
         if (isCodeHeader(header)) codeColumn = column;
         if (isQuantityHeader(header)) quantityColumn = column;
         if (NAME_HEADERS.has(header)) itemNameColumn = column;
+        if (UNIT_HEADERS.has(header)) unitColumn = column;
       });
-      if (codeColumn && quantityColumn) match = { row, codeColumn, quantityColumn, itemNameColumn };
+      if (codeColumn && quantityColumn) match = { row, codeColumn, quantityColumn, itemNameColumn, unitColumn };
     });
     return match;
   }
@@ -189,11 +192,13 @@
     }
 
     const quantities = new Map();
+    const records = new Map();
     selectedWorksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
       if (rowNumber <= header.row.number) return;
       const quantityCell = row.getCell(header.quantityColumn);
       const itemName = header.itemNameColumn ? cellText(row.getCell(header.itemNameColumn)) : '';
       const code = cellText(row.getCell(header.codeColumn));
+      const unit = header.unitColumn ? cellText(row.getCell(header.unitColumn)) : '';
       const quantityText = cellText(quantityCell);
       if (!code && !quantityText && !itemName) return;
       if (!code) throw new Error(`Row ${rowNumber}: Item Code/Item Number is missing.`);
@@ -204,13 +209,74 @@
       }
       const key = code.toLocaleLowerCase();
       quantities.set(key, (quantities.get(key) || 0) + quantity);
+      const record = records.get(key) || { code, name: '', unit: '' };
+      if (itemName && record.name && itemName.toLocaleLowerCase() !== record.name.toLocaleLowerCase()) {
+        throw new Error(`Rows for item ${code} contain different item names.`);
+      }
+      if (unit && record.unit && unit.toLocaleLowerCase() !== record.unit.toLocaleLowerCase()) {
+        throw new Error(`Rows for item ${code} contain different units.`);
+      }
+      records.set(key, { ...record, name: record.name || itemName, unit: record.unit || unit });
     });
     if (!quantities.size) throw new Error('No stock records were found in the selected file.');
     if ([...quantities.values()].every((quantity) => quantity === 0)) {
       throw new Error('No positive stock quantities were found in the selected file.');
     }
-    return { quantities, mode: 'add' };
+    return { quantities, records, mode: 'add' };
   }
 
-  return { read };
+  function applyToItems(items, { quantities, records }) {
+    const itemsByCode = new Map();
+    items.forEach((item) => {
+      const key = String(item.code || '').trim().toLocaleLowerCase();
+      if (!key) return;
+      if (itemsByCode.has(key)) {
+        throw new Error(`Item code "${item.code}" is duplicated in Item Master. Fix the duplicate before importing.`);
+      }
+      itemsByCode.set(key, item);
+    });
+
+    const nextItems = [...items];
+    let nextId = Math.max(0, ...items.map((item) => Number(item.id) || 0)) + 1;
+    let updatedCount = 0;
+    let createdCount = 0;
+    for (const [key, quantity] of quantities) {
+      const existing = itemsByCode.get(key);
+      if (existing) {
+        const stock = Number(existing.stock) || 0;
+        const nextStock = stock + quantity;
+        if (!Number.isFinite(nextStock)) throw new Error(`Stock total for ${existing.code} is too large.`);
+        const updated = { ...existing, stock: nextStock };
+        nextItems[nextItems.indexOf(existing)] = updated;
+        itemsByCode.set(key, updated);
+        updatedCount += 1;
+        continue;
+      }
+
+      const record = records.get(key);
+      if (!record?.name) {
+        throw new Error(`Item ${record?.code || key} is not in Item Master and has no Item Name. Add an Item Name column to create it.`);
+      }
+      const created = {
+        id: nextId++,
+        createdDate: new Date().toISOString().slice(0, 10),
+        name: record.name,
+        code: record.code,
+        type: 'Finished goods',
+        category: '',
+        brand: '',
+        unit: record.unit || 'Nos',
+        stock: quantity,
+        price: 0,
+        gst: 18,
+        description: ''
+      };
+      nextItems.push(created);
+      itemsByCode.set(key, created);
+      createdCount += 1;
+    }
+    return { items: nextItems, updatedCount, createdCount };
+  }
+
+  return { read, applyToItems };
 }));

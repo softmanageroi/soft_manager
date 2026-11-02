@@ -218,35 +218,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   async function importStockFile(file) {
     try {
-      const { quantities } = await StockImport.read(file, window.ExcelJS);
-      const itemsByCode = new Map();
-      items.forEach((item) => {
-        const key = String(item.code || '').trim().toLocaleLowerCase();
-        if (!key) return;
-        if (itemsByCode.has(key)) throw new Error(`Item code "${item.code}" is duplicated in Item Master. Fix the duplicate before importing.`);
-        itemsByCode.set(key, item);
-      });
-
-      const unmatched = [...quantities.keys()].filter((code) => !itemsByCode.has(code));
-      if (unmatched.length) {
-        const sample = unmatched.slice(0, 5).join(', ');
-        throw new Error(`${unmatched.length} item code${unmatched.length === 1 ? '' : 's'} not found in Item Master${sample ? `: ${sample}` : ''}. No stock was changed.`);
-      }
-
-      const updatedItems = items.map((item) => {
-        const quantity = quantities.get(String(item.code || '').trim().toLocaleLowerCase());
-        if (quantity === undefined) return item;
-        const stock = Number(item.stock) || 0;
-        const nextStock = stock + quantity;
-        if (!Number.isFinite(nextStock)) throw new Error(`Stock total for ${item.code} is too large.`);
-        return { ...item, stock: nextStock };
-      });
+      const importData = await StockImport.read(file, window.ExcelJS);
+      const { items: updatedItems, updatedCount, createdCount } = StockImport.applyToItems(items, importData);
+      const { quantities } = importData;
       const totalQuantity = [...quantities.values()].reduce((total, quantity) => total + quantity, 0);
-      const summary = `${quantities.size} item${quantities.size === 1 ? '' : 's'}, ${totalQuantity} total units`;
-      if (!window.confirm(`Add stock from "${file.name}"?\n\n${summary}\n\nImported quantities will be added to current stock.`)) return;
+      const summary = `${quantities.size} items, ${totalQuantity} units; ${createdCount} new, ${updatedCount} existing`;
+      if (!window.confirm(`Import stock from "${file.name}"?\n\n${summary}\n\nNew codes will create Item Master entries; existing stock will be increased.`)) return;
       if (!persistItems(updatedItems)) return;
       renderItems();
-      showMessage(`Stock import complete: ${summary} added.`, false);
+      showMessage(`Stock import complete: ${summary}.`, false);
     } catch (error) {
       console.error('Could not import warehouse stock from the selected spreadsheet.', error);
       showMessage(`Stock import failed: ${error.message}`, true);
