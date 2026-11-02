@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let quantityMode = 'add';
     headerRow.eachCell({ includeEmpty: true }, (cell, column) => {
       const header = normalizeImportHeader(cellText(cell));
-      if (['itemcode', 'materialcode', 'code'].includes(header)) codeColumn = column;
+      if (['itemcode', 'itemnumber', 'materialcode', 'materialnumber', 'code'].includes(header)) codeColumn = column;
       if (['itemname', 'materialname', 'name'].includes(header)) itemNameColumn = column;
       if (['quantity', 'qty', 'stock', 'stockqty', 'currentstock', 'availableqty', 'balancequantity', 'balanceqty'].includes(header)) {
         quantityColumn = column;
@@ -298,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
     if ((!codeColumn && !itemNameColumn) || !quantityColumn) {
-      throw new Error('The first non-empty row must include Item Code (or Item Name with code at the end) and Quantity, Stock, or Balance Quantity column headers.');
+      throw new Error('The first non-empty row must include Item Code/Item Number (or Item Name with code at the end) and Quantity, Stock, or Balance Quantity column headers.');
     }
 
     const quantities = new Map();
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function () {
         : itemName.match(/\b(ITM\d+)$/i)?.[1] || '';
       const quantityText = cellText(quantityCell);
       if (!code && !quantityText && !itemName) return;
-      if (!code) throw new Error(`Row ${rowNumber}: Item Code is missing, or Item Name does not end with an ITM code.`);
+      if (!code) throw new Error(`Row ${rowNumber}: Item Code/Item Number is missing, or Item Name does not end with an ITM code.`);
       if (!quantityText) throw new Error(`Row ${rowNumber}: Quantity is missing for item ${code}.`);
       const quantity = typeof quantityCell.value === 'number'
         ? quantityCell.value
