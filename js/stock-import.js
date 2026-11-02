@@ -4,21 +4,48 @@
   else root.StockImport = stockImport;
 }(typeof globalThis === 'undefined' ? this : globalThis, function () {
   const CODE_HEADERS = new Set([
-    'itemcode', 'itemnumber', 'materialcode', 'materialnumber', 'code',
-    'sku', 'skucode', 'productcode', 'productid', 'materialid'
+    'itemcode', 'itemcodenumber', 'itemnumber', 'itemno', 'itemnum', 'itemid',
+    'materialcode', 'materialnumber', 'materialno', 'materialid',
+    'code', 'sku', 'skucode', 'skuno', 'productcode', 'productid',
+    'partcode', 'partnumber', 'partno', 'itemreference', 'itemref'
   ]);
   const QUANTITY_HEADERS = new Set([
-    'quantity', 'qty', 'stock', 'stockqty', 'currentstock', 'availableqty',
-    'balancequantity', 'balanceqty', 'closingstock', 'openingstock',
-    'onhand', 'onhandqty', 'quantityonhand', 'physicalstock', 'physicalqty',
-    'inventoryquantity'
+    'quantity', 'quantitynos', 'qty', 'qtynos', 'qtyunits', 'quantityunits',
+    'stock', 'stockqty', 'stockquantity', 'stockqtynos', 'currentstock', 'currentqty', 'availableqty',
+    'availablequantity', 'balancequantity', 'balanceqty', 'balqty',
+    'balanceqtynos', 'closingstock', 'closingqty', 'closingquantity', 'closingqtynos', 'openingstock',
+    'openingqty', 'openingquantity', 'openingqtynos', 'onhand', 'onhandqty', 'qtyonhand',
+    'quantityonhand', 'physicalstock', 'physicalqty', 'inventoryquantity',
+    'totalquantity', 'totalqty', 'count', 'physicalquantity', 'stockinhand'
   ]);
-  const NAME_HEADERS = new Set(['itemname', 'materialname', 'productname', 'name']);
+  const NAME_HEADERS = new Set(['itemname', 'itemdescription', 'materialname', 'productname', 'name', 'description']);
   const MAX_FILE_SIZE = 10 * 1024 * 1024;
   const MAX_HEADER_ROWS = 50;
 
   function normalizeHeader(value) {
-    return String(value || '').replace(/^\uFEFF/, '').trim().toLocaleLowerCase().replace(/[\s_-]+/g, '');
+    return String(value || '').replace(/^\uFEFF/, '').trim().toLocaleLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+  }
+
+  function parseQuantity(value) {
+    const text = String(value).trim().replace(/[\s\u00a0\u202f']/g, '');
+    if (!text) return NaN;
+    const comma = text.lastIndexOf(',');
+    const dot = text.lastIndexOf('.');
+    if (comma !== -1 && dot !== -1) {
+      const decimalSeparator = comma > dot ? ',' : '.';
+      const groupingSeparator = decimalSeparator === ',' ? '.' : ',';
+      return Number(text.split(groupingSeparator).join('').replace(decimalSeparator, '.'));
+    }
+    if (comma !== -1) {
+      if (/^[+-]?\d{1,3}(,\d{3})+$/.test(text)) return Number(text.replace(/,/g, ''));
+      return Number(text.replace(',', '.'));
+    }
+    if ((text.match(/\./g) || []).length > 1) {
+      if (/^[+-]?\d{1,3}(\.\d{3})+$/.test(text)) return Number(text.replace(/\./g, ''));
+      return NaN;
+    }
+    return Number(text);
   }
 
   function cellText(cell) {
@@ -148,9 +175,7 @@
       if (!code && !quantityText && !itemName) return;
       if (!code) throw new Error(`Row ${rowNumber}: Item Code/Item Number is missing.`);
       if (!quantityText) throw new Error(`Row ${rowNumber}: Quantity is missing for item ${code}.`);
-      const quantity = typeof quantityCell.value === 'number'
-        ? quantityCell.value
-        : Number(quantityText.replace(/,/g, ''));
+      const quantity = typeof quantityCell.value === 'number' ? quantityCell.value : parseQuantity(quantityText);
       if (!Number.isFinite(quantity) || quantity < 0) {
         throw new Error(`Row ${rowNumber}: Quantity for ${code} must be a non-negative number.`);
       }

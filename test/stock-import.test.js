@@ -38,6 +38,22 @@ test('reads semicolon-delimited CSV and common SKU/On Hand headers', async () =>
   assert.equal(result.quantities.get('sku-1'), 2.5);
 });
 
+test('accepts item name, punctuated item-code headers, and localized quantity numbers', async () => {
+  const file = makeFile(
+    'balance.csv',
+    'Stock report\nItem Name|Item Code / Number|Balance Qty (Nos.)\nItem one|ITM-1|1.234,50\n'
+  );
+  const result = await read(file, ExcelJS);
+  assert.equal(result.quantities.get('itm-1'), 1234.5);
+  assert.equal(result.mode, 'add');
+});
+
+test('supports standard thousands separators in quantity cells', async () => {
+  const file = makeFile('balance.csv', 'SKU,Quantity\nSKU-1,"1,234.50"\n');
+  const result = await read(file, ExcelJS);
+  assert.equal(result.quantities.get('sku-1'), 1234.5);
+});
+
 test('rejects native Numbers files with a conversion hint', async () => {
   const file = makeFile('stock.xlsx', 'Index/Document.iwa');
   await assert.rejects(read(file, ExcelJS), /Apple Numbers file detected/);
