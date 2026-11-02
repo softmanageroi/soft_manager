@@ -1024,5 +1024,5 @@ if (require.main === module) {
     });
   }
 } else {
-  module.exports = { vercelHandler };
+  module.exports = vercelHandler;
 }

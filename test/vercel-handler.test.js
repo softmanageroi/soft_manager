@@ -11,7 +11,7 @@ for (const name of ['MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 
   process.env[name] = '';
 }
 
-const { vercelHandler } = require('../server');
+const vercelHandler = require('../server');
 
 test('Vercel handler routes requests and signs sessions across requests', async (context) => {
   const server = createServer(vercelHandler);
@@ -68,7 +68,7 @@ test('missing Vercel credentials return an error without creating local credenti
     let mkdirCalls = 0;
     fs.promises.mkdir = async () => { mkdirCalls += 1; };
     console.error = () => {};
-    const { vercelHandler } = require('./server');
+    const vercelHandler = require('./server');
     const response = {
       headersSent: false,
       writeHead(statusCode) { this.statusCode = statusCode; },

@@ -1,6 +1,6 @@
 module.exports = async function handler(request, response) {
   try {
-    const { vercelHandler } = require('../server');
+    const vercelHandler = require('../server');
     await vercelHandler(request, response);
   } catch (error) {
     console.error('Vercel function bootstrap failed.', error);
