@@ -82,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
       nextNumber += 1;
       docNo = `MRIU/${period}/${String(nextNumber).padStart(5, '0')}`;
     } while (savedNumbers.has(docNo));
-    localStorage.setItem(seriesCounterKey, String(nextNumber));
     return docNo;
   }
 
@@ -253,6 +252,15 @@ document.addEventListener('DOMContentLoaded', function () {
     if (existingIndex >= 0) vouchers[existingIndex] = voucher;
     else vouchers.push(voucher);
     localStorage.setItem(vouchersKey, JSON.stringify(vouchers));
+    if (existingIndex < 0) {
+      const [, period, sequence] = currentDocNo.split('/');
+      const number = Number(sequence);
+      if (period && Number.isInteger(number) && number > 0) {
+        const seriesCounterKey = `${counterKey}:${period}`;
+        const savedCounter = Number(localStorage.getItem(seriesCounterKey)) || 0;
+        localStorage.setItem(seriesCounterKey, String(Math.max(savedCounter, number)));
+      }
+    }
     return voucher;
   }
 
