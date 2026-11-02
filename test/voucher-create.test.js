@@ -25,6 +25,11 @@ function currentFinancialPeriod() {
   return `${String(startYear).slice(-2)}-${String(startYear + 1).slice(-2)}`;
 }
 
+test('voucher page loads the current save-only numbering script', () => {
+  const html = fs.readFileSync(path.join(__dirname, '../html/voucher-create.html'), 'utf8');
+  assert.match(html, /voucher-create\.js\?v=20261102-saved-voucher-sequence/);
+});
+
 function createVoucherPage(initialStorage = new Map()) {
   const elements = new Map();
   const getElement = (id) => {
