@@ -274,8 +274,21 @@ document.addEventListener('DOMContentLoaded', function () {
       throw new Error('Unsupported file type. Choose an .xlsx or .csv file.');
     }
 
-    const worksheet = workbook.worksheets[0];
-    if (!worksheet) throw new Error('The selected workbook has no worksheet.');
+    const worksheet = workbook.worksheets.find((sheet) => {
+      let hasValues = false;
+      sheet.eachRow({ includeEmpty: false }, (row) => {
+        if (row.values.some((value) => value !== null && value !== undefined && String(value).trim())) {
+          hasValues = true;
+        }
+      });
+      return hasValues;
+    });
+    if (!worksheet) {
+      if (!workbook.worksheets.length) {
+        throw new Error('This workbook has no readable worksheet. Open it in Excel and save it with at least one worksheet, or export it as .csv. Use CSV Template to check the required columns.');
+      }
+      throw new Error('All worksheets in this workbook are empty. Add stock rows and try again.');
+    }
     let headerRow;
     worksheet.eachRow({ includeEmpty: false }, (row) => {
       if (!headerRow && row.values.some((value) => value !== null && value !== undefined && String(value).trim())) {
