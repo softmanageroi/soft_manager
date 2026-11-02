@@ -41,7 +41,7 @@ test('reads semicolon-delimited CSV and common SKU/On Hand headers', async () =>
 test('accepts item name, punctuated item-code headers, and localized quantity numbers', async () => {
   const file = makeFile(
     'balance.csv',
-    'Stock report\nItem Name|Item Code / Number|Balance Qty (Nos.)\nItem one|ITM-1|1.234,50\n'
+    'Stock report\nItem Name|Item Code / Number|Balance Quantity (Nos.)\nItem one|ITM-1|1.234,50\n'
   );
   const result = await read(file, ExcelJS);
   assert.equal(result.quantities.get('itm-1'), 1234.5);
@@ -52,6 +52,16 @@ test('supports standard thousands separators in quantity cells', async () => {
   const file = makeFile('balance.csv', 'SKU,Quantity\nSKU-1,"1,234.50"\n');
   const result = await read(file, ExcelJS);
   assert.equal(result.quantities.get('sku-1'), 1234.5);
+});
+
+test('finds headers after titles and handles delimiters inside title rows', async () => {
+  const file = makeFile(
+    'stock.csv',
+    'Stock report, generated today, for warehouse\nItem No.;Qty Units;Description\nITM-2;3;Item, two\nITM-3;4;Item, three\n'
+  );
+  const result = await read(file, ExcelJS);
+  assert.equal(result.quantities.get('itm-2'), 3);
+  assert.equal(result.quantities.get('itm-3'), 4);
 });
 
 test('rejects native Numbers files with a conversion hint', async () => {

@@ -85,9 +85,7 @@ If MySQL is not configured, the app continues in local-only mode and stores data
 
 ## Importing stock balances
 
-Open **Item Master → Upload Stock Excel** and choose an `.xlsx` or `.csv` file. To set current balances, include `Item Number` (the existing item code, such as `ITM2605`) and `Balance Quantity` columns. `Item Code` is also accepted; if neither code column is present, the importer can extract an ITM code from the end of `Item Name`. The import replaces stock only for listed items; zero balances are allowed, while negative balances, duplicate codes, and codes missing from Item Master are rejected without changing stock. Correct any rejected rows and upload again.
-
-The existing `Item Code` + `Quantity` (or `Stock`) import format remains available for adding quantities to current stock.
+Open **Item Master → Upload Stock Excel** and choose an `.xlsx` or `.csv` file. Include an item-code column (for example `Item Code`, `Item Number`, `Item No`, or `SKU`) and a quantity column (for example `Quantity`, `Qty`, `Stock`, or `Balance Quantity`). Column order, extra columns, and up to 50 title rows are allowed; item names are optional. Numbers `.numbers` files must first be exported to Excel or CSV. Each imported quantity is added to the existing stock, including repeated item codes in the file; zero-only imports, negative values, and codes missing from Item Master are rejected without changing stock.
 
 ## Monthly registers
 

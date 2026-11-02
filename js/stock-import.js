@@ -19,6 +19,7 @@
     'totalquantity', 'totalqty', 'count', 'physicalquantity', 'stockinhand'
   ]);
   const NAME_HEADERS = new Set(['itemname', 'itemdescription', 'materialname', 'productname', 'name', 'description']);
+  const QUANTITY_SUFFIXES = ['pieces', 'piece', 'units', 'unit', 'nos', 'no', 'pcs', 'pc', 'kgs', 'kg', 'litres', 'liters', 'ltr', 'l', 'ea'];
   const MAX_FILE_SIZE = 10 * 1024 * 1024;
   const MAX_HEADER_ROWS = 50;
 
@@ -62,9 +63,11 @@
     const lines = text.split(/\r\n|\n|\r/).filter((line) => line.trim());
     const delimiters = [',', ';', '\t', '|'];
     let delimiter = ',';
-    let maxColumns = 1;
+    let bestRows = 0;
+    let bestColumns = 0;
     for (const candidate of delimiters) {
-      let maxCandidateColumns = 0;
+      let candidateRows = 0;
+      let candidateColumns = 0;
       for (const line of lines.slice(0, MAX_HEADER_ROWS)) {
         let columns = 0;
         let quoted = false;
@@ -72,10 +75,14 @@
           if (character === '"') quoted = !quoted;
           else if (character === candidate && !quoted) columns += 1;
         }
-        maxCandidateColumns = Math.max(maxCandidateColumns, columns);
+        if (columns) {
+          candidateRows += 1;
+          candidateColumns += columns;
+        }
       }
-      if (maxCandidateColumns > maxColumns) {
-        maxColumns = maxCandidateColumns;
+      if (candidateRows > bestRows || (candidateRows === bestRows && candidateColumns > bestColumns)) {
+        bestRows = candidateRows;
+        bestColumns = candidateColumns;
         delimiter = candidate;
       }
     }
@@ -121,13 +128,29 @@
       let itemNameColumn = 0;
       row.eachCell({ includeEmpty: true }, (cell, column) => {
         const header = normalizeHeader(cellText(cell));
-        if (CODE_HEADERS.has(header)) codeColumn = column;
-        if (QUANTITY_HEADERS.has(header)) quantityColumn = column;
+        if (isCodeHeader(header)) codeColumn = column;
+        if (isQuantityHeader(header)) quantityColumn = column;
         if (NAME_HEADERS.has(header)) itemNameColumn = column;
       });
       if (codeColumn && quantityColumn) match = { row, codeColumn, quantityColumn, itemNameColumn };
     });
     return match;
+  }
+
+  function isCodeHeader(header) {
+    return CODE_HEADERS.has(header)
+      || /^(?:(?:item|material|product|part)(?:code|number|no|num|id)|sku(?:code|no)?)$/.test(header);
+  }
+
+  function isQuantityHeader(header) {
+    let candidate = header;
+    while (candidate) {
+      if (QUANTITY_HEADERS.has(candidate)) return true;
+      const suffix = QUANTITY_SUFFIXES.find((unit) => candidate.endsWith(unit) && candidate.length > unit.length);
+      if (!suffix) return false;
+      candidate = candidate.slice(0, -suffix.length);
+    }
+    return false;
   }
 
   async function read(file, ExcelJS) {
