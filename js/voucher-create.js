@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
   renderDepartmentOptions();
 
   const vouchersKey = 'materialRequisitionVouchers';
-  const counterKey = 'materialRequisitionCounter';
   const saveButton = document.getElementById('saveVoucherBtn');
   const returnLink = document.getElementById('returnToIssueList');
   const previousButton = document.getElementById('previousVoucherBtn');
@@ -74,9 +73,14 @@ document.addEventListener('DOMContentLoaded', function () {
   function createDocumentNumber() {
     const savedVouchers = readVouchers();
     const period = voucherPrefix();
-    const seriesCounterKey = `${counterKey}:${period}`;
     const savedNumbers = new Set(savedVouchers.map((voucher) => String(voucher.docNo || '')));
-    let nextNumber = Number(localStorage.getItem(seriesCounterKey)) || 0;
+    const numberPrefix = `MRIU/${period}/`;
+    let nextNumber = savedVouchers.reduce((highest, voucher) => {
+      const docNo = String(voucher.docNo || '');
+      if (!docNo.startsWith(numberPrefix)) return highest;
+      const sequence = Number(docNo.slice(numberPrefix.length));
+      return Number.isInteger(sequence) && sequence > highest ? sequence : highest;
+    }, 0);
     let docNo = '';
     do {
       nextNumber += 1;
@@ -252,15 +256,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (existingIndex >= 0) vouchers[existingIndex] = voucher;
     else vouchers.push(voucher);
     localStorage.setItem(vouchersKey, JSON.stringify(vouchers));
-    if (existingIndex < 0) {
-      const [, period, sequence] = currentDocNo.split('/');
-      const number = Number(sequence);
-      if (period && Number.isInteger(number) && number > 0) {
-        const seriesCounterKey = `${counterKey}:${period}`;
-        const savedCounter = Number(localStorage.getItem(seriesCounterKey)) || 0;
-        localStorage.setItem(seriesCounterKey, String(Math.max(savedCounter, number)));
-      }
-    }
     return voucher;
   }
 

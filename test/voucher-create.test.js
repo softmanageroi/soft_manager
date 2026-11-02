@@ -19,7 +19,13 @@ function createElement() {
   };
 }
 
-function createVoucherPage() {
+function currentFinancialPeriod() {
+  const date = new Date();
+  const startYear = date.getMonth() >= 3 ? date.getFullYear() : date.getFullYear() - 1;
+  return `${String(startYear).slice(-2)}-${String(startYear + 1).slice(-2)}`;
+}
+
+function createVoucherPage(initialStorage = new Map()) {
   const elements = new Map();
   const getElement = (id) => {
     if (!elements.has(id)) elements.set(id, createElement());
@@ -46,7 +52,7 @@ function createVoucherPage() {
     },
     querySelector: () => ({ appendChild() {} })
   };
-  const storage = new Map();
+  const storage = initialStorage;
   const localStorage = {
     getItem: (key) => storage.get(key) ?? null,
     setItem: (key, value) => storage.set(key, String(value))
@@ -85,23 +91,28 @@ function createVoucherPage() {
   return { elements, itemsBody, storage };
 }
 
+test('starts at one when no vouchers are saved, even if an old counter exists', () => {
+  const datePeriod = currentFinancialPeriod();
+  const { elements } = createVoucherPage(new Map([
+    [`materialRequisitionCounter:${datePeriod}`, '5']
+  ]));
+  assert.equal(elements.get('docNo').value, `MRIU/${datePeriod}/00001`);
+});
+
 test('does not consume a material issue voucher number until saved', () => {
   const { elements, itemsBody, storage } = createVoucherPage();
   const newVoucherButton = elements.get('newVoucherBtn');
   const firstNumber = elements.get('docNo').value;
   assert.match(firstNumber, /^MRIU\/\d{2}-\d{2}\/00001$/);
-  assert.equal(storage.has(`materialRequisitionCounter:${firstNumber.split('/')[1]}`), false);
 
   newVoucherButton.listeners.click();
   assert.equal(elements.get('docNo').value, firstNumber);
-  assert.equal(storage.has(`materialRequisitionCounter:${firstNumber.split('/')[1]}`), false);
 
   const inputs = itemsBody.rows[0].querySelectorAll('input');
   inputs[1].value = 'Test item';
   inputs[4].value = '2';
   elements.get('saveVoucherBtn').listeners.click();
 
-  assert.equal(storage.get(`materialRequisitionCounter:${firstNumber.split('/')[1]}`), '1');
   assert.equal(JSON.parse(storage.get('materialRequisitionVouchers')).length, 1);
 
   newVoucherButton.listeners.click();
