@@ -106,7 +106,7 @@
                         </div>
                         <div class="erp-card-body">
                             <p id="stockImportHelp" style="margin: 0 0 12px; color: var(--erp-text-muted); font-size: 12px;">
-                                Upload .xlsx or .csv with <strong>Item Code/Item Number</strong> + <strong>Quantity</strong> to add stock, or <strong>Item Number</strong> + <strong>Balance Quantity</strong> to replace stock for listed items. In Apple Numbers, use <strong>File &gt; Export To &gt; Excel</strong> before uploading; renaming a Numbers file to .xlsx does not convert it.
+                                Upload .xlsx or .csv with an item-code column (e.g. <strong>Item Code, Item Number, SKU</strong>) and quantity column (e.g. <strong>Quantity, Qty, Stock, Balance Quantity</strong>). Column order and extra title rows are okay; quantities are always added. Export Numbers files to Excel or CSV first.
                             </p>
                             <div class="erp-table-container">
                                 <table class="erp-table">
@@ -408,6 +408,7 @@
     <script src="../js/searchText.js"></script>
     <script src="../js/header-user.js?v=github-pages-local-only"></script>
     <script src="../js/vendor/exceljs.min.js?v=4.4.0"></script>
-    <script src="../js/item-master.js?v=20261102-detect-numbers-workbook"></script>
+    <script src="../js/stock-import.js?v=20261102-flexible-stock-import"></script>
+    <script src="../js/item-master.js?v=20261102-flexible-stock-import"></script>
 </body>
 </html>

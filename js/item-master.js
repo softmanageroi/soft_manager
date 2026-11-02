@@ -216,143 +216,9 @@ document.addEventListener('DOMContentLoaded', function () {
     renderCategories();
   }
 
-  function normalizeImportHeader(value) {
-    return String(value || '').replace(/^\uFEFF/, '').trim().toLocaleLowerCase().replace(/[\s_-]+/g, '');
-  }
-
-  function cellText(cell) {
-    const value = cell.value;
-    if (value === null || value === undefined) return '';
-    if (typeof value === 'object') {
-      if (Array.isArray(value.richText)) return value.richText.map((part) => part.text || '').join('').trim();
-      throw new Error(`Cell ${cell.address} must contain a plain value, not a formula or object.`);
-    }
-    return String(value).trim();
-  }
-
-  async function readStockImport(file) {
-    if (!window.ExcelJS?.Workbook) throw new Error('The local Excel reader did not load. Refresh the page and try again.');
-    if (file.size > 10 * 1024 * 1024) throw new Error('Choose a file smaller than 10 MB.');
-    const extension = file.name.split('.').pop()?.toLocaleLowerCase();
-    const workbook = new ExcelJS.Workbook();
-    if (extension === 'xlsx') {
-      const fileBuffer = await file.arrayBuffer();
-      const archiveContents = new TextDecoder().decode(fileBuffer);
-      if (archiveContents.includes('Index/Document.iwa')) {
-        throw new Error('This is an Apple Numbers file, not an Excel workbook. In Numbers, choose File > Export To > Excel, then upload the exported .xlsx file. You can also export it as .csv. Renaming the file is not enough.');
-      }
-      await workbook.xlsx.load(fileBuffer);
-    } else if (extension === 'csv') {
-      const text = await file.text();
-      const worksheet = workbook.addWorksheet('Stock Import');
-      const rows = [];
-      let row = [];
-      let value = '';
-      let quoted = false;
-      for (let index = 0; index < text.length; index += 1) {
-        const character = text[index];
-        if (character === '"' && quoted && text[index + 1] === '"') {
-          value += '"';
-          index += 1;
-        } else if (character === '"') {
-          quoted = !quoted;
-        } else if (character === ',' && !quoted) {
-          row.push(value);
-          value = '';
-        } else if ((character === '\n' || character === '\r') && !quoted) {
-          if (character === '\r' && text[index + 1] === '\n') index += 1;
-          row.push(value);
-          rows.push(row);
-          row = [];
-          value = '';
-        } else {
-          value += character;
-        }
-      }
-      if (quoted) throw new Error('The CSV file has an unmatched quote.');
-      if (value || row.length) {
-        row.push(value);
-        rows.push(row);
-      }
-      rows.forEach((values) => worksheet.addRow(values));
-    } else {
-      throw new Error('Unsupported file type. Choose an .xlsx or .csv file.');
-    }
-
-    const worksheet = workbook.worksheets.find((sheet) => {
-      let hasValues = false;
-      sheet.eachRow({ includeEmpty: false }, (row) => {
-        if (row.values.some((value) => value !== null && value !== undefined && String(value).trim())) {
-          hasValues = true;
-        }
-      });
-      return hasValues;
-    });
-    if (!worksheet) {
-      if (!workbook.worksheets.length) {
-        throw new Error('This workbook has no readable worksheet. Open it in Excel and save it with at least one worksheet, or export it as .csv. Use CSV Template to check the required columns.');
-      }
-      throw new Error('All worksheets in this workbook are empty. Add stock rows and try again.');
-    }
-    let headerRow;
-    worksheet.eachRow({ includeEmpty: false }, (row) => {
-      if (!headerRow && row.values.some((value) => value !== null && value !== undefined && String(value).trim())) {
-        headerRow = row;
-      }
-    });
-    if (!headerRow) throw new Error('The selected sheet is empty.');
-
-    let codeColumn = 0;
-    let itemNameColumn = 0;
-    let quantityColumn = 0;
-    let quantityMode = 'add';
-    headerRow.eachCell({ includeEmpty: true }, (cell, column) => {
-      const header = normalizeImportHeader(cellText(cell));
-      if (['itemcode', 'itemnumber', 'materialcode', 'materialnumber', 'code'].includes(header)) codeColumn = column;
-      if (['itemname', 'materialname', 'name'].includes(header)) itemNameColumn = column;
-      if (['quantity', 'qty', 'stock', 'stockqty', 'currentstock', 'availableqty', 'balancequantity', 'balanceqty'].includes(header)) {
-        quantityColumn = column;
-        quantityMode = ['balancequantity', 'balanceqty'].includes(header) ? 'replace' : 'add';
-      }
-    });
-    if ((!codeColumn && !itemNameColumn) || !quantityColumn) {
-      throw new Error('The first non-empty row must include Item Code/Item Number (or Item Name with code at the end) and Quantity, Stock, or Balance Quantity column headers.');
-    }
-
-    const quantities = new Map();
-    worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-      if (rowNumber <= headerRow.number) return;
-      const quantityCell = row.getCell(quantityColumn);
-      const itemName = itemNameColumn ? cellText(row.getCell(itemNameColumn)) : '';
-      const code = codeColumn
-        ? cellText(row.getCell(codeColumn))
-        : itemName.match(/\b(ITM\d+)$/i)?.[1] || '';
-      const quantityText = cellText(quantityCell);
-      if (!code && !quantityText && !itemName) return;
-      if (!code) throw new Error(`Row ${rowNumber}: Item Code/Item Number is missing, or Item Name does not end with an ITM code.`);
-      if (!quantityText) throw new Error(`Row ${rowNumber}: Quantity is missing for item ${code}.`);
-      const quantity = typeof quantityCell.value === 'number'
-        ? quantityCell.value
-        : Number(quantityText.replace(/,/g, ''));
-      if (!Number.isFinite(quantity) || quantity < 0) {
-        throw new Error(`Row ${rowNumber}: Quantity for ${code} must be a non-negative number.`);
-      }
-      const key = code.toLocaleLowerCase();
-      if (quantityMode === 'replace' && quantities.has(key)) {
-        throw new Error(`Row ${rowNumber}: Item code ${code} appears more than once in a balance file.`);
-      }
-      quantities.set(key, (quantities.get(key) || 0) + quantity);
-    });
-    if (!quantities.size) throw new Error('No stock records were found in the selected file.');
-    if (quantityMode === 'add' && [...quantities.values()].every((quantity) => quantity === 0)) {
-      throw new Error('No positive stock quantities were found in the selected file.');
-    }
-    return { quantities, mode: quantityMode };
-  }
-
   async function importStockFile(file) {
     try {
-      const { quantities, mode } = await readStockImport(file);
+      const { quantities } = await StockImport.read(file, window.ExcelJS);
       const itemsByCode = new Map();
       items.forEach((item) => {
         const key = String(item.code || '').trim().toLocaleLowerCase();
@@ -370,7 +236,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const updatedItems = items.map((item) => {
         const quantity = quantities.get(String(item.code || '').trim().toLocaleLowerCase());
         if (quantity === undefined) return item;
-        if (mode === 'replace') return { ...item, stock: quantity };
         const stock = Number(item.stock) || 0;
         const nextStock = stock + quantity;
         if (!Number.isFinite(nextStock)) throw new Error(`Stock total for ${item.code} is too large.`);
@@ -378,14 +243,10 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       const totalQuantity = [...quantities.values()].reduce((total, quantity) => total + quantity, 0);
       const summary = `${quantities.size} item${quantities.size === 1 ? '' : 's'}, ${totalQuantity} total units`;
-      const action = mode === 'replace' ? 'Set stock balances' : 'Add stock';
-      const effect = mode === 'replace'
-        ? 'Listed items will be set to these balances. Items not in the file will stay unchanged.'
-        : 'Quantities will be added to current Item Master stock.';
-      if (!window.confirm(`${action} from "${file.name}"?\n\n${summary}\n\n${effect}`)) return;
+      if (!window.confirm(`Add stock from "${file.name}"?\n\n${summary}\n\nImported quantities will be added to current stock.`)) return;
       if (!persistItems(updatedItems)) return;
       renderItems();
-      showMessage(`Stock import complete: ${summary} ${mode === 'replace' ? 'set' : 'added'}.`, false);
+      showMessage(`Stock import complete: ${summary} added.`, false);
     } catch (error) {
       console.error('Could not import warehouse stock from the selected spreadsheet.', error);
       showMessage(`Stock import failed: ${error.message}`, true);
