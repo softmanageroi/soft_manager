@@ -236,7 +236,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const extension = file.name.split('.').pop()?.toLocaleLowerCase();
     const workbook = new ExcelJS.Workbook();
     if (extension === 'xlsx') {
-      await workbook.xlsx.load(await file.arrayBuffer());
+      const fileBuffer = await file.arrayBuffer();
+      const archiveContents = new TextDecoder().decode(fileBuffer);
+      if (archiveContents.includes('Index/Document.iwa')) {
+        throw new Error('This is an Apple Numbers file, not an Excel workbook. In Numbers, choose File > Export To > Excel, then upload the exported .xlsx file. You can also export it as .csv. Renaming the file is not enough.');
+      }
+      await workbook.xlsx.load(fileBuffer);
     } else if (extension === 'csv') {
       const text = await file.text();
       const worksheet = workbook.addWorksheet('Stock Import');
