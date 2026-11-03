@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+<<<<<<< ours
   <title>IMS | Warehouse Stock</title>
   <style>
     :root { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #182740; background: #f4f7fb; }
@@ -20,10 +21,51 @@
     input { width: 100%; min-height: 44px; padding: 9px 11px; border: 1px solid #c8d4e3; border-radius: 8px; font: inherit; color: #17263e; } input:focus { outline: 3px solid rgba(39,104,215,.2); border-color: #2768d7; }
     .actions { display: flex; justify-content: end; gap: 10px; margin-top: 26px; } button { min-height: 42px; padding: 0 15px; border: 0; border-radius: 8px; cursor: pointer; font: inherit; font-weight: 700; } .cancel { color: #35445a; background: #edf2f8; } .save { color: #fff; background: #2167dc; } .save:hover { background: #1858c3; }
     #notice { min-height: 1.5em; margin: 14px 0 0; color: #18703e; font-weight: 650; } @media (max-width: 580px) { header { align-items: start; flex-direction: column; } form { grid-template-columns: 1fr; } }
+=======
+  <title>Warehouse Stock</title>
+  <style>
+    :root { --ink:#192943; --muted:#6f819e; --line:#e1e8f1; --purple:#6240df; --pale:#f7f9fc; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--pale); color:var(--ink); font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { max-width:1040px; margin:48px auto; padding:0 24px; }
+    h1 { margin:0; font-size:28px; letter-spacing:-.025em; }
+    .intro { color:var(--muted); margin:8px 0 28px; }
+    .stock-card { background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:0 10px 30px rgba(37,58,91,.05); }
+    .stock-head, .stock-row { display:grid; grid-template-columns:1.4fr 1fr 1fr 42px; align-items:center; gap:20px; padding:18px 24px; }
+    .stock-head { background:#fafbfe; color:var(--muted); font-size:13px; font-weight:750; text-transform:uppercase; letter-spacing:.055em; }
+    .stock-row { min-height:74px; border-top:1px solid var(--line); cursor:pointer; transition:background .15s ease; }
+    .stock-row:hover, .stock-row:focus-visible { background:#faf9ff; outline:2px solid var(--purple); outline-offset:-2px; }
+    .item-name { display:block; font-weight:700; }
+    .code, .qty { color:var(--muted); }
+    .qty { font-weight:700; color:var(--ink); }
+    .hint { margin:20px 0 0; color:var(--muted); font-size:14px; }
+    .edit-icon { width:34px; height:34px; border:1px solid #d9def0; border-radius:8px; display:grid; place-items:center; color:var(--purple); font-size:17px; }
+
+    dialog { width:min(460px, calc(100% - 32px)); margin:auto; padding:0; border:0; border-radius:16px; color:var(--ink); box-shadow:0 24px 70px rgba(20,34,59,.28); }
+    dialog::backdrop { background:rgba(21,33,52,.42); backdrop-filter:blur(2px); }
+    .modal-head { display:flex; align-items:start; justify-content:space-between; padding:25px 28px 19px; border-bottom:1px solid var(--line); }
+    .modal-head h2 { margin:0; font-size:21px; }
+    .modal-head p { margin:5px 0 0; color:var(--muted); font-size:14px; }
+    .close { border:0; background:transparent; color:var(--muted); font-size:28px; line-height:1; cursor:pointer; }
+    form { padding:24px 28px 28px; }
+    .location { padding:19px 0 22px; border-bottom:1px solid var(--line); }
+    .location:first-of-type { padding-top:0; }
+    label { display:block; margin:0 0 8px; color:#536681; font-size:13px; font-weight:750; }
+    select { width:100%; height:54px; padding:0 16px; border:1px solid #d8d8eb; border-radius:9px; background:#fff; color:#202a3b; font:inherit; font-size:17px; outline:none; }
+    select:focus { border-color:var(--purple); box-shadow:0 0 0 3px rgba(98,64,223,.13); }
+    .location-footer { display:flex; justify-content:space-between; align-items:center; margin-top:11px; }
+    .opening { color:#6f819e; font-size:15px; }
+    .save { min-width:102px; height:43px; border:1px solid #d9ddeb; border-radius:9px; background:#fff; color:var(--ink); font:inherit; font-size:16px; font-weight:750; cursor:pointer; box-shadow:0 4px 12px rgba(44,60,88,.06); }
+    .save:hover { border-color:var(--purple); color:var(--purple); }
+    .modal-actions { display:flex; justify-content:flex-end; gap:12px; padding-top:22px; }
+    .done { height:44px; padding:0 22px; border:0; border-radius:9px; background:var(--purple); color:#fff; font:inherit; font-weight:750; cursor:pointer; }
+    @media (max-width:640px) { main { margin:28px auto; padding:0 15px; } .stock-head { display:none; } .stock-row { grid-template-columns:1fr auto; gap:8px; } .stock-row .code, .stock-row .qty { grid-column:1; font-size:14px; } .edit-icon { grid-column:2; grid-row:1 / span 3; } }
+>>>>>>> theirs
   </style>
 </head>
 <body>
   <main>
+<<<<<<< ours
     <header>
       <div><h1>Warehouse Stock</h1><p>View and maintain stock available in this warehouse.</p></div>
       <div class="hint">Double-click an item to edit it</div>
@@ -105,6 +147,52 @@
     document.querySelector('.close').addEventListener('click', () => dialog.close());
     document.querySelector('.cancel').addEventListener('click', () => dialog.close());
     renderRows();
+=======
+    <h1>Warehouse Stock</h1>
+    <p class="intro">Double-click an item to assign stock to a warehouse.</p>
+    <section class="stock-card" aria-label="Warehouse stock items">
+      <div class="stock-head"><span>Item</span><span>Item code</span><span>Opening stock</span><span></span></div>
+      <div class="stock-row" tabindex="0" data-item="Umbrella Facility Manager" data-code="UFM-001" data-opening="9"><span class="item-name">Umbrella Facility Manager</span><span class="code">UFM-001</span><span class="qty">9 Nos</span><span class="edit-icon" aria-hidden="true">↗</span></div>
+      <div class="stock-row" tabindex="0" data-item="Safety Helmet" data-code="SH-204" data-opening="2"><span class="item-name">Safety Helmet</span><span class="code">SH-204</span><span class="qty">2 Nos</span><span class="edit-icon" aria-hidden="true">↗</span></div>
+      <div class="stock-row" tabindex="0" data-item="Packing Tape" data-code="PT-318" data-opening="3"><span class="item-name">Packing Tape</span><span class="code">PT-318</span><span class="qty">3 Nos</span><span class="edit-icon" aria-hidden="true">↗</span></div>
+    </section>
+    <p class="hint">Tip: Double-click any row to open warehouse assignment options.</p>
+  </main>
+
+  <dialog id="warehouseDialog" aria-labelledby="dialogTitle">
+    <div class="modal-head"><div><h2 id="dialogTitle">Warehouse assignment</h2><p id="itemContext"></p></div><button class="close" type="button" aria-label="Close" id="closeDialog">×</button></div>
+    <form method="dialog" id="assignmentForm">
+      <div class="location"><label for="primaryWarehouse">Warehouse</label><select id="primaryWarehouse" name="primaryWarehouse"><option>Umbrella Facility Manager</option><option>Central warehouse</option><option>Unassigned warehouse</option></select><div class="location-footer"><button class="save" type="button" data-save="primary">Save</button><span class="opening">Opening: <strong id="primaryOpening">9</strong></span></div></div>
+      <div class="location"><label for="secondaryWarehouse">Additional warehouse</label><select id="secondaryWarehouse" name="secondaryWarehouse"><option>Unassigned warehouse</option><option>Central warehouse</option><option>Umbrella Facility Manager</option></select><div class="location-footer"><button class="save" type="button" data-save="secondary">Save</button><span class="opening">Opening: 0</span></div></div>
+      <div class="modal-actions"><button class="done" value="confirm">Done</button></div>
+    </form>
+  </dialog>
+  <script>
+    const dialog = document.querySelector('#warehouseDialog');
+    const context = document.querySelector('#itemContext');
+    const opening = document.querySelector('#primaryOpening');
+    const firstWarehouse = document.querySelector('#primaryWarehouse');
+    let activeRow;
+    function openAssignment(row) {
+      activeRow = row;
+      context.textContent = `${row.dataset.item} · ${row.dataset.code}`;
+      opening.textContent = row.dataset.opening;
+      dialog.showModal();
+      firstWarehouse.focus();
+    }
+    document.querySelectorAll('.stock-row').forEach((row) => {
+      row.addEventListener('dblclick', () => openAssignment(row));
+      row.addEventListener('keydown', (event) => { if (event.key === 'Enter') openAssignment(row); });
+    });
+    document.querySelector('#closeDialog').addEventListener('click', () => dialog.close());
+    document.querySelectorAll('[data-save]').forEach((button) => button.addEventListener('click', () => {
+      const location = button.closest('.location');
+      button.textContent = 'Saved';
+      button.style.color = '#268052';
+      setTimeout(() => { button.textContent = 'Save'; button.style.color = ''; }, 1300);
+    }));
+    dialog.addEventListener('close', () => activeRow?.focus());
+>>>>>>> theirs
   </script>
 </body>
 </html>
