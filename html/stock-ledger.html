@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stock Ledger | Soft Manager</title>
-    <link rel="stylesheet" href="../css/common-erp.css?v=20261102-filter-fields" />
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261103-glass-ui" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 <body class="erp-page">
@@ -29,8 +29,8 @@
             
             <div class="erp-nav-heading">Inventory & Stock</div>
             <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
-            <a class="erp-nav-link active" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
-            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            <a class="erp-nav-link active" data-sidebar-stock-view="ledger" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="erp-nav-link" data-sidebar-stock-view="warehouse" href="stock-ledger.html#warehouse-stock"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
             
             <div class="erp-nav-heading">Reports</div>
             <a class="erp-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Purchase Reports</span></a>
@@ -55,14 +55,20 @@
         <main class="erp-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <div>
-                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Stock Ledger</h1>
-                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Detailed movement history for items including receipts and issues.</p>
+                    <h1 id="stockPageTitle" style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Stock Ledger</h1>
+                    <p id="stockPageDescription" style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Detailed movement history for items including receipts and issues.</p>
                 </div>
                 <a href="dashboard.html" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
                     <i class="fa-solid fa-arrow-left"></i> Dashboard
                 </a>
             </div>
 
+            <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+                <a class="status-badge status-neutral" data-stock-view="ledger" href="stock-ledger.html">Stock Ledger</a>
+                <a class="status-badge status-neutral" data-stock-view="warehouse" href="stock-ledger.html#warehouse-stock">Warehouse Stock</a>
+            </div>
+
+            <div id="stockLedgerView">
             <div style="display: grid; grid-template-columns: 1fr 300px; gap: 24px; margin-bottom: 24px;">
                 <!-- Filter Section -->
                 <section class="erp-card">
@@ -73,7 +79,7 @@
                         <form id="stockLedgerForm" class="erp-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); align-items: end;">
                             <div class="erp-field">
                                 <label for="ledgerItemSearch">Item Search</label>
-                                <input id="ledgerItemSearch" type="search" list="ledgerItemOptions" placeholder="Item name or code" required />
+                                <input id="ledgerItemSearch" type="search" list="ledgerItemOptions" placeholder="Type item name or code" autocomplete="off" required />
                                 <datalist id="ledgerItemOptions"></datalist>
                             </div>
                             <div class="erp-field">
@@ -170,7 +176,7 @@
                                     <th>Voucher No.</th>
                                     <th>Activity</th>
                                     <th>Warehouse / Location</th>
-                                    <th style="text-align: right;">In</th>th>
+                                    <th style="text-align: right;">In</th>
                                     <th style="text-align: right;">Out</th>
                                     <th style="text-align: right;">Balance</th>
                                 </tr>
@@ -179,10 +185,64 @@
                                 <!-- Injected by stock-ledger.js -->
                             </tbody>
                         </table>
+                        <div id="ledgerEmptyState" hidden style="text-align: center; padding: 24px; color: var(--erp-text-muted);">
+                            No stock movements found for this item in the selected date range.
+                        </div>
                     </div>
                     <p style="margin-top: 20px; font-size: 11px; color: var(--erp-text-muted); font-style: italic;">
                         IN is derived from Material Receipt Notes. OUT is derived from approved Material Issue Vouchers.
                     </p>
+                </div>
+            </section>
+            </div>
+
+            <section id="warehouseStockView" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <div>
+                        <h2 style="margin: 0;">Warehouse Stock by Department</h2>
+                        <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 12px;">Item balances grouped by warehouse and the department/category saved in Item Master.</p>
+                    </div>
+                    <button id="downloadWarehouseStockCsv" class="btn-secondary" type="button">
+                        <i class="fa-solid fa-file-csv" aria-hidden="true"></i> Download CSV
+                    </button>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); align-items: end;">
+                        <div class="erp-field">
+                            <label for="warehouseStockWarehouse">Warehouse</label>
+                            <select id="warehouseStockWarehouse">
+                                <option value="">All warehouses</option>
+                            </select>
+                        </div>
+                        <div class="erp-field">
+                            <label for="warehouseStockDepartment">Department</label>
+                            <select id="warehouseStockDepartment">
+                                <option value="">All departments</option>
+                            </select>
+                        </div>
+                        <div class="erp-field">
+                            <label>Displayed stock</label>
+                            <strong id="warehouseStockSummary">0 stock rows</strong>
+                        </div>
+                    </div>
+                    <p id="warehouseStockMessage" role="status" aria-live="polite" style="margin: 12px 0; color: var(--erp-text-muted); font-size: 12px;">
+                        Warehouse balances use received quantities minus approved issues. Opening balances without a warehouse are shown as Unassigned warehouse.
+                    </p>
+                    <div class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>Warehouse</th>
+                                    <th>Department</th>
+                                    <th>Item Name</th>
+                                    <th>Item Code</th>
+                                    <th>Unit</th>
+                                    <th style="text-align: right;">Stock Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody id="warehouseStockRows"></tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
         </main>
@@ -190,6 +250,7 @@
     <script src="../js/ims-store.js"></script>
     <script src="../js/searchText.js"></script>
     <script src="../js/header-user.js?v=github-pages-local-only"></script>
-    <script src="../js/stock-ledger.js"></script>
+    <script src="../js/warehouse-stock-report.js?v=20261103-warehouse-stock"></script>
+    <script src="../js/stock-ledger.js?v=20261103-warehouse-stock"></script>
 </body>
 </html>

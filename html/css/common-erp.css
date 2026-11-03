@@ -49,8 +49,11 @@ body.erp-page {
   flex: 0 0 240px;
   width: 240px;
   height: 100vh;
-  background: var(--erp-sidebar);
+  border-right: 1px solid rgba(255,255,255,.16);
+  background: linear-gradient(155deg, rgba(22, 27, 52, .94), rgba(54, 43, 91, .86));
   color: #fff;
+  -webkit-backdrop-filter: blur(20px) saturate(155%);
+  backdrop-filter: blur(20px) saturate(155%);
   transition: width .2s ease;
 }
 
@@ -94,6 +97,7 @@ body.erp-page {
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
+  border: 1px solid transparent;
   border-radius: 8px;
   color: var(--erp-sidebar-text);
   font-size: 13px;
@@ -109,15 +113,21 @@ body.erp-page {
 }
 
 .erp-nav-link:hover {
-  background: var(--erp-sidebar-hover);
+  border-color: rgba(255,255,255,.16);
+  background: rgba(255,255,255,.1);
   color: #fff;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .erp-nav-link.active {
-  background: var(--erp-sidebar-active);
+  border-color: rgba(255,255,255,.25);
+  background: linear-gradient(120deg, rgba(137, 112, 255, .76), rgba(84, 48, 203, .66));
   color: #fff;
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(96, 56, 223, 0.32);
+  box-shadow: 0 6px 18px rgba(17, 12, 48, .24), inset 0 1px rgba(255,255,255,.2);
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
+  backdrop-filter: blur(12px) saturate(145%);
 }
 
 .erp-main {
@@ -136,9 +146,10 @@ body.erp-page {
   justify-content: space-between;
   padding: 0 24px;
   height: 64px;
-  background: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,0.78);
   border-bottom: 1px solid var(--erp-border);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
 }
 
 .erp-search {
@@ -414,8 +425,10 @@ body.erp-page {
   overflow-y: auto;
   border: 1px solid var(--erp-border);
   border-radius: 14px;
-  background: #fff;
+  background: rgba(255,255,255,.84);
   box-shadow: 0 20px 60px rgba(16, 35, 63, .22);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
 }
 
 .shared-voucher-filter-panel .filter-dialog-header {
@@ -670,8 +683,10 @@ body .shared-voucher-filter-panel .filter-field select {
   border: 1px solid #dcd8ed;
   border-radius: 9px;
   font-size: 13px;
-  background: #fff;
+  background: rgba(255,255,255,.82);
   color: var(--erp-text-main);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   transition: border-color .2s ease, box-shadow .2s ease;
 }
 
@@ -721,38 +736,68 @@ body .shared-voucher-filter-panel .filter-field select {
 }
 
 .status-badge.active {
-  background: var(--status-purple-bg);
+  border: 1px solid rgba(121, 88, 236, .2);
+  background: rgba(241, 237, 255, .82);
   color: var(--status-purple-text);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 /* Buttons */
 .btn-primary {
-  background: var(--erp-primary);
+  border: 1px solid rgba(255,255,255,.35);
+  background: linear-gradient(135deg, rgba(123, 97, 235, .94), rgba(83, 47, 198, .88));
   color: #fff;
-  border: none;
   padding: 10px 20px;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: background .2s ease;
+  box-shadow: 0 6px 16px rgba(73, 49, 171, .18), inset 0 1px rgba(255,255,255,.2);
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
+  backdrop-filter: blur(12px) saturate(145%);
+  transition: background .2s ease, box-shadow .2s ease, transform .2s ease;
 }
 
 .btn-primary:hover {
-  background: var(--erp-primary-hover);
+  background: linear-gradient(135deg, rgba(111, 82, 222, .98), rgba(70, 38, 178, .94));
+  box-shadow: 0 9px 22px rgba(73, 49, 171, .24), inset 0 1px rgba(255,255,255,.24);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background: #fff;
-  border: 1px solid var(--erp-border);
+  border: 1px solid rgba(115, 129, 155, .22);
+  background: rgba(255,255,255,.72);
   color: var(--erp-text-main);
   padding: 10px 20px;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(29, 48, 78, .06), inset 0 1px rgba(255,255,255,.9);
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
+  backdrop-filter: blur(12px) saturate(145%);
+  transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
 
 .btn-secondary:hover {
-  background: #f8fafd;
+  border-color: rgba(96, 56, 223, .22);
+  background: rgba(255,255,255,.9);
+  box-shadow: 0 7px 17px rgba(29, 48, 78, .1), inset 0 1px #fff;
+  transform: translateY(-1px);
+}
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.erp-nav-link:focus-visible {
+  outline: 3px solid rgba(135, 111, 255, .55);
+  outline-offset: 2px;
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  cursor: not-allowed;
+  opacity: .58;
+  box-shadow: none;
+  transform: none;
 }
 
 .erp-dialog {
@@ -760,8 +805,11 @@ body .shared-voucher-filter-panel .filter-field select {
   padding: 0;
   border: 1px solid var(--erp-border);
   border-radius: 12px;
+  background: rgba(255,255,255,.84);
   color: var(--erp-text-main);
   box-shadow: 0 20px 60px rgba(16, 35, 63, .24);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
 }
 
 .erp-dialog::backdrop {

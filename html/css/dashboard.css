@@ -36,8 +36,11 @@ body.dashboard-page {
   height: 100vh;
   min-height: 560px;
   overflow: hidden;
-  background: var(--dash-sidebar);
+  border-right: 1px solid rgba(255,255,255,.16);
+  background: linear-gradient(155deg, rgba(16, 35, 63, .94), rgba(42, 59, 96, .84));
   color: #fff;
+  -webkit-backdrop-filter: blur(20px) saturate(155%);
+  backdrop-filter: blur(20px) saturate(155%);
   transition: width .2s ease, flex-basis .2s ease, transform .2s ease;
 }
 
@@ -99,6 +102,7 @@ body.dashboard-page {
   gap: 10px;
   margin: 2px 0;
   padding: 7px 10px;
+  border: 1px solid transparent;
   border-radius: 8px;
   color: #c3d0e2;
   font-size: 11.5px;
@@ -114,15 +118,21 @@ body.dashboard-page {
 }
 
 .dashboard-nav-link:hover {
-  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.16);
+  background: rgba(255,255,255,.1);
   color: #fff;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .dashboard-nav-link.active {
-  background: linear-gradient(100deg, #1682ff, #1265ec);
-  box-shadow: 0 5px 14px rgba(5, 88, 229, .24);
+  border-color: rgba(255,255,255,.24);
+  background: linear-gradient(120deg, rgba(68, 155, 255, .78), rgba(16, 99, 229, .68));
+  box-shadow: 0 6px 18px rgba(8, 39, 93, .26), inset 0 1px rgba(255,255,255,.22);
   color: #fff;
   font-weight: 650;
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
+  backdrop-filter: blur(12px) saturate(145%);
 }
 
 .dashboard-nav-link.active i {
@@ -172,9 +182,10 @@ body.dashboard-page {
   gap: 16px;
   padding: 0 22px;
   border-bottom: 1px solid var(--dash-line);
-  background: rgba(255,255,255,.94);
+  background: rgba(255,255,255,.78);
   box-shadow: 0 3px 12px rgba(24,49,82,.035);
-  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
 }
 
 .dashboard-menu-btn {
@@ -183,15 +194,18 @@ body.dashboard-page {
   height: 32px;
   flex: 0 0 30px;
   place-items: center;
-  border: 0;
+  border: 1px solid rgba(103, 119, 145, .15);
   border-radius: 7px;
-  background: transparent;
+  background: rgba(255,255,255,.62);
   color: #667791;
   cursor: pointer;
+  box-shadow: 0 3px 10px rgba(24,49,82,.08), inset 0 1px #fff;
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
+  backdrop-filter: blur(12px) saturate(145%);
 }
 
 .dashboard-menu-btn:hover {
-  background: #f0f5fb;
+  background: rgba(240,245,251,.9);
   color: #1677f9;
 }
 
@@ -390,14 +404,17 @@ body.dashboard-page {
   align-items: center;
   gap: 6px;
   padding: 0 10px;
-  border: 1px solid #e2eaf5;
+  border: 1px solid rgba(226,234,245,.78);
   border-radius: 7px;
-  background: #fff;
+  background: rgba(255,255,255,.72);
   color: #4b5c75;
   font-size: 10px;
   font-weight: 650;
   text-decoration: none;
-  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  box-shadow: 0 4px 12px rgba(29,48,78,.06), inset 0 1px rgba(255,255,255,.9);
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
+  backdrop-filter: blur(12px) saturate(145%);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
 }
 
 .dashboard-action i {
@@ -408,13 +425,15 @@ body.dashboard-page {
 .dashboard-action:hover {
   transform: translateY(-1px);
   border-color: #b7d5ff;
-  box-shadow: 0 4px 10px rgba(22,77,145,.08);
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 7px 17px rgba(22,77,145,.12), inset 0 1px #fff;
 }
 
 .dashboard-action.action-primary {
-  border-color: #1677f9;
-  background: #1677f9;
+  border-color: rgba(255,255,255,.32);
+  background: linear-gradient(135deg, rgba(49,151,255,.94), rgba(17,103,230,.86));
   color: #fff;
+  box-shadow: 0 6px 16px rgba(22,102,226,.2), inset 0 1px rgba(255,255,255,.24);
 }
 
 .dashboard-action.action-primary i {
@@ -978,11 +997,14 @@ body.dashboard-page {
   width: 22px;
   height: 22px;
   place-items: center;
-  border: 1px solid #e6edf5;
+  border: 1px solid rgba(230,237,245,.82);
   border-radius: 6px;
-  background: #fff;
+  background: rgba(255,255,255,.7);
   color: #8492a6;
   text-decoration: none;
+  box-shadow: 0 3px 9px rgba(29,48,78,.05), inset 0 1px #fff;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .dashboard-row-action:hover {
@@ -1093,7 +1115,9 @@ body.dashboard-page {
     z-index: 14;
     display: block;
     border: 0;
-    background: rgba(15, 31, 54, .38);
+    background: rgba(15, 31, 54, .28);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
     cursor: default;
   }
 

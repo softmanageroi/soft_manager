@@ -10,6 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const message = document.getElementById('ledgerMessage');
   const result = document.getElementById('ledgerResult');
   const rows = document.getElementById('ledgerRows');
+  const ledgerView = document.getElementById('stockLedgerView');
+  const warehouseView = document.getElementById('warehouseStockView');
+  const warehouseSelect = document.getElementById('warehouseStockWarehouse');
+  const departmentSelect = document.getElementById('warehouseStockDepartment');
+  const warehouseRows = document.getElementById('warehouseStockRows');
+  const warehouseMessage = document.getElementById('warehouseStockMessage');
+  const stockPageTitle = document.getElementById('stockPageTitle');
+  const stockPageDescription = document.getElementById('stockPageDescription');
   const esc = (value) => IMS.esc(value);
   const number = (value) => Number(value) || 0;
   const formatQty = (value) => new Intl.NumberFormat(undefined, { maximumFractionDigits: 3 }).format(value);
@@ -21,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const getItems = () => IMS.items().slice().sort((a, b) => a.name.localeCompare(b.name));
   let selectedItemCode = '';
   let selectedDepartment = '';
+  let warehouseStock = [];
   function itemLabel(item) {
     return `${item.name} (${item.code})`;
   }
@@ -31,7 +40,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function loadItemOptions() {
-    options.innerHTML = itemsForSelectedDepartment().map((item) => `<option value="${esc(itemLabel(item))}"></option>`).join('');
+    options.innerHTML = itemsForSelectedDepartment().map((item) =>
+      `<option value="${esc(itemLabel(item))}" label="${esc(item.name)} — ${esc(item.code)}"></option>`
+    ).join('');
+  }
+
+  function findLedgerItem(value) {
+    const query = String(value || '').trim().toLocaleLowerCase();
+    if (!query) return { item: null, matches: [] };
+    const items = getItems();
+    const exact = items.filter((item) =>
+      [itemLabel(item), item.code, item.name].some((candidate) =>
+        String(candidate || '').trim().toLocaleLowerCase() === query
+      )
+    );
+    if (exact.length === 1) return { item: exact[0], matches: exact };
+    if (exact.length > 1) return { item: null, matches: exact };
+    const matches = items.filter((item) =>
+      String(item.name || '').toLocaleLowerCase().includes(query)
+      || String(item.code || '').toLocaleLowerCase().includes(query)
+    );
+    return matches.length === 1 ? { item: matches[0], matches } : { item: null, matches };
   }
 
   function renderDepartmentItems() {
@@ -75,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function getMovements(item) {
     const movements = [];
     const code = String(item.code || '');
-    const sameItem = (line) => String(line.code || line.itemCode || '') === code;
+    const sameItem = (line) => String(line.code || line.itemCode || '').trim().toLocaleLowerCase() === code.trim().toLocaleLowerCase();
     const merns = JSON.parse(localStorage.getItem('ims_mrn') || '[]');
     if (Array.isArray(merns)) {
       merns.forEach((note) => (note.lines || []).forEach((line) => {
@@ -88,7 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const requisitions = JSON.parse(localStorage.getItem('materialRequisitionVouchers') || '[]');
     if (Array.isArray(requisitions)) {
       requisitions.forEach((voucher) => {
-        if (String(voucher.authorizationStatus || voucher.status || '').toLowerCase() !== 'approved') return;
+        if (!['approved', 'authorized', 'issued', 'completed']
+          .includes(String(voucher.authorizationStatus || voucher.status || '').trim().toLocaleLowerCase())) return;
         (voucher.items || []).forEach((line) => {
           const qty = number(line.quantity ?? line.qty);
           if (!sameItem(line) || qty <= 0) return;
@@ -162,10 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderSelectedLedger() {
-    const selected = search.value.trim().toLocaleLowerCase();
-    const item = getItems().find((entry) => itemLabel(entry).toLocaleLowerCase() === selected
-      || String(entry.code).toLocaleLowerCase() === selected
-      || String(entry.name).toLocaleLowerCase() === selected);
+    const { item } = findLedgerItem(search.value);
     if (item) renderLedger(item, getMovements(item));
   }
 
@@ -184,15 +211,16 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     const movements = allMovements.filter((movement) => movement.date >= start && movement.date <= end);
-    const netAfterStart = allMovements.filter((movement) => movement.date >= start)
+    const netFromStart = allMovements.filter((movement) => movement.date >= start)
       .reduce((sum, movement) => sum + movement.incoming - movement.outgoing, 0);
     const totalIn = movements.reduce((sum, movement) => sum + movement.incoming, 0);
     const totalOut = movements.reduce((sum, movement) => sum + movement.outgoing, 0);
-    const currentStock = number(item.stock);
-    let balance = currentStock - netAfterStart;
+    const currentStock = number(item.stock)
+      - allMovements.reduce((sum, movement) => sum + movement.outgoing, 0);
+    let balance = currentStock - netFromStart;
 
     document.getElementById('selectedItemName').textContent = item.name;
-    document.getElementById('selectedItemMeta').textContent = `Code: ${item.code}  •  Brand: ${item.brand || '—'}  •  Unit: ${item.unit || 'Nos'}`;
+    document.getElementById('selectedItemMeta').textContent = `Code: ${item.code}  •  Department: ${item.department || item.category || '—'}  •  Brand: ${item.brand || '—'}  •  Unit: ${item.unit || 'Nos'}`;
     document.getElementById('openingBalance').textContent = formatQty(balance);
     document.getElementById('totalIn').textContent = formatQty(totalIn);
     document.getElementById('totalOut').textContent = formatQty(totalOut);
@@ -207,23 +235,156 @@ document.addEventListener('DOMContentLoaded', () => {
     message.textContent = '';
   }
 
+  function savedArray(key) {
+    const raw = localStorage.getItem(key);
+    if (raw === null) return [];
+    const value = JSON.parse(raw);
+    if (!Array.isArray(value)) throw new TypeError(`Saved ${key} data must be an array.`);
+    return value;
+  }
+
+  function warehouseStockData() {
+    if (!window.WarehouseStockReport?.buildRows) {
+      throw new Error('Warehouse stock report could not be loaded. Refresh the page and try again.');
+    }
+    return WarehouseStockReport.buildRows(getItems(), IMS.mrnAll(), savedArray('materialRequisitionVouchers'));
+  }
+
+  function renderWarehouseStock() {
+    try {
+      const report = warehouseStockData();
+      warehouseStock = report.rows;
+      const selectedWarehouse = warehouseSelect.value;
+      const selectedDepartmentValue = departmentSelect.value;
+      const warehouses = [...new Set([
+        ...IMS.warehouseMaster(),
+        ...warehouseStock.map((row) => row.warehouse)
+      ])].sort((first, second) => first.localeCompare(second));
+      const departments = [...new Set(warehouseStock.map((row) => row.department))]
+        .sort((first, second) => first.localeCompare(second));
+
+      warehouseSelect.innerHTML = `<option value="">All warehouses</option>${warehouses.map((name) =>
+        `<option value="${esc(name)}">${esc(name)}</option>`
+      ).join('')}`;
+      if (warehouses.includes(selectedWarehouse)) warehouseSelect.value = selectedWarehouse;
+      departmentSelect.innerHTML = `<option value="">All departments</option>${departments.map((name) =>
+        `<option value="${esc(name)}">${esc(name)}</option>`
+      ).join('')}`;
+      if (departments.includes(selectedDepartmentValue)) departmentSelect.value = selectedDepartmentValue;
+
+      const visibleRows = filteredWarehouseRows();
+      warehouseRows.innerHTML = visibleRows.length ? visibleRows.map((row) => `
+        <tr>
+          <td>${esc(row.warehouse)}</td>
+          <td>${esc(row.department)}</td>
+          <td>${esc(row.itemName)}</td>
+          <td>${esc(row.itemCode)}</td>
+          <td>${esc(row.unit)}</td>
+          <td style="text-align: right;">${formatQty(row.quantity)}</td>
+        </tr>
+      `).join('') : '<tr><td colspan="6" style="text-align: center; padding: 20px;">No stock found for this warehouse and department.</td></tr>';
+      document.getElementById('warehouseStockSummary').textContent =
+        `${visibleRows.length} stock row${visibleRows.length === 1 ? '' : 's'}`;
+      document.getElementById('downloadWarehouseStockCsv').disabled = visibleRows.length === 0;
+      const warningDetails = report.warnings.slice(0, 3).join(' ');
+      const moreWarnings = report.warnings.length > 3
+        ? ` ${report.warnings.length - 3} more reconciliation warning${report.warnings.length - 3 === 1 ? '' : 's'}.`
+        : '';
+      warehouseMessage.textContent = report.warnings.length
+        ? `Opening balances without a warehouse are shown as Unassigned warehouse. Reconcile: ${warningDetails}${moreWarnings}`
+        : 'Warehouse balances use received quantities minus approved issues. Opening balances without a warehouse are shown as Unassigned warehouse.';
+    } catch (error) {
+      console.error('Could not load warehouse stock report.', error);
+      warehouseRows.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 20px;">Warehouse stock could not be loaded.</td></tr>`;
+      document.getElementById('warehouseStockSummary').textContent = 'Report unavailable';
+      document.getElementById('downloadWarehouseStockCsv').disabled = true;
+      warehouseMessage.textContent = `Warehouse stock report error: ${error.message}`;
+    }
+  }
+
+  function filteredWarehouseRows() {
+    const warehouse = warehouseSelect.value.toLocaleLowerCase();
+    const department = departmentSelect.value.toLocaleLowerCase();
+    return warehouseStock.filter((row) =>
+      (!warehouse || row.warehouse.toLocaleLowerCase() === warehouse)
+      && (!department || row.department.toLocaleLowerCase() === department)
+    );
+  }
+
+  function downloadWarehouseStock() {
+    const data = filteredWarehouseRows();
+    if (!data.length) return;
+    const columns = [
+      ['Warehouse', 'warehouse'],
+      ['Department', 'department'],
+      ['Item Name', 'itemName'],
+      ['Item Code', 'itemCode'],
+      ['Unit', 'unit'],
+      ['Stock Quantity', 'quantity']
+    ];
+    const csvCell = (value) => {
+      const text = String(value ?? '');
+      const safeText = typeof value === 'string' && /^[=+\-@\t\r]/.test(text) ? `'${text}` : text;
+      return `"${safeText.replace(/"/g, '""')}"`;
+    };
+    const csv = `\uFEFF${[columns.map(([label]) => label), ...data.map((row) =>
+      columns.map(([, key]) => row[key])
+    )].map((line) => line.map(csvCell).join(',')).join('\r\n')}`;
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `warehouse-stock-${IMS.todayISO()}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function setStockView(view, updateUrl = false) {
+    const isWarehouse = view === 'warehouse';
+    ledgerView.hidden = isWarehouse;
+    warehouseView.hidden = !isWarehouse;
+    stockPageTitle.textContent = isWarehouse ? 'Warehouse Stock' : 'Stock Ledger';
+    stockPageDescription.textContent = isWarehouse
+      ? 'View warehouse item balances grouped by department and download the filtered report.'
+      : 'Detailed movement history for items including receipts and issues.';
+    document.querySelectorAll('[data-stock-view]').forEach((link) => {
+      const active = link.dataset.stockView === view;
+      link.classList.toggle('active', active);
+      link.setAttribute('aria-current', active ? 'page' : 'false');
+    });
+    document.querySelectorAll('[data-sidebar-stock-view]').forEach((link) => {
+      link.classList.toggle('active', link.dataset.sidebarStockView === view);
+    });
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      url.hash = isWarehouse ? 'warehouse-stock' : '';
+      window.history.replaceState(null, '', url);
+    }
+    if (isWarehouse) renderWarehouseStock();
+  }
+
   loadItemOptions();
   loadDepartmentOptions();
   renderDepartmentItems();
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    const selected = search.value.trim().toLocaleLowerCase();
-    const item = getItems().find((entry) => itemLabel(entry).toLocaleLowerCase() === selected
-      || String(entry.code).toLocaleLowerCase() === selected
-      || String(entry.name).toLocaleLowerCase() === selected);
+    const { item, matches } = findLedgerItem(search.value);
     if (!item) {
       result.hidden = true;
-      message.textContent = 'List se valid item select karein, phir OK dabayein.';
+      message.textContent = matches.length > 1
+        ? 'Same name ke kai items mile. Suggestion list se item name ke saath code bhi select karein.'
+        : 'Item name ya code match nahi hua. Suggestion list se item select karein.';
       return;
     }
+    search.value = itemLabel(item);
     const movements = getMovements(item);
     if (selectedItemCode !== String(item.code) || fromDate.disabled) showLedger(item);
     else renderLedger(item, movements);
+  });
+  search.addEventListener('change', () => {
+    const { item } = findLedgerItem(search.value);
+    if (item) showLedger(item);
   });
   [fromDate, toDate].forEach((field) => field.addEventListener('change', () => {
     dateOption.value = 'as-on-date';
@@ -231,7 +392,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }));
   dateOption.addEventListener('change', applyDateOption);
   document.getElementById('printLedgerBtn').addEventListener('click', () => window.print());
+  warehouseSelect.addEventListener('change', renderWarehouseStock);
+  departmentSelect.addEventListener('change', renderWarehouseStock);
+  document.getElementById('downloadWarehouseStockCsv').addEventListener('click', downloadWarehouseStock);
+  window.addEventListener('hashchange', () => {
+    setStockView(window.location.hash === '#warehouse-stock' ? 'warehouse' : 'ledger');
+  });
+  setStockView(window.location.hash === '#warehouse-stock' ? 'warehouse' : 'ledger');
   window.addEventListener('storage', () => {
     loadItemOptions();
+    renderWarehouseStock();
   });
 });
