@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const itemSearch = document.getElementById('itemSearch');
   const statusMessage = document.getElementById('statusMessage');
   const importStockButton = document.getElementById('importStockBtn');
+  const updateItemDepartmentsButton = document.getElementById('updateItemDepartmentsBtn');
   const stockImportFile = document.getElementById('stockImportFile');
   const downloadStockTemplateButton = document.getElementById('downloadStockTemplateBtn');
   const addMasterRecordButton = document.getElementById('addMasterRecordBtn');
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let editingAccountId = null;
   let activeCategory = 'all';
   let activeMaster = 'item';
+  let stockImportMode = 'stock';
   let itemsStorageReady = true;
   let accountsStorageReady = true;
   let departmentsStorageReady = true;
@@ -216,9 +218,17 @@ document.addEventListener('DOMContentLoaded', function () {
     renderCategories();
   }
 
-  async function importStockFile(file) {
+  async function importStockFile(file, mode = 'stock') {
     try {
       const importData = await StockImport.read(file, window.ExcelJS);
+      if (mode === 'departments') {
+        const { items: updatedItems, updatedCount } = StockImport.applyCategoriesToItems(items, importData);
+        if (!window.confirm(`Update departments for ${updatedCount} items from "${file.name}"?\n\nStock quantities will not change.`)) return;
+        if (!persistItems(updatedItems)) return;
+        renderItems();
+        showMessage(`Departments updated for ${updatedCount} items. Stock quantities were not changed.`, false);
+        return;
+      }
       const { items: updatedItems, updatedCount, createdCount } = StockImport.applyToItems(items, importData);
       const { quantities } = importData;
       const totalQuantity = [...quantities.values()].reduce((total, quantity) => total + quantity, 0);
@@ -475,12 +485,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     stockImportFile.click();
   });
+  updateItemDepartmentsButton.addEventListener('click', () => {
+    if (!itemsStorageReady) {
+      showMessage('Department update is unavailable because Item Master data could not be loaded.', true);
+      return;
+    }
+    stockImportMode = 'departments';
+    stockImportFile.click();
+  });
   stockImportFile.addEventListener('change', () => {
     const [file] = stockImportFile.files || [];
-    if (file) importStockFile(file);
+    if (file) importStockFile(file, stockImportMode);
+    stockImportMode = 'stock';
   });
   downloadStockTemplateButton.addEventListener('click', () => {
-    const template = new Blob(['Item Code,Quantity\r\n'], { type: 'text/csv;charset=utf-8' });
+    const template = new Blob(['Item Name,Item Code,Department,Unit,Quantity\r\n'], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(template);
     const link = document.createElement('a');
     link.href = url;

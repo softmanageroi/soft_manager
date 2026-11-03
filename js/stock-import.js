@@ -20,6 +20,7 @@
   ]);
   const NAME_HEADERS = new Set(['itemname', 'itemdescription', 'materialname', 'productname', 'name', 'description']);
   const UNIT_HEADERS = new Set(['unit', 'uom', 'unitofmeasure', 'measureunit']);
+  const CATEGORY_HEADERS = new Set(['category', 'itemcategory', 'department', 'dept']);
   const QUANTITY_SUFFIXES = ['pieces', 'piece', 'units', 'unit', 'nos', 'no', 'pcs', 'pc', 'kgs', 'kg', 'litres', 'liters', 'ltr', 'l', 'ea'];
   const MAX_FILE_SIZE = 10 * 1024 * 1024;
   const MAX_HEADER_ROWS = 50;
@@ -128,14 +129,16 @@
       let quantityColumn = 0;
       let itemNameColumn = 0;
       let unitColumn = 0;
+      let categoryColumn = 0;
       row.eachCell({ includeEmpty: true }, (cell, column) => {
         const header = normalizeHeader(cellText(cell));
         if (isCodeHeader(header)) codeColumn = column;
         if (isQuantityHeader(header)) quantityColumn = column;
         if (NAME_HEADERS.has(header)) itemNameColumn = column;
         if (UNIT_HEADERS.has(header)) unitColumn = column;
+        if (CATEGORY_HEADERS.has(header)) categoryColumn = column;
       });
-      if (codeColumn && quantityColumn) match = { row, codeColumn, quantityColumn, itemNameColumn, unitColumn };
+      if (codeColumn && quantityColumn) match = { row, codeColumn, quantityColumn, itemNameColumn, unitColumn, categoryColumn };
     });
     return match;
   }
@@ -199,6 +202,7 @@
       const itemName = header.itemNameColumn ? cellText(row.getCell(header.itemNameColumn)) : '';
       const code = cellText(row.getCell(header.codeColumn));
       const unit = header.unitColumn ? cellText(row.getCell(header.unitColumn)) : '';
+      const category = header.categoryColumn ? cellText(row.getCell(header.categoryColumn)) : '';
       const quantityText = cellText(quantityCell);
       if (!code && !quantityText && !itemName) return;
       if (!code) throw new Error(`Row ${rowNumber}: Item Code/Item Number is missing.`);
@@ -209,14 +213,22 @@
       }
       const key = code.toLocaleLowerCase();
       quantities.set(key, (quantities.get(key) || 0) + quantity);
-      const record = records.get(key) || { code, name: '', unit: '' };
+      const record = records.get(key) || { code, name: '', unit: '', category: '' };
       if (itemName && record.name && itemName.toLocaleLowerCase() !== record.name.toLocaleLowerCase()) {
         throw new Error(`Rows for item ${code} contain different item names.`);
       }
       if (unit && record.unit && unit.toLocaleLowerCase() !== record.unit.toLocaleLowerCase()) {
         throw new Error(`Rows for item ${code} contain different units.`);
       }
-      records.set(key, { ...record, name: record.name || itemName, unit: record.unit || unit });
+      if (category && record.category && category.toLocaleLowerCase() !== record.category.toLocaleLowerCase()) {
+        throw new Error(`Rows for item ${code} contain different departments or categories.`);
+      }
+      records.set(key, {
+        ...record,
+        name: record.name || itemName,
+        unit: record.unit || unit,
+        category: record.category || category
+      });
     });
     if (!quantities.size) throw new Error('No stock records were found in the selected file.');
     if ([...quantities.values()].every((quantity) => quantity === 0)) {
@@ -246,7 +258,8 @@
         const stock = Number(existing.stock) || 0;
         const nextStock = stock + quantity;
         if (!Number.isFinite(nextStock)) throw new Error(`Stock total for ${existing.code} is too large.`);
-        const updated = { ...existing, stock: nextStock };
+        const category = records.get(key)?.category;
+        const updated = { ...existing, stock: nextStock, ...(category ? { category } : {}) };
         nextItems[nextItems.indexOf(existing)] = updated;
         itemsByCode.set(key, updated);
         updatedCount += 1;
@@ -263,7 +276,7 @@
         name: record.name,
         code: record.code,
         type: 'Finished goods',
-        category: '',
+        category: record.category || '',
         brand: '',
         unit: record.unit || 'Nos',
         stock: quantity,
@@ -278,5 +291,32 @@
     return { items: nextItems, updatedCount, createdCount };
   }
 
-  return { read, applyToItems };
+  function applyCategoriesToItems(items, { quantities, records }) {
+    const itemsByCode = new Map();
+    items.forEach((item) => {
+      const key = String(item.code || '').trim().toLocaleLowerCase();
+      if (!key) return;
+      if (itemsByCode.has(key)) {
+        throw new Error(`Item code "${item.code}" is duplicated in Item Master. Fix the duplicate before importing.`);
+      }
+      itemsByCode.set(key, item);
+    });
+
+    const categorizedRecords = [...records.entries()].filter(([, record]) => record.category);
+    if (!categorizedRecords.length) {
+      throw new Error('Add a Department or Category column with values, then upload again.');
+    }
+
+    const nextItems = [...items];
+    for (const [key, record] of categorizedRecords) {
+      const existing = itemsByCode.get(key);
+      if (!existing) {
+        throw new Error(`Item ${record.code} is not in Item Master. Use Upload Stock Excel to create missing items.`);
+      }
+      nextItems[nextItems.indexOf(existing)] = { ...existing, category: record.category };
+    }
+    return { items: nextItems, updatedCount: categorizedRecords.length };
+  }
+
+  return { read, applyToItems, applyCategoriesToItems };
 }));

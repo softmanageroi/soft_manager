@@ -1,7 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const ExcelJS = require('exceljs');
-const { read, applyToItems } = require('../js/stock-import');
+const { read, applyToItems, applyCategoriesToItems } = require('../js/stock-import');
 
 function makeFile(name, contents) {
   const buffer = Buffer.isBuffer(contents) ? contents : Buffer.from(contents);
@@ -74,6 +74,37 @@ test('creates missing items from item name, code, unit, and quantity', async () 
     gst: 18,
     description: ''
   });
+});
+
+test('imports department as an item category and can categorize existing items without changing stock', async () => {
+  const file = makeFile(
+    'departments.csv',
+    'Item Name,Item Code,Department,Unit,Quantity\nPump,MEP-1,MEP,Nos,4\n'
+  );
+  const importData = await read(file, ExcelJS);
+  const created = applyToItems([], importData);
+  assert.equal(created.items[0].category, 'MEP');
+
+  const existing = applyToItems([
+    { id: 1, code: 'MEP-1', name: 'Pump', category: '', stock: 3 }
+  ], importData);
+  assert.equal(existing.items[0].category, 'MEP');
+  assert.equal(existing.items[0].stock, 7);
+
+  const categorized = applyCategoriesToItems([
+    { id: 1, code: 'MEP-1', name: 'Pump', category: '', stock: 3 }
+  ], importData);
+  assert.equal(categorized.items[0].category, 'MEP');
+  assert.equal(categorized.items[0].stock, 3);
+  assert.equal(categorized.updatedCount, 1);
+});
+
+test('rejects repeated item codes assigned to conflicting departments', async () => {
+  const file = makeFile(
+    'departments.csv',
+    'Item Name,Item Code,Department,Quantity\nPump,ITEM-1,MEP,4\nPump,ITEM-1,Civil,2\n'
+  );
+  await assert.rejects(read(file, ExcelJS), /different departments or categories/);
 });
 
 test('rejects a missing item without a name and leaves original items unchanged', async () => {

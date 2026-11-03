@@ -16,11 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const departmentSelect = document.getElementById('warehouseStockDepartment');
   const warehouseRows = document.getElementById('warehouseStockRows');
   const warehouseMessage = document.getElementById('warehouseStockMessage');
+  const warehouseAssignmentStatus = document.getElementById('warehouseAssignmentStatus');
   const stockPageTitle = document.getElementById('stockPageTitle');
   const stockPageDescription = document.getElementById('stockPageDescription');
   const esc = (value) => IMS.esc(value);
   const number = (value) => Number(value) || 0;
   const formatQty = (value) => new Intl.NumberFormat(undefined, { maximumFractionDigits: 3 }).format(value);
+  const UNASSIGNED_WAREHOUSE = 'Unassigned warehouse';
+  const OPENING_ASSIGNMENTS_KEY = 'ims_warehouse_opening_assignments';
   const formatDate = (value) => {
     if (!value) return '—';
     const parsed = new Date(`${value}T00:00:00`);
@@ -247,10 +250,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!window.WarehouseStockReport?.buildRows) {
       throw new Error('Warehouse stock report could not be loaded. Refresh the page and try again.');
     }
-    return WarehouseStockReport.buildRows(getItems(), IMS.mrnAll(), savedArray('materialRequisitionVouchers'));
+    return WarehouseStockReport.buildRows(
+      getItems(),
+      IMS.mrnAll(),
+      savedArray('materialRequisitionVouchers'),
+      savedArray(OPENING_ASSIGNMENTS_KEY)
+    );
   }
 
   function renderWarehouseStock() {
+    warehouseAssignmentStatus.textContent = '';
     try {
       const report = warehouseStockData();
       warehouseStock = report.rows;
@@ -261,6 +270,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ...warehouseStock.map((row) => row.warehouse)
       ])].sort((first, second) => first.localeCompare(second));
       const departments = [...new Set(warehouseStock.map((row) => row.department))]
+        .sort((first, second) => first.localeCompare(second));
+      const assignableWarehouses = [...new Set(IMS.warehouseMaster())]
         .sort((first, second) => first.localeCompare(second));
 
       warehouseSelect.innerHTML = `<option value="">All warehouses</option>${warehouses.map((name) =>
@@ -281,8 +292,44 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>${esc(row.itemCode)}</td>
           <td>${esc(row.unit)}</td>
           <td style="text-align: right;">${formatQty(row.quantity)}</td>
+          <td>${row.openingBalance > 0 ? `
+            <select data-opening-warehouse="${esc(row.itemCode)}" aria-label="Warehouse for ${esc(row.itemName)}">
+              ${[...new Set([UNASSIGNED_WAREHOUSE, ...assignableWarehouses, row.openingWarehouse])].map((name) =>
+                `<option value="${esc(name)}" ${row.openingWarehouse === name ? 'selected' : ''}>${esc(name)}</option>`
+              ).join('')}
+            </select>
+            <button class="btn-secondary" type="button" data-save-opening-warehouse="${esc(row.itemCode)}" ${!assignableWarehouses.length && row.openingWarehouse === UNASSIGNED_WAREHOUSE ? 'disabled' : ''}>Save</button>
+            <small style="display: block; color: var(--erp-text-muted);">Opening: ${formatQty(row.openingBalance)}</small>
+          ` : '—'}</td>
         </tr>
-      `).join('') : '<tr><td colspan="6" style="text-align: center; padding: 20px;">No stock found for this warehouse and department.</td></tr>';
+      `).join('') : '<tr><td colspan="7" style="text-align: center; padding: 20px;">No stock found for this warehouse and department.</td></tr>';
+      warehouseRows.querySelectorAll('[data-save-opening-warehouse]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const itemCode = button.dataset.saveOpeningWarehouse;
+          const select = button.closest('td')?.querySelector('[data-opening-warehouse]');
+          if (!select) return;
+          const warehouse = select.value;
+          const itemName = select.getAttribute('aria-label')?.replace(/^Warehouse for /, '') || itemCode;
+          try {
+            const assignments = savedArray(OPENING_ASSIGNMENTS_KEY)
+              .filter((assignment) => String(assignment?.itemCode || assignment?.code || '').trim().toLocaleLowerCase()
+                !== itemCode.trim().toLocaleLowerCase());
+            if (warehouse !== UNASSIGNED_WAREHOUSE) assignments.push({ itemCode, warehouse });
+            localStorage.setItem(OPENING_ASSIGNMENTS_KEY, JSON.stringify(assignments));
+          } catch (error) {
+            console.error('Could not save opening stock warehouse assignment.', error);
+            warehouseAssignmentStatus.textContent = `Could not save warehouse assignment: ${error.message}`;
+            return;
+          }
+          renderWarehouseStock();
+          warehouseAssignmentStatus.textContent = warehouse === UNASSIGNED_WAREHOUSE
+            ? `${itemName} returned to Unassigned warehouse.`
+            : `Opening stock assigned to ${warehouse}.`;
+        });
+      });
+      if (!assignableWarehouses.length) {
+        warehouseAssignmentStatus.textContent = 'To assign opening stock, add a warehouse in Warehouse Master first.';
+      }
       document.getElementById('warehouseStockSummary').textContent =
         `${visibleRows.length} stock row${visibleRows.length === 1 ? '' : 's'}`;
       document.getElementById('downloadWarehouseStockCsv').disabled = visibleRows.length === 0;
@@ -292,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
         : '';
       warehouseMessage.textContent = report.warnings.length
         ? `Opening balances without a warehouse are shown as Unassigned warehouse. Reconcile: ${warningDetails}${moreWarnings}`
-        : 'Warehouse balances use received quantities minus approved issues. Opening balances without a warehouse are shown as Unassigned warehouse.';
+        : 'Warehouse balances use received quantities minus approved issues. Opening balances can be assigned here or left under Unassigned warehouse.';
     } catch (error) {
       console.error('Could not load warehouse stock report.', error);
       warehouseRows.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 20px;">Warehouse stock could not be loaded.</td></tr>`;

@@ -14,9 +14,35 @@ test('groups warehouse receipts and approved issues by item department', () => {
 
   assert.deepEqual(result.rows, [
     { warehouse: 'Main Store', department: 'MEP', itemName: 'Water pump', itemCode: 'ITM-1', unit: 'Nos', quantity: 7 },
-    { warehouse: UNASSIGNED_WAREHOUSE, department: 'MEP', itemName: 'Water pump', itemCode: 'ITM-1', unit: 'Nos', quantity: 5 }
+    {
+      warehouse: UNASSIGNED_WAREHOUSE,
+      department: 'MEP',
+      itemName: 'Water pump',
+      itemCode: 'ITM-1',
+      unit: 'Nos',
+      quantity: 5,
+      openingBalance: 5,
+      openingWarehouse: UNASSIGNED_WAREHOUSE
+    }
   ]);
   assert.deepEqual(result.warnings, []);
+});
+
+test('assigns opening stock to a selected warehouse without changing item stock', () => {
+  const items = [{ code: 'ITM-1', name: 'Water pump', department: 'MEP', stock: 8 }];
+  const result = buildRows(items, [], [], [{ itemCode: 'ITM-1', warehouse: 'Main Store' }]);
+
+  assert.deepEqual(result.rows, [{
+    warehouse: 'Main Store',
+    department: 'MEP',
+    itemName: 'Water pump',
+    itemCode: 'ITM-1',
+    unit: 'Nos',
+    quantity: 8,
+    openingBalance: 8,
+    openingWarehouse: 'Main Store'
+  }]);
+  assert.equal(items[0].stock, 8);
 });
 
 test('keeps opening stock without a warehouse separate and flags inconsistent balances', () => {

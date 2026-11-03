@@ -97,6 +97,9 @@
                                 <button id="importStockBtn" class="btn-secondary" type="button" aria-describedby="stockImportHelp">
                                     <i class="fa-solid fa-file-import" aria-hidden="true"></i> Upload Stock Excel
                                 </button>
+                                <button id="updateItemDepartmentsBtn" class="btn-secondary" type="button" aria-describedby="stockImportHelp">
+                                    <i class="fa-solid fa-layer-group" aria-hidden="true"></i> Update Departments from Excel
+                                </button>
                                 <button id="downloadStockTemplateBtn" class="btn-secondary" type="button">CSV Template</button>
                                 <div class="erp-search" style="width: 300px;">
                                     <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
@@ -106,7 +109,7 @@
                         </div>
                         <div class="erp-card-body">
                             <p id="stockImportHelp" style="margin: 0 0 12px; color: var(--erp-text-muted); font-size: 12px;">
-                                Upload .xlsx or .csv with <strong>Item Name, Item Code/Number, and Quantity</strong>. New codes are added to Item Master; existing stock is increased. Unit is optional. Numbers files must be exported to Excel or CSV first.
+                                Upload .xlsx or .csv with <strong>Item Name, Item Code/Number, and Quantity</strong>. Add a Department column (for example MEP, Civil, or Housekeeping) to group items in Item Master. Use <strong>Update Departments from Excel</strong> to categorize items already uploaded without changing stock; use <strong>Upload Stock Excel</strong> to add quantities. Unit is optional. Numbers files must be exported to Excel or CSV first.
                             </p>
                             <div class="erp-table-container">
                                 <table class="erp-table">
@@ -408,7 +411,7 @@
     <script src="../js/searchText.js"></script>
     <script src="../js/header-user.js?v=github-pages-local-only"></script>
     <script src="../js/vendor/exceljs.min.js?v=4.4.0"></script>
-    <script src="../js/stock-import.js?v=20261102-auto-create-items"></script>
-    <script src="../js/item-master.js?v=20261102-auto-create-items"></script>
+    <script src="../js/stock-import.js?v=20261102-department-import-only"></script>
+    <script src="../js/item-master.js?v=20261102-department-import-only"></script>
 </body>
 </html>

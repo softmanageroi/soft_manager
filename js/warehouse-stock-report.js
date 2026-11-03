@@ -11,17 +11,26 @@
     return Number.isFinite(quantity) ? quantity : 0;
   }
 
-  function buildRows(items, receipts, vouchers) {
+  function buildRows(items, receipts, vouchers, openingAssignments = []) {
     const itemByCode = new Map();
     (Array.isArray(items) ? items : []).forEach((item) => {
       const code = normalizeCode(item?.code || item?.itemCode);
       if (code) itemByCode.set(code, item);
     });
 
+    const assignedWarehouseByCode = new Map();
+    (Array.isArray(openingAssignments) ? openingAssignments : []).forEach((assignment) => {
+      const code = normalizeCode(assignment?.itemCode || assignment?.code);
+      const warehouse = String(assignment?.warehouse || '').trim();
+      if (code && warehouse && warehouse.toLocaleLowerCase() !== UNASSIGNED_WAREHOUSE.toLocaleLowerCase()) {
+        assignedWarehouseByCode.set(code, warehouse);
+      }
+    });
+
     const quantities = new Map();
     const receivedByCode = new Map();
     const warnings = new Set();
-    const record = (line, warehouseValue, quantity, direction, departmentValue = '', isReceipt = false) => {
+    const record = (line, warehouseValue, quantity, direction, departmentValue = '', isReceipt = false, isOpeningBalance = false) => {
       const codeValue = String(line?.code || line?.itemCode || '').trim();
       const code = normalizeCode(codeValue);
       if (!code) return;
@@ -40,9 +49,15 @@
         itemName: String(item.name || item.itemName || line.name || line.item || code),
         itemCode: String(item.code || item.itemCode || code),
         unit: String(item.unit || line.unit || 'Nos'),
-        quantity: 0
+        quantity: 0,
+        openingBalance: 0,
+        openingWarehouse: ''
       };
       current.quantity += amount(quantity) * direction;
+      if (isOpeningBalance) {
+        current.openingBalance += amount(quantity) * direction;
+        current.openingWarehouse = warehouse;
+      }
       quantities.set(key, current);
       if (isReceipt) receivedByCode.set(code, (receivedByCode.get(code) || 0) + amount(quantity));
     };
@@ -68,14 +83,20 @@
       if (!code) return;
       const openingQuantity = amount(item.stock) - (receivedByCode.get(code) || 0);
       if (openingQuantity > 0) {
-        record({ ...item, code }, UNASSIGNED_WAREHOUSE, openingQuantity, 1);
+        const warehouse = assignedWarehouseByCode.get(code) || UNASSIGNED_WAREHOUSE;
+        record({ ...item, code }, warehouse, openingQuantity, 1, '', false, true);
       } else if (openingQuantity < 0) {
         warnings.add(`Item ${item.name || item.code} has less Item Master stock than recorded warehouse receipts; its unassigned opening balance is not shown.`);
       }
     });
 
     const rows = [...quantities.values()]
-      .filter((row) => Math.abs(row.quantity) > 0.0005)
+      .filter((row) => Math.abs(row.quantity) > 0.0005 || row.openingBalance > 0.0005)
+      .map((row) => {
+        if (row.openingBalance > 0) return row;
+        const { openingBalance, openingWarehouse, ...movementRow } = row;
+        return movementRow;
+      })
       .sort((first, second) =>
         first.warehouse.localeCompare(second.warehouse)
         || first.department.localeCompare(second.department)
