@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IMS | Warehouse Stock</title>
+  <style>
+    :root { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #182740; background: #f4f7fb; }
+    * { box-sizing: border-box; } body { margin: 0; padding: clamp(18px, 4vw, 48px); }
+    main { max-width: 1150px; margin: auto; } header { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+    h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.45rem); } header p { margin: 7px 0 0; color: #59677e; }
+    .hint { padding: 10px 14px; border-radius: 9px; background: #e9f1ff; color: #164b9a; font-size: .9rem; }
+    .card { overflow: hidden; background: white; border: 1px solid #dbe4f0; border-radius: 14px; box-shadow: 0 8px 25px rgba(31, 58, 95, .07); }
+    .scroll { overflow-x: auto; } table { width: 100%; min-width: 720px; border-collapse: collapse; } th, td { padding: 16px 20px; text-align: left; border-bottom: 1px solid #e6edf5; }
+    th { background: #f8faff; color: #526178; font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; } tbody tr { cursor: pointer; } tbody tr:hover, tbody tr:focus { background: #f1f6ff; outline: 2px solid #2768d7; outline-offset: -2px; }
+    .quantity { font-weight: 750; } .low { color: #a71d2a; } .status { display: inline-block; padding: 4px 9px; border-radius: 99px; background: #e4f7eb; color: #166534; font-size: .82rem; font-weight: 650; }
+    dialog { width: min(94vw, 560px); padding: 0; border: 0; border-radius: 16px; box-shadow: 0 24px 60px rgba(10, 26, 53, .3); } dialog::backdrop { background: rgba(11, 27, 49, .48); }
+    .dialog-content { padding: 28px; } .dialog-header { display: flex; justify-content: space-between; align-items: start; gap: 16px; } h2 { margin: 0; font-size: 1.4rem; } .dialog-header p { margin: 5px 0 0; color: #637087; }
+    .close { width: 36px; height: 36px; border: 0; border-radius: 50%; color: #44536a; background: #edf2f8; cursor: pointer; font-size: 1.35rem; } form { display: grid; grid-template-columns: 1fr 1fr; gap: 17px; margin-top: 24px; } label { display: grid; gap: 7px; font-weight: 650; font-size: .9rem; } .wide { grid-column: 1 / -1; }
+    input { width: 100%; min-height: 44px; padding: 9px 11px; border: 1px solid #c8d4e3; border-radius: 8px; font: inherit; color: #17263e; } input:focus { outline: 3px solid rgba(39,104,215,.2); border-color: #2768d7; }
+    .actions { display: flex; justify-content: end; gap: 10px; margin-top: 26px; } button { min-height: 42px; padding: 0 15px; border: 0; border-radius: 8px; cursor: pointer; font: inherit; font-weight: 700; } .cancel { color: #35445a; background: #edf2f8; } .save { color: #fff; background: #2167dc; } .save:hover { background: #1858c3; }
+    #notice { min-height: 1.5em; margin: 14px 0 0; color: #18703e; font-weight: 650; } @media (max-width: 580px) { header { align-items: start; flex-direction: column; } form { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div><h1>Warehouse Stock</h1><p>View and maintain stock available in this warehouse.</p></div>
+      <div class="hint">Double-click an item to edit it</div>
+    </header>
+    <section class="card" aria-label="Warehouse stock list">
+      <div class="scroll"><table><thead><tr><th>Item code</th><th>Item name</th><th>Warehouse</th><th>Quantity</th><th>Reorder level</th><th>Status</th></tr></thead><tbody id="stock-rows"></tbody></table></div>
+    </section>
+    <p id="notice" role="status" aria-live="polite"></p>
+  </main>
+
+  <dialog id="edit-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-content">
+      <div class="dialog-header"><div><h2 id="dialog-title">Edit stock item</h2><p>Update the selected warehouse item and save your changes.</p></div><button class="close" type="button" aria-label="Close edit dialog">×</button></div>
+      <form id="edit-form">
+        <label class="wide">Item name<input id="item-name" name="name" required maxlength="100"></label>
+        <label>Item code<input id="item-code" name="code" required maxlength="30"></label>
+        <label>Warehouse<input id="warehouse" name="warehouse" required maxlength="80"></label>
+        <label>Quantity<input id="quantity" name="quantity" type="number" min="0" step="1" required></label>
+        <label>Reorder level<input id="reorder-level" name="reorderLevel" type="number" min="0" step="1" required></label>
+        <div class="actions wide"><button class="cancel" type="button">Cancel</button><button class="save" type="submit">Save changes</button></div>
+      </form>
+    </div>
+  </dialog>
+
+  <script>
+    const defaultItems = [
+      { id: 'itm-001', code: 'SKU-1001', name: 'Safety Helmet', warehouse: 'Main Warehouse', quantity: 84, reorderLevel: 20 },
+      { id: 'itm-002', code: 'SKU-1002', name: 'Work Gloves', warehouse: 'Main Warehouse', quantity: 12, reorderLevel: 25 },
+      { id: 'itm-003', code: 'SKU-1003', name: 'Drill Machine', warehouse: 'Tool Store', quantity: 18, reorderLevel: 5 }
+    ];
+    const storageKey = 'ims-warehouse-stock';
+    let items = JSON.parse(localStorage.getItem(storageKey) || 'null') || defaultItems;
+    let selectedId = null;
+    const rows = document.querySelector('#stock-rows');
+    const dialog = document.querySelector('#edit-dialog');
+    const form = document.querySelector('#edit-form');
+    const notice = document.querySelector('#notice');
+
+    function renderRows() {
+      rows.replaceChildren(...items.map((item) => {
+        const row = document.createElement('tr');
+        row.tabIndex = 0;
+        row.dataset.itemId = item.id;
+        const lowStock = item.quantity <= item.reorderLevel;
+        row.innerHTML = `<td>${item.code}</td><td>${item.name}</td><td>${item.warehouse}</td><td class="quantity ${lowStock ? 'low' : ''}">${item.quantity}</td><td>${item.reorderLevel}</td><td><span class="status">${lowStock ? 'Low stock' : 'In stock'}</span></td>`;
+        row.addEventListener('dblclick', () => openEditor(item.id));
+        row.addEventListener('keydown', (event) => { if (event.key === 'Enter') openEditor(item.id); });
+        return row;
+      }));
+    }
+
+    function openEditor(itemId) {
+      const item = items.find((entry) => entry.id === itemId);
+      if (!item) return;
+      selectedId = itemId;
+      form.elements.name.value = item.name;
+      form.elements.code.value = item.code;
+      form.elements.warehouse.value = item.warehouse;
+      form.elements.quantity.value = item.quantity;
+      form.elements.reorderLevel.value = item.reorderLevel;
+      dialog.showModal();
+      form.elements.name.focus();
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity() || !selectedId) return;
+      const item = items.find((entry) => entry.id === selectedId);
+      Object.assign(item, {
+        name: form.elements.name.value.trim(), code: form.elements.code.value.trim(), warehouse: form.elements.warehouse.value.trim(),
+        quantity: Number(form.elements.quantity.value), reorderLevel: Number(form.elements.reorderLevel.value)
+      });
+      localStorage.setItem(storageKey, JSON.stringify(items));
+      renderRows();
+      dialog.close();
+      notice.textContent = `${item.name} has been updated.`;
+    });
+
+    document.querySelector('.close').addEventListener('click', () => dialog.close());
+    document.querySelector('.cancel').addEventListener('click', () => dialog.close());
+    renderRows();
+  </script>
+</body>
+</html>
