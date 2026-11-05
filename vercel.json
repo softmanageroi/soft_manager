@@ -6,7 +6,7 @@
     }
   ],
   "functions": {
-    "server.js": {
+    "api/index.js": {
       "includeFiles": "{index.html,html/**,js/**,node_modules/exceljs/dist/exceljs.min.js}"
     }
   }

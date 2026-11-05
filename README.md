@@ -4,6 +4,7 @@
 
 - Node.js 20 or newer
 - A running MySQL server
+- PHP 8.0 or newer (for the optional XAMPP-style app under `htdocs/`)
 
 ## Project structure
 
@@ -21,6 +22,46 @@ soft_manager/
 ├── supabase-connection.js
 └── package.json
 ```
+
+The `htdocs/` directory also contains a standalone PHP/MySQL entry point with
+`index.php`, `login.php`, `dashboard.php`, shared includes, and the Products,
+Purchase, Stock, Material Issue, Material Receive, and Stock Ledger modules.
+It uses the same `users` and `user_app_data` MySQL tables as the Node app.
+
+```text
+htdocs/
+├── index.php
+├── login.php
+├── dashboard.php
+├── config/database.php
+├── css/{style.css,dashboard.css}
+├── js/app.js
+├── modules/{products,purchase,stock,material-issue,material-receive,stock-ledger}.php
+└── includes/{bootstrap,functions,header,sidebar,footer,error}.php
+```
+
+### Run the PHP version with XAMPP
+
+1. Start Apache and MySQL in XAMPP, then run `db/schema.sql` in MySQL if the
+   `soft_manager` database or its tables have not been created.
+2. Set `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD`, and
+   `MYSQL_DATABASE` in a `.env` file beside the deployed PHP app. When running
+   directly from this repository, the PHP app also reads the project-root
+   `.env`. Keep the file private.
+3. Copy the contents of `htdocs/` into a folder under XAMPP's `htdocs`, or set
+   the Apache document root to this project's `htdocs/` directory.
+4. If the `users` table has no account, use the existing MySQL setup flow
+   (`npm install`, then `node server.js --setup`) to create one.
+5. Open `http://localhost/<folder>/` (or `http://localhost/` if `htdocs/` is
+   the document root) and sign in with that account. PHP pages do not use the
+   Node-only local fallback login.
+
+The PHP screens are a separate entry point; the existing Node app and its
+original HTML pages are left in place. The PHP modules currently cover the
+basic workflows listed above and read/write the same account-scoped JSON
+collections used by the existing app. The PHP Products page accepts stock CSV
+imports and assigns opening stock to Umbrella Facility Management Services Pvt
+Ltd; export `.xlsx` files as CSV before importing them in the PHP version.
 
 The HTML pages, stylesheets, and images are grouped under `html/`. Static asset
 URLs used by existing pages continue to work through the server.

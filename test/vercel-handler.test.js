@@ -14,11 +14,14 @@ for (const name of ['MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 
 
 const vercelHandler = require('../server');
 
-test('Vercel bundles assets for the server.js function entrypoint', () => {
-  const includeFiles = vercelConfig.functions['server.js'].includeFiles;
+test('Vercel bundles assets for the API function entrypoint', () => {
+  const functionConfig = vercelConfig.functions['api/index.js'];
+  assert.ok(functionConfig, 'the routed API entrypoint must have a function configuration');
+  const includeFiles = functionConfig.includeFiles;
   for (const directory of ['html/**', 'js/**']) {
     assert.ok(includeFiles.includes(directory));
   }
+  assert.ok(includeFiles.includes('node_modules/exceljs/dist/exceljs.min.js'));
 });
 
 test('Vercel handler routes requests and signs sessions across requests', async (context) => {

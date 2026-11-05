@@ -6,7 +6,11 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "setup": "node server.js --setup"
+    "setup": "node server.js --setup",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
