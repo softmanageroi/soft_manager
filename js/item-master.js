@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const statusMessage = document.getElementById('statusMessage');
   const importStockButton = document.getElementById('importStockBtn');
   const updateItemDepartmentsButton = document.getElementById('updateItemDepartmentsBtn');
+  const deleteAllItemsButton = document.getElementById('deleteAllItemsBtn');
   const stockImportFile = document.getElementById('stockImportFile');
   const downloadStockTemplateButton = document.getElementById('downloadStockTemplateBtn');
   const addMasterRecordButton = document.getElementById('addMasterRecordBtn');
@@ -189,6 +190,50 @@ document.addEventListener('DOMContentLoaded', function () {
     }).join('')}`;
   }
 
+  function clearWarehouseAssignmentsForCodes(codes) {
+    const normalized = [...new Set((Array.isArray(codes) ? codes : []).map((code) => String(code || '').trim().toLocaleLowerCase()).filter(Boolean))];
+    if (!normalized.length) return;
+    try {
+      const previousAssignments = JSON.parse(localStorage.getItem('ims_warehouse_opening_assignments') || '[]');
+      const nextAssignments = Array.isArray(previousAssignments)
+        ? previousAssignments.filter((assignment) => {
+            const code = String(assignment?.itemCode || assignment?.code || '').trim().toLocaleLowerCase();
+            return !normalized.includes(code);
+          })
+        : [];
+      localStorage.setItem('ims_warehouse_opening_assignments', JSON.stringify(nextAssignments));
+    } catch (error) {
+      console.error('Could not remove warehouse assignments for deleted items.', error);
+    }
+  }
+
+  function assignDefaultWarehouseForCodes(codes) {
+    const warehouseName = 'Umbrella Facility Management Services Pvt Ltd';
+    const normalizedByCode = new Map();
+    (Array.isArray(codes) ? codes : []).forEach((code) => {
+      const cleaned = String(code || '').trim();
+      if (!cleaned) return;
+      normalizedByCode.set(cleaned.toLocaleLowerCase(), cleaned);
+    });
+    if (!normalizedByCode.size) return;
+    try {
+      const previousAssignments = JSON.parse(localStorage.getItem('ims_warehouse_opening_assignments') || '[]');
+      const nextAssignments = Array.isArray(previousAssignments)
+        ? previousAssignments.filter((assignment) => {
+            const code = String(assignment?.itemCode || assignment?.code || '').trim().toLocaleLowerCase();
+            return !normalizedByCode.has(code);
+          })
+        : [];
+      for (const code of normalizedByCode.values()) {
+        nextAssignments.push({ itemCode: code, warehouse: warehouseName });
+      }
+      localStorage.setItem('ims_warehouse_opening_assignments', JSON.stringify(nextAssignments));
+    } catch (error) {
+      console.error('Could not store default warehouse assignment for uploaded stock.', error);
+      showMessage(`Could not assign uploaded stock to ${warehouseName}: ${error.message}`, true);
+    }
+  }
+
   function renderItems() {
     const visibleItems = filteredItems();
     tableBody.innerHTML = visibleItems.map((item) => `
@@ -200,9 +245,16 @@ document.addEventListener('DOMContentLoaded', function () {
         <td>${escapeHtml(item.type || '—')}</td>
         <td><span class="gst-badge">${escapeHtml(item.gst)}%</span></td>
         <td>${escapeHtml(item.stock)}</td>
-        <td><button class="row-action" type="button" data-edit-id="${escapeHtml(item.id)}" aria-label="Edit ${escapeHtml(item.name)}">
-          <i class="fa-solid fa-pen" aria-hidden="true"></i>
-        </button></td>
+        <td>
+          <div style="display: flex; gap: 6px; justify-content: center;">
+            <button class="row-action" type="button" data-edit-id="${escapeHtml(item.id)}" aria-label="Edit ${escapeHtml(item.name)}">
+              <i class="fa-solid fa-pen" aria-hidden="true"></i>
+            </button>
+            <button class="row-action" type="button" data-delete-id="${escapeHtml(item.id)}" aria-label="Delete ${escapeHtml(item.name)}" style="color: #b91c1c; border-color: #fecaca; background: #fff7ed;">
+              <i class="fa-solid fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
       </tr>
     `).join('');
 
@@ -235,8 +287,9 @@ document.addEventListener('DOMContentLoaded', function () {
       const summary = `${quantities.size} items, ${totalQuantity} units; ${createdCount} new, ${updatedCount} existing`;
       if (!window.confirm(`Import stock from "${file.name}"?\n\n${summary}\n\nNew codes will create Item Master entries; existing stock will be increased.`)) return;
       if (!persistItems(updatedItems)) return;
+      assignDefaultWarehouseForCodes([...importData.quantities.keys()]);
       renderItems();
-      showMessage(`Stock import complete: ${summary}.`, false);
+      showMessage(`Stock import complete: ${summary}. Default warehouse assigned: Umbrella Facility Management Services Pvt Ltd.`, false);
     } catch (error) {
       console.error('Could not import warehouse stock from the selected spreadsheet.', error);
       showMessage(`Stock import failed: ${error.message}`, true);
@@ -471,10 +524,24 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   tableBody.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-edit-id]');
-    if (!button) return;
-    const item = items.find((entry) => Number(entry.id) === Number(button.dataset.editId));
-    if (item) openForm(item);
+    const editButton = event.target.closest('[data-edit-id]');
+    if (editButton) {
+      const item = items.find((entry) => Number(entry.id) === Number(editButton.dataset.editId));
+      if (item) openForm(item);
+      return;
+    }
+
+    const deleteButton = event.target.closest('[data-delete-id]');
+    if (!deleteButton) return;
+    const item = items.find((entry) => Number(entry.id) === Number(deleteButton.dataset.deleteId));
+    if (!item) return;
+    const confirmed = window.confirm(`Delete item "${item.name}" (${item.code}) from Item Master?\n\nThis removes it from the catalogue and clears any assigned warehouse tracking.`);
+    if (!confirmed) return;
+    const nextItems = items.filter((entry) => Number(entry.id) !== Number(item.id));
+    if (!persistItems(nextItems)) return;
+    clearWarehouseAssignmentsForCodes([item.code]);
+    renderItems();
+    showMessage(`Item "${item.name}" was deleted successfully.`, false);
   });
 
   itemSearch.addEventListener('input', renderItems);
@@ -497,6 +564,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const [file] = stockImportFile.files || [];
     if (file) importStockFile(file, stockImportMode);
     stockImportMode = 'stock';
+  });
+  deleteAllItemsButton.addEventListener('click', () => {
+    if (!items.length) {
+      showMessage('There are no items to delete.', true);
+      return;
+    }
+    const confirmed = window.confirm(`Delete all ${items.length} items from Item Master?\n\nThis removes every item and clears all warehouse assignments for those items.`);
+    if (!confirmed) return;
+    const itemCodes = items.map((item) => item.code).filter(Boolean);
+    if (!persistItems([])) return;
+    clearWarehouseAssignmentsForCodes(itemCodes);
+    renderItems();
+    showMessage(`Deleted all ${itemCodes.length} items successfully.`, false);
   });
   downloadStockTemplateButton.addEventListener('click', () => {
     const template = new Blob(['Item Name,Item Code,Department,Unit,Quantity\r\n'], { type: 'text/csv;charset=utf-8' });

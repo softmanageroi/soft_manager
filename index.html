@@ -2,6 +2,8 @@
 <<<<<<< ours
 <<<<<<< ours
 <<<<<<< ours
+<<<<<<< ours
+<<<<<<< ours
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,11 +21,17 @@
 >>>>>>> theirs
 =======
 >>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+<<<<<<< ours
+<<<<<<< ours
   <title>IMS | Sign in</title>
   <style>
     :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
@@ -131,6 +139,80 @@
 =======
 >>>>>>> theirs
 =======
+>>>>>>> theirs
+=======
+>>>>>>> theirs
+=======
+=======
+>>>>>>> theirs
+  <meta name="description" content="A lightweight inventory management workspace.">
+  <title>IMS | Inventory Management</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <a class="brand" href="#dashboard" aria-label="IMS dashboard">IMS<span>•</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#requisitions">Requisitions</a>
+      <a href="#orders">Purchase orders</a>
+    </nav>
+    <button class="button button-secondary" id="resetData" type="button">Reset demo data</button>
+  </header>
+
+  <main class="container">
+    <section id="dashboard" class="view" aria-labelledby="dashboardTitle">
+      <div class="page-heading">
+        <div><p class="eyebrow">Operations overview</p><h1 id="dashboardTitle">Inventory at a glance</h1></div>
+        <a class="button" href="#requisitions">New requisition</a>
+      </div>
+      <div class="metrics" id="metrics" aria-live="polite"></div>
+      <section class="panel" aria-labelledby="lowStockTitle">
+        <div class="panel-heading"><div><h2 id="lowStockTitle">Stock requiring attention</h2><p>Items at or below their reorder level.</p></div></div>
+        <div class="table-wrap"><table><thead><tr><th>Item</th><th>SKU</th><th>On hand</th><th>Reorder level</th><th>Status</th></tr></thead><tbody id="stockBody"></tbody></table></div>
+      </section>
+    </section>
+
+    <section id="requisitions" class="view" aria-labelledby="requisitionTitle">
+      <div class="page-heading"><div><p class="eyebrow">Material requests</p><h1 id="requisitionTitle">Requisitions</h1></div></div>
+      <div class="two-column">
+        <form class="panel" id="requisitionForm">
+          <div class="panel-heading"><div><h2>Create a requisition</h2><p>Requests are saved in this browser.</p></div></div>
+          <div class="form-grid">
+            <label>Requestor<input name="requestor" required maxlength="80" placeholder="e.g. Priya Sharma"></label>
+            <label>Department<input name="department" required maxlength="80" placeholder="e.g. Facilities"></label>
+            <label>Item<select name="item" id="itemSelect" required></select></label>
+            <label>Quantity<input name="quantity" required type="number" min="1" step="1" value="1"></label>
+            <label class="wide">Notes<textarea name="notes" maxlength="280" placeholder="Optional details"></textarea></label>
+          </div>
+          <div class="form-actions"><button class="button" type="submit">Submit requisition</button></div>
+          <p class="form-message" id="requisitionMessage" role="status"></p>
+        </form>
+        <section class="panel"><div class="panel-heading"><div><h2>Pending approval</h2><p>Approve requests when stock can be issued.</p></div></div><div id="pendingRequests" class="request-list"></div></section>
+      </div>
+    </section>
+
+    <section id="orders" class="view" aria-labelledby="orderTitle">
+      <div class="page-heading"><div><p class="eyebrow">Procurement</p><h1 id="orderTitle">Purchase orders</h1></div></div>
+      <div class="two-column">
+        <form class="panel" id="orderForm">
+          <div class="panel-heading"><div><h2>Create purchase order</h2><p>Record an incoming replenishment.</p></div></div>
+          <div class="form-grid">
+            <label>Supplier<input name="supplier" required maxlength="100" placeholder="Supplier name"></label>
+            <label>Item<select name="item" class="item-select" required></select></label>
+            <label>Quantity<input name="quantity" type="number" min="1" step="1" required value="1"></label>
+            <label>Expected date<input name="expectedDate" type="date" required></label>
+          </div>
+          <div class="form-actions"><button class="button" type="submit">Create purchase order</button></div>
+          <p class="form-message" id="orderMessage" role="status"></p>
+        </form>
+        <section class="panel"><div class="panel-heading"><div><h2>Open orders</h2><p>Mark delivered orders as received to update stock.</p></div></div><div id="openOrders" class="request-list"></div></section>
+      </div>
+    </section>
+  </main>
+  <template id="emptyState"><p class="empty-state">Nothing to show yet.</p></template>
+  <script src="app.js"></script>
+<<<<<<< ours
 >>>>>>> theirs
 =======
 >>>>>>> theirs
