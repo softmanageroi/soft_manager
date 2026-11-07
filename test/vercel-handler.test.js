@@ -14,6 +14,32 @@ for (const name of ['MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 
 
 const vercelHandler = require('../server');
 
+test('unauthenticated New Indent route preserves the requested form after login', async () => {
+  const response = {
+    headersSent: false,
+    writeHead(statusCode, headers = {}) {
+      this.statusCode = statusCode;
+      this.headers = headers;
+      this.headersSent = true;
+    },
+    end(body) {
+      this.body = body;
+    },
+    destroy() {}
+  };
+  await vercelHandler({
+    url: '/api/index?__path=%2Fhtml%2Fpurchase-indent.html%3Fview%3Dnew',
+    method: 'GET',
+    headers: { host: 'example.test' }
+  }, response);
+
+  assert.equal(response.statusCode, 302);
+  assert.equal(
+    response.headers.Location,
+    '/html/index.html?next=%2Fhtml%2Fpurchase-indent.html%3Fview%3Dnew'
+  );
+});
+
 test('Vercel bundles assets for the API function entrypoint', () => {
   const functionConfig = vercelConfig.functions['api/index.js'];
   assert.ok(functionConfig, 'the routed API entrypoint must have a function configuration');
@@ -58,6 +84,15 @@ test('Vercel handler routes requests and signs sessions across requests', async 
   });
   assert.equal(landingResponse.status, 302);
   assert.equal(landingResponse.headers.get('location'), '/html/dashboard.html');
+
+  const protectedIndent = await request('/html/purchase-indent.html?view=new', {
+    redirect: 'manual'
+  });
+  assert.equal(protectedIndent.status, 302);
+  assert.equal(
+    protectedIndent.headers.get('location'),
+    '/html/index.html?next=%2Fhtml%2Fpurchase-indent.html%3Fview%3Dnew'
+  );
 
   const [name, token] = sessionCookie.split('=');
   const [payload, signature] = token.split('.');

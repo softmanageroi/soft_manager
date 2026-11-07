@@ -5,6 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebar = $('dashboardSidebar');
   const backdrop = $('dashboardBackdrop');
 
+  const newIndentAction = document.querySelector('.dashboard-action.action-primary[href]');
+  newIndentAction?.addEventListener('click', () => {
+    const target = new URL(newIndentAction.href, window.location.href);
+    sessionStorage.setItem('softManagerPendingNavigation', JSON.stringify({
+      path: `${target.pathname}${target.search}${target.hash}`,
+      createdAt: Date.now()
+    }));
+  });
+
   if (!window.IMS || !errorBox || !menuButton || !sidebar || !backdrop) {
     console.error('Dashboard: required page elements or IMS data helpers are missing.');
     return;
@@ -155,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cursor += share;
     });
     const donut = $('categoryDonut');
-    donut.style.background = segments.length ? `conic-gradient(${segments.join(', ')})` : 'conic-gradient(#e9eef5 0 100%)';
+    donut.style.background = segments.length ? `conic-gradient(${segments.join(', ')})` : 'conic-gradient(rgba(152, 120, 255, .34) 0 100%)';
     donut.setAttribute('aria-label', `Inventory stock total ${stockTotal} units, grouped into ${primary.length} categories.`);
     $('categoryLegend').innerHTML = primary.length ? primary.map(([name, quantity], index) => `
       <div class="category-legend-row">

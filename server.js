@@ -869,7 +869,11 @@ async function handleRequest(request, response, credentials) {
     .some((prefix) => pathname.startsWith(prefix))
     && !isLoginAsset(pathname);
   if ((isProtectedPage || isProtectedAsset) && !session) {
-    if (isProtectedPage) redirect(response, '/html/index.html');
+    if (isProtectedPage) {
+      const loginUrl = new URL('/html/index.html', requestUrl);
+      loginUrl.searchParams.set('next', `${pathname}${requestUrl.search}`);
+      redirect(response, `${loginUrl.pathname}${loginUrl.search}`);
+    }
     else sendJson(response, 401, { error: 'Authentication required.' });
     return;
   }

@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function () {
       total += taxableValue + cgst + sgst + igst;
     });
     totalAmount.value = total.toFixed(2);
-    document.getElementById('poNetDisplay').textContent = total.toLocaleString('en-IN', {
+    document.getElementById('poNetDisplay').value = total.toLocaleString('en-IN', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });

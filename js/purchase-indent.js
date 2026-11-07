@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         elements.piListView.hidden = true;
         elements.piFormView.hidden = false;
+        elements.piFormView.scrollIntoView({ behavior: 'instant', block: 'start' });
     }
 
     function saveIndent() {
@@ -190,4 +191,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     renderList();
+    if (new URLSearchParams(window.location.search).get('view') === 'new') {
+        sessionStorage.removeItem('softManagerPendingNavigation');
+        openForm();
+    }
 });

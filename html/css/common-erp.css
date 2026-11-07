@@ -575,6 +575,245 @@ body .shared-voucher-filter-panel .filter-field select {
   }
 }
 
+:root {
+  color-scheme: dark;
+  --erp-bg-canvas: #090a0f;
+  --erp-bg-surface: #111219;
+  --erp-border: rgba(255, 255, 255, .09);
+  --erp-text-main: #f0eff7;
+  --erp-text-muted: #9a98aa;
+  --erp-primary: #9878ff;
+  --erp-primary-hover: #b09aff;
+  --erp-sidebar: #0b0b11;
+  --erp-sidebar-hover: #191722;
+  --status-green-bg: rgba(39, 196, 137, .13);
+  --status-green-text: #5de0ae;
+  --status-orange-bg: rgba(245, 168, 64, .13);
+  --status-orange-text: #ffc274;
+  --status-red-bg: rgba(244, 92, 111, .13);
+  --status-red-text: #ff8291;
+  --status-purple-bg: rgba(152, 120, 255, .14);
+  --status-purple-text: #b8a2ff;
+  --status-neutral-bg: rgba(255, 255, 255, .07);
+  --status-neutral-text: #b8b5c5;
+}
+
+html:has(body.erp-page) {
+  min-height: 100%;
+  background: #090a0f;
+  scroll-behavior: smooth;
+}
+
+body.erp-page {
+  background:
+    radial-gradient(ellipse at 82% 0%, rgba(116, 77, 220, .12), transparent 38rem),
+    radial-gradient(ellipse at 5% 78%, rgba(45, 93, 154, .08), transparent 34rem),
+    #090a0f;
+}
+
+.erp-sidebar {
+  border-right-color: rgba(255, 255, 255, .07);
+  background: linear-gradient(180deg, #101017, #0b0b10 72%);
+  box-shadow: 12px 0 42px rgba(0, 0, 0, .17);
+}
+
+.erp-sidebar,
+.erp-nav-link,
+.erp-topbar,
+.erp-search,
+.erp-card,
+.workflow-overview-panel,
+.po-overview-panel,
+.shared-voucher-filter-panel .filter-dialog,
+.erp-dialog-content {
+  border-color: var(--erp-border);
+}
+
+.erp-topbar {
+  background: rgba(13, 13, 19, .88);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .16);
+}
+
+.erp-search {
+  background: #15151d;
+}
+
+.erp-search input {
+  color: var(--erp-text-main);
+}
+
+.erp-content {
+  animation: erp-content-enter .45s cubic-bezier(.2, .75, .25, 1) both;
+}
+
+.erp-card,
+.workflow-overview-panel,
+.po-overview-panel {
+  border: 1px solid var(--erp-border);
+  background: linear-gradient(145deg, rgba(20, 20, 29, .96), rgba(15, 15, 22, .96));
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .19), inset 0 1px rgba(255, 255, 255, .025);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.erp-card:hover {
+  border-color: rgba(166, 143, 255, .2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .24), 0 0 24px rgba(123, 86, 220, .045);
+}
+
+.workflow-overview-panel,
+.po-overview-panel {
+  background: linear-gradient(125deg, rgba(36, 27, 56, .82), rgba(18, 18, 26, .96) 74%);
+}
+
+.workflow-overview-panel .po-overview-stats > div + div,
+.po-overview-stats > div + div,
+.erp-card-header {
+  border-color: var(--erp-border);
+}
+
+.po-vendor-account-details:not([hidden]) {
+  border-color: var(--erp-border);
+  background: #171620;
+}
+
+.erp-table th {
+  border-bottom-color: var(--erp-border);
+  background: #191820;
+  color: #b8a8ef;
+}
+
+.erp-table td {
+  border-bottom-color: rgba(255, 255, 255, .065);
+}
+
+.erp-table tbody tr:hover {
+  background: rgba(152, 120, 255, .065);
+}
+
+.erp-field input,
+.erp-field select,
+.erp-field textarea,
+.shared-voucher-filter-panel .filter-field input,
+.shared-voucher-filter-panel .filter-field select {
+  border-color: rgba(255, 255, 255, .12);
+  background: #14141c;
+  color: var(--erp-text-main);
+  color-scheme: dark;
+}
+
+.erp-field input::placeholder,
+.erp-field textarea::placeholder {
+  color: #777586;
+}
+
+.erp-field input:focus,
+.erp-field select:focus,
+.erp-field textarea:focus,
+.shared-voucher-filter-panel .filter-field input:focus,
+.shared-voucher-filter-panel .filter-field select:focus,
+.erp-search:focus-within {
+  border-color: rgba(166, 143, 255, .7);
+  outline: 3px solid rgba(152, 120, 255, .14);
+  outline-offset: 1px;
+  box-shadow: 0 0 22px rgba(123, 86, 220, .09);
+}
+
+.btn-primary,
+.shared-voucher-filter-panel .filter-actions .page-btn:last-child {
+  border-color: transparent;
+  background: linear-gradient(135deg, #9878ff, #7045dc);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(112, 69, 220, .2);
+}
+
+.btn-primary:hover,
+.shared-voucher-filter-panel .filter-actions .page-btn:last-child:hover {
+  background: linear-gradient(135deg, #ad94ff, #8058ea);
+  box-shadow: 0 8px 24px rgba(112, 69, 220, .29);
+}
+
+.btn-secondary,
+.shared-voucher-action,
+.shared-voucher-filter-panel .filter-actions .page-btn,
+.shared-voucher-filter-panel .filter-close-btn {
+  border-color: var(--erp-border);
+  background: #191920;
+  color: #dedbe8;
+}
+
+.btn-secondary:hover,
+.shared-voucher-action:hover,
+.shared-voucher-filter-panel .filter-close-btn:hover {
+  border-color: rgba(166, 143, 255, .4);
+  background: rgba(152, 120, 255, .12);
+  color: #c6b6ff;
+}
+
+.shared-voucher-selected,
+.shared-voucher-selected td {
+  background: rgba(152, 120, 255, .12) !important;
+}
+
+.shared-voucher-filter-panel {
+  background: rgba(3, 3, 7, .76);
+  backdrop-filter: blur(8px);
+}
+
+.shared-voucher-filter-panel .filter-dialog {
+  background: rgba(18, 18, 26, .97);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .5);
+  animation: erp-content-enter .24s cubic-bezier(.2, .75, .25, 1) both;
+}
+
+.status-message {
+  border-color: rgba(39, 196, 137, .25);
+  background: rgba(39, 196, 137, .1);
+  color: #82e8bd;
+}
+
+.status-message.error {
+  border-color: rgba(244, 92, 111, .25);
+  background: rgba(244, 92, 111, .1);
+  color: #ff9aa5;
+}
+
+.erp-dialog-content {
+  background: #14141c;
+  color: var(--erp-text-main);
+}
+
+.erp-dialog::backdrop {
+  background: rgba(3, 3, 7, .76);
+  backdrop-filter: blur(7px);
+}
+
+.erp-page :is(button, a, input, select, textarea) {
+  transition: color .18s ease, background-color .18s ease, border-color .18s ease,
+    box-shadow .18s ease, transform .18s ease;
+}
+
+.erp-page :is(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid rgba(174, 151, 255, .8);
+  outline-offset: 3px;
+}
+
+@keyframes erp-content-enter {
+  from { opacity: 0; translate: 0 10px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .erp-content,
+  .shared-voucher-filter-panel .filter-dialog {
+    animation: none;
+  }
+
+  .erp-page :is(button, a, input, select, textarea),
+  .erp-card {
+    transition-duration: .01ms;
+  }
+}
+
 /* Professional Components */
 .erp-card {
   background: var(--erp-bg-surface);
@@ -955,4 +1194,122 @@ body .shared-voucher-filter-panel .filter-field select {
 
 .line-row:hover {
     background: #fcfdfe !important;
+}
+
+.form-section {
+  border-color: var(--erp-border);
+  background: var(--erp-bg-surface);
+}
+
+.form-section-header,
+.item-table-header {
+  border-color: var(--erp-border);
+  background: #191820 !important;
+  color: var(--erp-text-main) !important;
+}
+
+.line-row:hover,
+.erp-table tbody tr:hover {
+  background: rgba(152, 120, 255, .065) !important;
+}
+
+.erp-field input,
+.erp-field select,
+.erp-field textarea {
+  border-color: rgba(255, 255, 255, .12);
+  background: #14141c;
+  color: var(--erp-text-main);
+  color-scheme: dark;
+}
+
+.erp-card {
+  border-color: var(--erp-border);
+  background: linear-gradient(145deg, rgba(20, 20, 29, .96), rgba(15, 15, 22, .96));
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .19), inset 0 1px rgba(255, 255, 255, .025);
+}
+
+.erp-table th {
+  background: #191820;
+  color: #b8a8ef;
+}
+
+.btn-primary {
+  border-color: transparent;
+  background: linear-gradient(135deg, #9878ff, #7045dc);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #ad94ff, #8058ea);
+}
+
+.erp-dialog-content {
+  border-color: var(--erp-border);
+  background: #14141c;
+  color: var(--erp-text-main);
+}
+
+.erp-dialog::backdrop {
+  background: rgba(3, 3, 7, .76);
+  backdrop-filter: blur(7px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .erp-content {
+    animation: none;
+  }
+}
+
+.erp-page .item-gst-settings {
+  margin: 20px 0 0;
+  border-color: rgba(255, 255, 255, .09);
+  border-style: dashed;
+  background: linear-gradient(145deg, rgba(24, 24, 33, .96), rgba(18, 18, 25, .96));
+  box-shadow: none;
+}
+
+.erp-page #categoryList .category-option {
+  display: flex;
+  width: 100%;
+  min-height: 32px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 9px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: #17171f;
+  color: var(--erp-text-main);
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.35;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.erp-page #categoryList .category-option:hover {
+  border-color: rgba(166, 143, 255, .25);
+  background: rgba(152, 120, 255, .1);
+  color: #e8e2ff;
+}
+
+.erp-page #categoryList .category-option.active {
+  border-color: rgba(166, 143, 255, .3);
+  background: rgba(152, 120, 255, .15);
+  color: #cabbff;
+}
+
+.erp-page #categoryList .category-count {
+  display: inline-flex;
+  min-width: 22px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .08);
+  color: #c4c0d0;
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1;
 }

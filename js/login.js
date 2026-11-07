@@ -16,9 +16,41 @@ window.addEventListener('DOMContentLoaded', function () {
     loginMessage.hidden = false;
   }
 
+  function getPostLoginPath() {
+    const storedNavigationKey = 'softManagerPendingNavigation';
+    const nextPath = new URLSearchParams(window.location.search).get('next');
+    let requestedPath = nextPath;
+    if (!requestedPath) {
+      const storedNavigation = sessionStorage.getItem(storedNavigationKey);
+      if (storedNavigation) {
+        try {
+          const pending = JSON.parse(storedNavigation);
+          if (typeof pending.path === 'string'
+              && Number.isFinite(pending.createdAt)
+              && Date.now() - pending.createdAt < 10 * 60 * 1000) {
+            requestedPath = pending.path;
+          }
+        } catch (error) {
+          console.error('Could not restore the pending page after login.', error);
+        }
+      }
+    }
+
+    if (!requestedPath) return '/html/dashboard.html';
+    const target = new URL(requestedPath, window.location.origin);
+    if (target.origin !== window.location.origin
+        || !target.pathname.startsWith('/html/')
+        || !target.pathname.endsWith('.html')
+        || target.pathname === '/html/index.html') {
+      return '/html/dashboard.html';
+    }
+    sessionStorage.removeItem(storedNavigationKey);
+    return `${target.pathname}${target.search}${target.hash}`;
+  }
+
   fetch('/api/auth/session', { credentials: 'same-origin' })
     .then((response) => {
-      if (response.ok) window.location.replace('/html/dashboard.html');
+      if (response.ok) window.location.replace(getPostLoginPath());
       else if (response.status !== 401) showMessage('Could not verify your login. Please restart the app and try again.');
     })
     .catch((error) => {
@@ -47,7 +79,7 @@ window.addEventListener('DOMContentLoaded', function () {
     }).then(async (response) => {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || 'Login failed. Please try again.');
-      window.location.replace('/html/dashboard.html');
+      window.location.replace(getPostLoginPath());
     }).catch((error) => {
       showMessage(error instanceof TypeError
         ? 'Could not connect to the login service. Start the app with "node server.js" and open http://localhost:3000.'

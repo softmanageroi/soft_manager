@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Purchase Orders | Soft Manager</title>
-    <link rel="stylesheet" href="../css/common-erp.css?v=20261103-glass-ui" />
-    <link rel="stylesheet" href="../css/purchase.css?v=20261101-po-list-fit" />
+    <link rel="stylesheet" href="css/common-erp.css?v=20261103-glass-ui" />
+    <link rel="stylesheet" href="css/purchase.css?v=20261101-po-list-fit" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </head>
 <body class="erp-page">
@@ -123,6 +123,7 @@
                                     <th>QR No.</th>
                                     <th>Supplier</th>
                                     <th>Total</th>
+                                    <th>Lines</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -147,6 +148,7 @@
                 <div class="erp-card-body">
                     <input id="orderId" type="hidden" />
                     <input id="totalAmount" type="hidden" value="0" />
+                    <input id="poStatus" type="hidden" value="Pending" />
                     <div class="erp-form-grid">
                         <div class="erp-field">
                             <label for="poNo">Document No.</label>
