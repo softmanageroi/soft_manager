@@ -652,12 +652,9 @@ async function serveFile(request, response, pathname) {
 
   const resolvedPath = decodedPath === '/js/vendor/exceljs.min.js'
     ? path.join(ROOT, 'node_modules', 'exceljs', 'dist', 'exceljs.min.js')
-    : path.resolve(ROOT, `.${decodedPath.startsWith('/css/')
-      ? decodedPath.replace('/css/', '/html/css/')
-      : decodedPath.startsWith('/images/')
-        ? decodedPath.replace('/images/', '/html/images/')
-        : decodedPath}`);
+    : path.resolve(ROOT, decodedPath.startsWith('/') ? decodedPath.slice(1) : decodedPath);
   if (!resolvedPath.startsWith(`${ROOT}${path.sep}`)) {
+    console.log(`[404] Path outside ROOT: ${resolvedPath}`);
     sendJson(response, 404, { error: 'Not found.' });
     return;
   }
