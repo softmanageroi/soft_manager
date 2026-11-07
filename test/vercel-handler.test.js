@@ -40,11 +40,42 @@ test('unauthenticated New Indent route preserves the requested form after login'
   );
 });
 
+test('Vercel serves the public login page and script from the bundled file root', async () => {
+  const request = async (path) => {
+    const response = {
+      headersSent: false,
+      writeHead(statusCode, headers = {}) {
+        this.statusCode = statusCode;
+        this.headers = headers;
+        this.headersSent = true;
+      },
+      end(body) {
+        this.body = body;
+      },
+      destroy() {}
+    };
+    await vercelHandler({
+      url: `/api/index?__path=${encodeURIComponent(path)}`,
+      method: 'GET',
+      headers: { host: 'example.test' }
+    }, response);
+    return response;
+  };
+
+  const page = await request('/html/index.html');
+  assert.equal(page.statusCode, 200);
+  assert.match(page.body.toString(), /IMS Login/);
+
+  const script = await request('/js/login.js');
+  assert.equal(script.statusCode, 200);
+  assert.match(script.body.toString(), /loginForm/);
+});
+
 test('Vercel bundles assets for the API function entrypoint', () => {
   const functionConfig = vercelConfig.functions['api/index.js'];
   assert.ok(functionConfig, 'the routed API entrypoint must have a function configuration');
   const includeFiles = functionConfig.includeFiles;
-  for (const directory of ['html/**', 'js/**']) {
+  for (const directory of ['html/**/*', 'js/**/*']) {
     assert.ok(includeFiles.includes(directory));
   }
   assert.ok(includeFiles.includes('node_modules/exceljs/dist/exceljs.min.js'));
@@ -104,7 +135,9 @@ test('Vercel handler routes requests and signs sessions across requests', async 
 
   const loginPage = await request('/html/index.html');
   assert.equal(loginPage.status, 200);
-  assert.match(await loginPage.text(), /IMS Login/);
+  const loginPageHtml = await loginPage.text();
+  assert.match(loginPageHtml, /IMS Login/);
+  assert.match(loginPageHtml, /<script src="\/js\/data-store\.js"><\/script>/);
 
   const protectedStyles = await request('/html/css/dashboard.css');
   assert.equal(protectedStyles.status, 401);
@@ -164,4 +197,93 @@ test('public Vercel routes work without credentials and login fails explicitly w
 
   assert.equal(result.status, 0, result.stderr);
   assert.match(result.stdout, /^200 302 500 0 Vercel requires APP_USERNAME and APP_PASSWORD/);
+});
+
+test('public Vercel routes do not load credentials until login is requested', () => {
+  const environment = { ...process.env, VERCEL: '1', DOTENV_CONFIG_PATH: '/nonexistent/.env' };
+  for (const name of ['APP_USERNAME', 'APP_PASSWORD', 'SESSION_SECRET', 'MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'MYSQLHOST', 'MYSQLPORT', 'MYSQLUSER', 'MYSQLPASSWORD', 'MYSQLDATABASE']) {
+    delete environment[name];
+  }
+  const script = `
+    const handler = require('./server');
+    const response = {
+      headersSent: false,
+      writeHead(statusCode) { this.statusCode = statusCode; this.headersSent = true; },
+      end() {},
+      destroy() {}
+    };
+    handler({ url: '/api/index?__path=%2Fhealthz', method: 'GET', headers: { host: 'example.test' } }, response)
+      .then(() => setTimeout(() => console.log(response.statusCode, 'alive'), 25));
+  `;
+  const result = spawnSync(process.execPath, ['-e', script], {
+    cwd: process.cwd(),
+    encoding: 'utf8',
+    env: environment
+  });
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /^200 alive/);
+});
+
+test('database failures return an explicit service-unavailable response instead of HTTP 500', () => {
+  const environment = {
+    ...process.env,
+    VERCEL: '1',
+    APP_USERNAME: 'test-admin',
+    APP_PASSWORD: 'test-password-long-enough',
+    SESSION_SECRET: 'test-session-signing-secret-that-is-at-least-32-chars',
+    MYSQL_HOST: 'mysql.test',
+    MYSQL_USER: 'test-user',
+    MYSQL_PASSWORD: 'test-password',
+    MYSQL_DATABASE: 'test-database',
+    DOTENV_CONFIG_PATH: '/nonexistent/.env'
+  };
+  const script = `
+    const Module = require('node:module');
+    const originalLoad = Module._load;
+    Module._load = function (request, parent, isMain) {
+      if (request === 'mysql2/promise') {
+        return { createPool: () => ({ query: async () => {
+          const error = new Error('test database is offline');
+          error.code = 'ECONNREFUSED';
+          throw error;
+        } }) };
+      }
+      return originalLoad.call(this, request, parent, isMain);
+    };
+    console.error = () => {};
+    const { createHmac } = require('node:crypto');
+    const handler = require('./server');
+    const secret = process.env.SESSION_SECRET;
+    const payload = Buffer.from(JSON.stringify({
+      username: 'test-admin',
+      expiresAt: Date.now() + 60_000
+    })).toString('base64url');
+    const signature = createHmac('sha256', secret).update(payload).digest('base64url');
+    const response = {
+      headersSent: false,
+      writeHead(statusCode) { this.statusCode = statusCode; this.headersSent = true; },
+      end(body) { this.body = body; },
+      destroy() {}
+    };
+    handler({
+      url: '/api/index?__path=%2Fapi%2Fdata',
+      method: 'GET',
+      headers: {
+        host: 'example.test',
+        cookie: 'soft_manager_session=' + payload + '.' + signature
+      }
+    }, response).then(() => {
+      const body = JSON.parse(response.body);
+      console.log(response.statusCode, body.code);
+    });
+  `;
+  const result = spawnSync(process.execPath, ['-e', script], {
+    cwd: process.cwd(),
+    encoding: 'utf8',
+    env: environment
+  });
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /^503 MYSQL_STORAGE_UNAVAILABLE/);
 });

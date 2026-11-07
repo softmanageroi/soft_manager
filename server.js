@@ -1,5 +1,6 @@
 const { createServer } = require('node:http');
-const { promises: fs } = require('node:fs');
+const fsSync = require('node:fs');
+const { promises: fs } = fsSync;
 const path = require('node:path');
 const {
   createHmac,
@@ -16,7 +17,10 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const scrypt = promisify(scryptCallback);
-const ROOT = __dirname;
+const ROOT = [__dirname, path.resolve(__dirname, '..')].find((directory) =>
+  fsSync.existsSync(path.join(directory, 'html'))
+  && fsSync.existsSync(path.join(directory, 'js'))
+) || __dirname;
 const AUTH_DIRECTORY = path.join(ROOT, '.auth');
 const CREDENTIALS_FILE = path.join(AUTH_DIRECTORY, 'credentials.json');
 const IS_VERCEL = process.env.VERCEL === '1';
@@ -814,7 +818,25 @@ async function handleRequest(request, response, credentials) {
     return;
   }
   if (pathname === '/api/data' || pathname === '/api/data/migrate') {
-    await handleAppData(request, response, session, requestUrl);
+    try {
+      await handleAppData(request, response, session, requestUrl);
+    } catch (error) {
+      const errorCode = typeof error?.code === 'string' ? error.code : '';
+      const isDatabaseError = errorCode.startsWith('ER_')
+        || errorCode.startsWith('PROTOCOL_')
+        || ['ECONNREFUSED', 'ECONNRESET', 'EHOSTUNREACH', 'ENETUNREACH', 'ENOTFOUND', 'ETIMEDOUT', 'EAI_AGAIN', 'ESOCKET', 'EPIPE', 'ETLS'].includes(errorCode);
+      if (!isDatabaseError) throw error;
+
+      console.error('MySQL app-data request failed.', error);
+      if (!response.headersSent) {
+        sendJson(response, 503, {
+          code: 'MYSQL_STORAGE_UNAVAILABLE',
+          error: 'MySQL storage is temporarily unavailable.'
+        });
+      } else {
+        response.destroy();
+      }
+    }
     return;
   }
   if (pathname === '/api/items') {
@@ -891,11 +913,11 @@ async function vercelHandler(request, response) {
       request.url = `${originalPath}${requestUrl.search ? requestUrl.search : ''}`;
     }
 
-    vercelCredentialsPromise ||= Promise.resolve().then(() => {
-      return readCredentials();
-    });
     const routeUrl = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
     const needsCredentials = routeUrl.pathname === '/api/auth/login' && request.method === 'POST';
+    if (needsCredentials) {
+      vercelCredentialsPromise ||= Promise.resolve().then(() => readCredentials());
+    }
     const credentials = needsCredentials ? await vercelCredentialsPromise : null;
     await handleRequest(request, response, credentials);
   } catch (error) {

@@ -149,7 +149,8 @@
     } catch (error) {
       const mysqlIsNotConfigured = error.code === 'MYSQL_NOT_CONFIGURED'
         || error.message === 'MySQL storage is not configured. Set MYSQL_* values in .env and restart the server.';
-      if (mysqlIsNotConfigured && activeUsername) {
+      const mysqlIsUnavailable = error.code === 'MYSQL_STORAGE_UNAVAILABLE';
+      if ((mysqlIsNotConfigured || mysqlIsUnavailable) && activeUsername) {
         if (owner && owner !== activeUsername) original.clear.call(storage);
         original.setItem.call(storage, ownerKey, activeUsername);
         window.APP_STORAGE = {
@@ -157,6 +158,9 @@
           isConnected: false,
           mode: 'local'
         };
+        if (mysqlIsUnavailable) {
+          showStorageError('MySQL storage is unavailable. Changes are saved only in this browser until the database reconnects.');
+        }
         return { imported: false, records: localRecords, storage: 'local' };
       }
       if (error.message.includes('Authentication required')) {
