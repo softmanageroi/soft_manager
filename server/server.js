@@ -654,7 +654,7 @@ async function serveFile(request, response, pathname) {
     ? path.join(ROOT, 'node_modules', 'exceljs', 'dist', 'exceljs.min.js')
     : path.resolve(ROOT, decodedPath.startsWith('/') ? decodedPath.slice(1) : decodedPath);
 
-  if (!resolvedPath.startsWith(`${ROOT}${path.sep}`)) {
+  if (!resolvedPath.startsWith(ROOT)) {
     console.log(`[404] Path outside ROOT: ${resolvedPath}`);
     sendJson(response, 404, { error: 'Not found.' });
     return;
