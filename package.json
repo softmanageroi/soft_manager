@@ -10,7 +10,7 @@
     "test": "node --test"
   },
   "engines": {
-    "node": "22.x"
+    "node": "26.x"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
