@@ -653,6 +653,7 @@ async function serveFile(request, response, pathname) {
   const resolvedPath = decodedPath === '/js/vendor/exceljs.min.js'
     ? path.join(ROOT, 'node_modules', 'exceljs', 'dist', 'exceljs.min.js')
     : path.resolve(ROOT, decodedPath.startsWith('/') ? decodedPath.slice(1) : decodedPath);
+
   if (!resolvedPath.startsWith(`${ROOT}${path.sep}`)) {
     console.log(`[404] Path outside ROOT: ${resolvedPath}`);
     sendJson(response, 404, { error: 'Not found.' });
@@ -662,8 +663,10 @@ async function serveFile(request, response, pathname) {
   const allowedDirectory = decodedPath === '/js/vendor/exceljs.min.js'
     || ['html', 'js']
       .some((directory) => resolvedPath.startsWith(path.join(ROOT, directory) + path.sep));
+  
   const extension = path.extname(resolvedPath).toLowerCase();
   if (!allowedDirectory || !MIME_TYPES[extension] || path.basename(resolvedPath).startsWith('.')) {
+    console.log(`[404] Disallowed directory or missing MIME type: ${resolvedPath} (${extension})`);
     sendJson(response, 404, { error: 'Not found.' });
     return;
   }
@@ -677,7 +680,11 @@ async function serveFile(request, response, pathname) {
     let file = await fs.readFile(realPath);
     if (extension === '.html' && pathname.startsWith('/html/') && pathname !== '/html/index.html') {
       const html = file.toString('utf8');
-      file = Buffer.from(html.replace(/<\/head>/i, '<script src="/js/data-store.js"></script></head>'));
+      file = Buffer.from(html.replace(/<\/head>/i, '<
+        
+        
+        
+        src="/js/data-store.js"></script></head>'));
     }
     response.writeHead(200, {
       'Cache-Control': extension === '.html' || pathname === '/js/data-store.js'
