@@ -680,11 +680,7 @@ async function serveFile(request, response, pathname) {
     let file = await fs.readFile(realPath);
     if (extension === '.html' && pathname.startsWith('/html/') && pathname !== '/html/index.html') {
       const html = file.toString('utf8');
-      file = Buffer.from(html.replace(/<\/head>/i, '<
-        
-        
-        
-        src="/js/data-store.js"></script></head>'));
+      file = Buffer.from(html.replace(/<\/head>/i, '<script src="/js/data-store.js"></script></head>'));
     }
     response.writeHead(200, {
       'Cache-Control': extension === '.html' || pathname === '/js/data-store.js'
