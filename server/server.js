@@ -661,8 +661,8 @@ async function serveFile(request, response, pathname) {
   }
 
   const allowedDirectory = decodedPath === '/js/vendor/exceljs.min.js'
-    || ['html', 'js']
-      .some((directory) => resolvedPath.startsWith(path.join(ROOT, directory) + path.sep));
+    || ['html', 'js', 'html/css', 'html/images', 'html/standalone']
+      .some((directory) => resolvedPath.startsWith(path.join(ROOT, directory)));
   
   const extension = path.extname(resolvedPath).toLowerCase();
   if (!allowedDirectory || !MIME_TYPES[extension] || path.basename(resolvedPath).startsWith('.')) {
