@@ -17,12 +17,14 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const scrypt = promisify(scryptCallback);
-const ROOT = process.env.VERCEL === '1' 
-  ? path.resolve(__dirname, '..') 
-  : [__dirname, path.resolve(__dirname, '..')].find((directory) =>
-      fsSync.existsSync(path.join(directory, 'html'))
-      && fsSync.existsSync(path.join(directory, 'js'))
-    ) || __dirname;
+const ROOT = [
+  __dirname,
+  path.resolve(__dirname, '..'),
+  path.resolve(__dirname, '../..')
+].find((directory) =>
+  fsSync.existsSync(path.join(directory, 'html'))
+  && fsSync.existsSync(path.join(directory, 'js'))
+) || __dirname;
 const AUTH_DIRECTORY = path.join(ROOT, '.auth');
 const CREDENTIALS_FILE = path.join(AUTH_DIRECTORY, 'credentials.json');
 const IS_VERCEL = process.env.VERCEL === '1';
