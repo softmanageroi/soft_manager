@@ -17,14 +17,23 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const scrypt = promisify(scryptCallback);
-const ROOT = [
-  __dirname,
-  path.resolve(__dirname, '..'),
-  path.resolve(__dirname, '../..')
-].find((directory) =>
-  fsSync.existsSync(path.join(directory, 'html'))
-  && fsSync.existsSync(path.join(directory, 'js'))
-) || __dirname;
+function findAppRoot() {
+  const candidates = new Set();
+  for (const start of [process.cwd(), __dirname]) {
+    let directory = path.resolve(start);
+    for (let depth = 0; depth < 8; depth += 1) {
+      candidates.add(directory);
+      const parent = path.dirname(directory);
+      if (parent === directory) break;
+      directory = parent;
+    }
+  }
+  return [...candidates].find((directory) =>
+    fsSync.existsSync(path.join(directory, 'html', 'index.html'))
+    && fsSync.existsSync(path.join(directory, 'js', 'login.js'))
+  ) || path.resolve(__dirname, '..');
+}
+const ROOT = findAppRoot();
 const AUTH_DIRECTORY = path.join(ROOT, '.auth');
 const CREDENTIALS_FILE = path.join(AUTH_DIRECTORY, 'credentials.json');
 const IS_VERCEL = process.env.VERCEL === '1';
@@ -918,6 +927,8 @@ async function vercelHandler(request, response) {
     if (originalPath) {
       requestUrl.searchParams.delete('__path');
       request.url = `${originalPath}${requestUrl.search ? requestUrl.search : ''}`;
+    } else if (requestUrl.pathname === '/api/index') {
+      request.url = '/healthz';
     }
 
     const routeUrl = new URL(request.url, `http://${request.headers.host || 'localhost'}`);

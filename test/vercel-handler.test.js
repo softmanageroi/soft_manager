@@ -40,6 +40,29 @@ test('unauthenticated New Indent route preserves the requested form after login'
   );
 });
 
+test('direct API entrypoint requests return health instead of a static-file 404', async () => {
+  const response = {
+    headersSent: false,
+    writeHead(statusCode, headers = {}) {
+      this.statusCode = statusCode;
+      this.headers = headers;
+      this.headersSent = true;
+    },
+    end(body) {
+      this.body = body;
+    },
+    destroy() {}
+  };
+  await vercelHandler({
+    url: '/api/index',
+    method: 'GET',
+    headers: { host: 'example.test' }
+  }, response);
+
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(JSON.parse(response.body), { ok: true });
+});
+
 test('Vercel serves the public login page and script from the bundled file root', async () => {
   const request = async (path) => {
     const response = {
@@ -75,7 +98,7 @@ test('Vercel bundles assets for the API function entrypoint', () => {
   const functionConfig = vercelConfig.functions['api/index.js'];
   assert.ok(functionConfig, 'the routed API entrypoint must have a function configuration');
   const includeFiles = functionConfig.includeFiles;
-  for (const directory of ['html/**/*', 'js/**/*']) {
+  for (const directory of ['html/', 'js/']) {
     assert.ok(includeFiles.includes(directory));
   }
   assert.ok(includeFiles.includes('node_modules/exceljs/dist/exceljs.min.js'));
