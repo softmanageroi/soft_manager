@@ -936,7 +936,10 @@ let vercelCredentialsPromise;
 async function vercelHandler(request, response, assets) {
   try {
     const requestUrl = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
-    const originalPath = requestUrl.searchParams.get('__path');
+    const queryPath = typeof request.query?.__path === 'string'
+      ? request.query.__path
+      : null;
+    const originalPath = requestUrl.searchParams.get('__path') || queryPath;
     if (originalPath) {
       requestUrl.searchParams.delete('__path');
       request.url = `${originalPath}${requestUrl.search ? requestUrl.search : ''}`;
