@@ -23,6 +23,6 @@ const excelJsPath = path.join(root, 'node_modules/exceljs/dist/exceljs.min.js');
 assets['node_modules/exceljs/dist/exceljs.min.js'] = fs.readFileSync(excelJsPath).toString('base64');
 
 fs.writeFileSync(
-  path.join(root, 'server/app-assets.generated.json'),
+  path.join(root, 'api/app-assets.generated.json'),
   JSON.stringify(assets)
 );

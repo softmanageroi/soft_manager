@@ -17,10 +17,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const scrypt = promisify(scryptCallback);
-const ASSET_BUNDLE_PATH = path.join(__dirname, 'app-assets.generated.json');
-const bundledAssets = fsSync.existsSync(ASSET_BUNDLE_PATH)
-  ? require('./app-assets.generated.json')
-  : null;
 function findAppRoot() {
   const candidates = new Set();
   for (const start of [process.cwd(), __dirname]) {
@@ -660,7 +656,7 @@ async function createInventoryItem(request, response, username) {
   sendJson(response, 201, { id: result.insertId, itemCode, itemName });
 }
 
-async function serveFile(request, response, pathname) {
+async function serveFile(request, response, pathname, assets) {
   let decodedPath;
   try {
     decodedPath = decodeURIComponent(pathname);
@@ -700,8 +696,8 @@ async function serveFile(request, response, pathname) {
 
   try {
     let file;
-    if (bundledAssets && Object.hasOwn(bundledAssets, assetKey)) {
-      file = Buffer.from(bundledAssets[assetKey], 'base64');
+    if (assets && Object.hasOwn(assets, assetKey)) {
+      file = Buffer.from(assets[assetKey], 'base64');
     } else {
       const realPath = await fs.realpath(resolvedPath);
       const realRelativePath = path.relative(ROOT, realPath);
@@ -813,7 +809,7 @@ async function readCredentials() {
   };
 }
 
-async function handleRequest(request, response, credentials) {
+async function handleRequest(request, response, credentials, assets) {
   const requestUrl = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
   const pathname = requestUrl.pathname;
   const session = getSession(request);
@@ -933,11 +929,11 @@ async function handleRequest(request, response, credentials) {
     return;
   }
 
-  await serveFile(request, response, pathname);
+  await serveFile(request, response, pathname, assets);
 }
 
 let vercelCredentialsPromise;
-async function vercelHandler(request, response) {
+async function vercelHandler(request, response, assets) {
   try {
     const requestUrl = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
     const originalPath = requestUrl.searchParams.get('__path');
@@ -957,7 +953,7 @@ async function vercelHandler(request, response) {
       vercelCredentialsPromise ||= Promise.resolve().then(() => readCredentials());
     }
     const credentials = needsCredentials ? await vercelCredentialsPromise : null;
-    await handleRequest(request, response, credentials);
+    await handleRequest(request, response, credentials, assets);
   } catch (error) {
     console.error('Vercel request could not be completed.', error);
     if (!response.headersSent) {
