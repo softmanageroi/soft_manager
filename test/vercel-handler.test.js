@@ -61,6 +61,26 @@ test('direct API entrypoint requests return health instead of a static-file 404'
 
   assert.equal(response.statusCode, 200);
   assert.deepEqual(JSON.parse(response.body), { ok: true });
+
+  const rewrittenResponse = {
+    headersSent: false,
+    writeHead(statusCode, headers = {}) {
+      this.statusCode = statusCode;
+      this.headers = headers;
+      this.headersSent = true;
+    },
+    end(body) {
+      this.body = body;
+    },
+    destroy() {}
+  };
+  await vercelHandler({
+    url: '/api/index?__path=%2Fapi%2Findex',
+    method: 'GET',
+    headers: { host: 'example.test' }
+  }, rewrittenResponse);
+  assert.equal(rewrittenResponse.statusCode, 200);
+  assert.deepEqual(JSON.parse(rewrittenResponse.body), { ok: true });
 });
 
 test('Vercel serves the public login page and script from the bundled file root', async () => {

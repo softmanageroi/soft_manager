@@ -927,7 +927,10 @@ async function vercelHandler(request, response) {
     if (originalPath) {
       requestUrl.searchParams.delete('__path');
       request.url = `${originalPath}${requestUrl.search ? requestUrl.search : ''}`;
-    } else if (requestUrl.pathname === '/api/index') {
+    }
+
+    const rewrittenUrl = new URL(request.url, `http://${request.headers.host || 'localhost'}`);
+    if (rewrittenUrl.pathname === '/api/index') {
       request.url = '/healthz';
     }
 
