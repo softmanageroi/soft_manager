@@ -1,13 +1,59 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": null,
-  "buildCommand": null,
-  "installCommand": null,
-  "outputDirectory": ".",
+  "installCommand": "npm ci",
+  "buildCommand": "npm run build",
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "{css,html,js,node_modules/exceljs/dist}/**"
+    }
+  },
   "rewrites": [
     {
       "source": "/",
-      "destination": "/html/index.html"
+      "destination": "/api/index?__path=/"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/api/index?__path=/index.html"
+    },
+    {
+      "source": "/html/:path*",
+      "destination": "/api/index?__path=/html/:path*"
+    },
+    {
+      "source": "/js/:path*",
+      "destination": "/api/index?__path=/js/:path*"
+    },
+    {
+      "source": "/css/:path*",
+      "destination": "/api/index?__path=/css/:path*"
+    },
+    {
+      "source": "/images/:path*",
+      "destination": "/api/index?__path=/images/:path*"
+    },
+    {
+      "source": "/api/auth/:path*",
+      "destination": "/api/index?__path=/api/auth/:path*"
+    },
+    {
+      "source": "/api/data",
+      "destination": "/api/index?__path=/api/data"
+    },
+    {
+      "source": "/api/data/:path*",
+      "destination": "/api/index?__path=/api/data/:path*"
+    },
+    {
+      "source": "/api/items",
+      "destination": "/api/index?__path=/api/items"
+    },
+    {
+      "source": "/api/inventory",
+      "destination": "/api/index?__path=/api/inventory"
+    },
+    {
+      "source": "/healthz",
+      "destination": "/api/index?__path=/healthz"
     }
   ]
 }

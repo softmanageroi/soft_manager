@@ -1,0 +1,25 @@
+{
+  "name": "soft_manager",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local inventory management app with MySQL-ready backend",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "setup": "node server/server.js --setup",
+    "build": "node scripts/verify-vercel-assets.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.118.0",
+    "@vercel/analytics": "^2.0.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "exceljs": "^4.4.0",
+    "mysql2": "^3.4.2"
+  }
+}
