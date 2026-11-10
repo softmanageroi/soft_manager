@@ -144,6 +144,9 @@ test('Vercel builds and bundles assets with the API function entrypoint', () => 
   assert.match(apiEntry, /require\('\.\/app-assets\.generated\.json'\)/);
   assert.equal(vercelConfig.rewrites.some(({ source }) => source === '/(.*)'), false);
   assert.ok(vercelConfig.rewrites.some(({ source, destination }) =>
+    source === '/' && destination === '/api/index?__path=/html/index.html'
+  ));
+  assert.ok(vercelConfig.rewrites.some(({ source, destination }) =>
     source === '/html/:path*' && destination === '/api/index?__path=/html/:path*'
   ));
 });
