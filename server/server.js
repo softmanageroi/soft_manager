@@ -23,6 +23,8 @@ function findAppRoot() {
     let directory = path.resolve(start);
     for (let depth = 0; depth < 8; depth += 1) {
       candidates.add(directory);
+      candidates.add(path.join(directory, 'api'));
+      candidates.add(path.join(directory, 'server'));
       const parent = path.dirname(directory);
       if (parent === directory) break;
       directory = parent;
