@@ -5,12 +5,12 @@
   "description": "Local inventory management app with MySQL-ready backend",
   "main": "server/server.js",
   "scripts": {
-    "start": "node server.js",
-    "setup": "node server.js --setup",
+    "start": "node server/server.js",
+    "setup": "node server/server.js --setup",
     "test": "node --test"
   },
   "engines": {
-    "node": "26.x"
+    "node": ">=20"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

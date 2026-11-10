@@ -1,220 +1,72 @@
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; url=html/index.html">
-    <title>Soft Manager</title>
+    <title>IMS Login</title>
+    <link rel="stylesheet" href="css/skeuomorphic.css?v=4">
+    <link rel="stylesheet" href="css/index.css?v=20261107-light-login-2">
 </head>
 <body>
-    <p>Opening Soft Manager... <a href="html/index.html">Continue to the app</a></p>
-=======
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<<<<<<< ours
-<<<<<<< ours
-  <title>IMS | Sign in</title>
-  <style>
-    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    * { box-sizing: border-box; }
-    body { min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 24px; background: linear-gradient(135deg, #e8d0a9, #f8e9ce 50%, #d1aa72); color: #172743; }
-    main { width: min(100%, 680px); padding: clamp(34px, 7vw, 58px); background: rgba(255,255,255,.97); border: 1px solid #dbe3f0; border-radius: 24px; box-shadow: 0 20px 55px rgba(74, 48, 17, .18); }
-    h1 { margin: 0 0 36px; text-align: center; font-size: clamp(2.3rem, 7vw, 3.7rem); line-height: 1; letter-spacing: -.045em; }
-    form { display: grid; gap: 20px; }
-    label { display: grid; gap: 8px; font-size: 1rem; font-weight: 650; }
-    input { width: 100%; min-height: 72px; padding: 0 22px; border: 2px solid #dbe3f0; border-radius: 16px; background: #fff; color: #172743; font: inherit; font-size: 1.08rem; outline: none; transition: border-color .15s, box-shadow .15s; }
-    input::placeholder { color: #788397; }
-    input:focus { border-color: #2468dd; box-shadow: 0 0 0 4px rgba(36,104,221,.16); }
-    button { justify-self: center; min-width: 200px; min-height: 64px; border: 0; border-radius: 14px; background: #2468dd; color: #fff; cursor: pointer; font: inherit; font-size: 1.15rem; font-weight: 700; transition: background .15s, transform .15s; }
-    button:hover { background: #1555c4; transform: translateY(-1px); }
-    button:focus-visible { outline: 4px solid rgba(36,104,221,.3); outline-offset: 3px; }
-    button:disabled { cursor: wait; opacity: .72; transform: none; }
-    #message { min-height: 1.5em; margin: 4px 0 0; text-align: center; font-size: 1.05rem; font-weight: 600; }
-    #message[role="alert"] { color: #a01d1d; }
-    #message.success { color: #14713d; }
-    .field-error { border-color: #b42318; }
-    @media (max-width: 480px) { body { padding: 12px; } main { padding: 32px 20px; border-radius: 18px; } input { min-height: 62px; } }
-  </style>
-</head>
-<body>
-  <main aria-labelledby="page-title">
-    <h1 id="page-title">Login</h1>
-    <!-- novalidate lets this page provide clear validation messages instead of browser pattern errors. -->
-    <form id="login-form" novalidate>
-      <label for="username">Username
-        <input id="username" name="username" type="text" autocomplete="username" placeholder="Enter username" required>
-      </label>
-      <label for="password">Password
-        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter password" required>
-      </label>
-      <button id="submit-button" type="submit">Sign in</button>
-      <p id="message" aria-live="polite"></p>
+    <aside class="login-promo">
+        <div class="promo-brand">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+                <path d="M24 2 44 13.5v21L24 46 4 34.5v-21L24 2Z" fill="#6038df"/>
+                <path d="m24 2 20 11.5L24 25 4 13.5 24 2Z" fill="#9678ff"/>
+                <path d="M4 13.5 24 25v21L4 34.5v-21Z" fill="#7045ed"/>
+                <path d="M44 13.5 24 25v21l20-11.5v-21Z" fill="#542bd5"/>
+            </svg>
+            <span>Inventory ERP</span>
+        </div>
+        <p class="promo-eyebrow">PURCHASE &amp; INVENTORY</p>
+        <h2>Everything you need,<br>all in one place.</h2>
+        <p class="promo-description">Manage purchases, stock and vouchers with a clearer view of your business.</p>
+        <div class="promo-features">
+            <span>Purchase</span>
+            <span>Inventory</span>
+            <span>Reports</span>
+        </div>
+    </aside>
+    <form id="loginForm" class="login-box">
+        <div class="login-brand" aria-label="Inventory ERP">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+                <path d="M24 2 44 13.5v21L24 46 4 34.5v-21L24 2Z" fill="#6038df"/>
+                <path d="m24 2 20 11.5L24 25 4 13.5 24 2Z" fill="#9678ff"/>
+                <path d="M4 13.5 24 25v21L4 34.5v-21Z" fill="#7045ed"/>
+                <path d="M44 13.5 24 25v21l20-11.5v-21Z" fill="#542bd5"/>
+            </svg>
+            <span>Inventory ERP</span>
+        </div>
+        <h1>Login to Your Account</h1>
+        <p class="login-subtitle">Enter your credentials to access the system</p>
+
+        <label class="login-field">
+            <span class="visually-hidden">Username</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 21v-2a8 8 0 0 1 16 0v2"></path>
+            </svg>
+            <input id="username" name="username" type="text" placeholder="Username" autocomplete="username" required>
+        </label>
+        <label class="login-field">
+            <span class="visually-hidden">Password</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="4" y="10" width="16" height="11" rx="2"></rect>
+                <path d="M8 10V7a4 4 0 1 1 8 0v3"></path>
+                <circle cx="12" cy="15" r="1"></circle>
+            </svg>
+            <input id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" required>
+        </label>
+        <button id="LoginButton" class="button" type="submit">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M10 17l5-5-5-5M15 12H3"></path>
+                <path d="M12 3h6a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-6"></path>
+            </svg>
+            Login
+        </button>
+        <p id="loginMessage" role="alert" aria-live="polite" hidden></p>
+        <p style="text-align: center; margin: 0;"><a href="data-backup.html">Backup or restore data</a></p>
     </form>
-  </main>
-  <script>
-    const form = document.querySelector('#login-form');
-    const username = document.querySelector('#username');
-    const password = document.querySelector('#password');
-    const button = document.querySelector('#submit-button');
-    const message = document.querySelector('#message');
-
-    function showMessage(text, isError = true) {
-      message.textContent = text;
-      message.setAttribute('role', isError ? 'alert' : 'status');
-      message.classList.toggle('success', !isError);
-    }
-
-    function clearFieldErrors() {
-      username.classList.remove('field-error');
-      password.classList.remove('field-error');
-    }
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      clearFieldErrors();
-      const enteredUsername = username.value.trim();
-
-      if (!enteredUsername || !password.value) {
-        if (!enteredUsername) username.classList.add('field-error');
-        if (!password.value) password.classList.add('field-error');
-        showMessage('Please enter both your username and password.');
-        (!enteredUsername ? username : password).focus();
-        return;
-      }
-
-      button.disabled = true;
-      button.textContent = 'Signing in…';
-      showMessage('', false);
-
-      try {
-        // Send plain form values to the configured application authentication endpoint.
-        // There is deliberately no client-side `pattern` constraint: usernames may use
-        // the format supported by the server, rather than failing browser validation.
-        const response = await fetch('/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          credentials: 'same-origin',
-          body: JSON.stringify({ username: enteredUsername, password: password.value })
-        });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(result.message || 'Unable to sign in. Please check your credentials.');
-<<<<<<< ours
-        window.location.assign(result.redirect || '/dashboard.html');
-=======
-        window.location.assign(result.redirect || '/warehouse-stock.html');
->>>>>>> theirs
-      } catch (error) {
-        // Do not expose low-level browser/network errors such as "string did not match pattern".
-        showMessage(error instanceof TypeError ? 'Unable to reach the sign-in service. Please try again.' : error.message);
-        button.disabled = false;
-        button.textContent = 'Sign in';
-      }
-    });
-
-    form.addEventListener('input', () => { clearFieldErrors(); if (message.textContent) showMessage('', false); });
-  </script>
-<<<<<<< ours
-<<<<<<< ours
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
->>>>>>> theirs
-=======
-=======
->>>>>>> theirs
-  <meta name="description" content="A lightweight inventory management workspace.">
-  <title>IMS | Inventory Management</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <header class="app-header">
-    <a class="brand" href="#dashboard" aria-label="IMS dashboard">IMS<span>•</span></a>
-    <nav aria-label="Primary navigation">
-      <a href="#dashboard">Dashboard</a>
-      <a href="#requisitions">Requisitions</a>
-      <a href="#orders">Purchase orders</a>
-    </nav>
-    <button class="button button-secondary" id="resetData" type="button">Reset demo data</button>
-  </header>
-
-  <main class="container">
-    <section id="dashboard" class="view" aria-labelledby="dashboardTitle">
-      <div class="page-heading">
-        <div><p class="eyebrow">Operations overview</p><h1 id="dashboardTitle">Inventory at a glance</h1></div>
-        <a class="button" href="#requisitions">New requisition</a>
-      </div>
-      <div class="metrics" id="metrics" aria-live="polite"></div>
-      <section class="panel" aria-labelledby="lowStockTitle">
-        <div class="panel-heading"><div><h2 id="lowStockTitle">Stock requiring attention</h2><p>Items at or below their reorder level.</p></div></div>
-        <div class="table-wrap"><table><thead><tr><th>Item</th><th>SKU</th><th>On hand</th><th>Reorder level</th><th>Status</th></tr></thead><tbody id="stockBody"></tbody></table></div>
-      </section>
-    </section>
-
-    <section id="requisitions" class="view" aria-labelledby="requisitionTitle">
-      <div class="page-heading"><div><p class="eyebrow">Material requests</p><h1 id="requisitionTitle">Requisitions</h1></div></div>
-      <div class="two-column">
-        <form class="panel" id="requisitionForm">
-          <div class="panel-heading"><div><h2>Create a requisition</h2><p>Requests are saved in this browser.</p></div></div>
-          <div class="form-grid">
-            <label>Requestor<input name="requestor" required maxlength="80" placeholder="e.g. Priya Sharma"></label>
-            <label>Department<input name="department" required maxlength="80" placeholder="e.g. Facilities"></label>
-            <label>Item<select name="item" id="itemSelect" required></select></label>
-            <label>Quantity<input name="quantity" required type="number" min="1" step="1" value="1"></label>
-            <label class="wide">Notes<textarea name="notes" maxlength="280" placeholder="Optional details"></textarea></label>
-          </div>
-          <div class="form-actions"><button class="button" type="submit">Submit requisition</button></div>
-          <p class="form-message" id="requisitionMessage" role="status"></p>
-        </form>
-        <section class="panel"><div class="panel-heading"><div><h2>Pending approval</h2><p>Approve requests when stock can be issued.</p></div></div><div id="pendingRequests" class="request-list"></div></section>
-      </div>
-    </section>
-
-    <section id="orders" class="view" aria-labelledby="orderTitle">
-      <div class="page-heading"><div><p class="eyebrow">Procurement</p><h1 id="orderTitle">Purchase orders</h1></div></div>
-      <div class="two-column">
-        <form class="panel" id="orderForm">
-          <div class="panel-heading"><div><h2>Create purchase order</h2><p>Record an incoming replenishment.</p></div></div>
-          <div class="form-grid">
-            <label>Supplier<input name="supplier" required maxlength="100" placeholder="Supplier name"></label>
-            <label>Item<select name="item" class="item-select" required></select></label>
-            <label>Quantity<input name="quantity" type="number" min="1" step="1" required value="1"></label>
-            <label>Expected date<input name="expectedDate" type="date" required></label>
-          </div>
-          <div class="form-actions"><button class="button" type="submit">Create purchase order</button></div>
-          <p class="form-message" id="orderMessage" role="status"></p>
-        </form>
-        <section class="panel"><div class="panel-heading"><div><h2>Open orders</h2><p>Mark delivered orders as received to update stock.</p></div></div><div id="openOrders" class="request-list"></div></section>
-      </div>
-    </section>
-  </main>
-  <template id="emptyState"><p class="empty-state">Nothing to show yet.</p></template>
-  <script src="app.js"></script>
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
+    <script src="../js/login.js?v=20261107-restore-pending-navigation"></script>
 </body>
 </html>

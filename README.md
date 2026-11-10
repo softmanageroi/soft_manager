@@ -10,16 +10,18 @@
 
 ```text
 soft_manager/
-├── config/
 ├── api/
-├── db/
+│   └── index.js
 ├── html/
 │   ├── css/
 │   ├── images/
 │   └── standalone/
 ├── js/
-├── server.js
-├── supabase-connection.js
+├── server/
+│   ├── db/schema.sql
+│   ├── server.js
+│   └── supabase-connection.js
+├── vercel.json
 └── package.json
 ```
 
@@ -51,7 +53,7 @@ htdocs/
 3. Copy the contents of `htdocs/` into a folder under XAMPP's `htdocs`, or set
    the Apache document root to this project's `htdocs/` directory.
 4. If the `users` table has no account, use the existing MySQL setup flow
-   (`npm install`, then `node server.js --setup`) to create one.
+   (`npm install`, then `npm run setup`) to create one.
 5. Open `http://localhost/<folder>/` (or `http://localhost/` if `htdocs/` is
    the document root) and sign in with that account. PHP pages do not use the
    Node-only local fallback login.
@@ -90,7 +92,7 @@ Install the app dependencies and create the first account:
 
 ```sh
 npm install
-node server.js --setup
+npm run setup
 ```
 
 Choose a username and password of at least 12 characters. Account credentials are stored in MySQL with a bcrypt password hash.
@@ -138,4 +140,4 @@ Open **Registers & Monthly Reports** from the dashboard, select a month, and swi
 
 ## Local-only login fallback
 
-If MySQL settings are not present, `node server.js --setup` can still create a local login stored in `.auth/credentials.json`. This fallback protects the pages but does not provide MySQL app-data persistence; configure MySQL before using the app as a database-backed system.
+If MySQL settings are not present, `npm run setup` can still create a local login stored in `.auth/credentials.json`. This fallback protects the pages but does not provide MySQL app-data persistence; configure MySQL before using the app as a database-backed system.

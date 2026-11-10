@@ -652,9 +652,12 @@ async function serveFile(request, response, pathname) {
     return;
   }
 
+  const assetPath = decodedPath.startsWith('/css/') || decodedPath.startsWith('/images/')
+    ? path.join('html', decodedPath.slice(1))
+    : decodedPath;
   const resolvedPath = decodedPath === '/js/vendor/exceljs.min.js'
     ? path.join(ROOT, 'node_modules', 'exceljs', 'dist', 'exceljs.min.js')
-    : path.resolve(ROOT, decodedPath.startsWith('/') ? decodedPath.slice(1) : decodedPath);
+    : path.resolve(ROOT, assetPath.startsWith('/') ? assetPath.slice(1) : assetPath);
 
   if (!resolvedPath.startsWith(ROOT)) {
     console.log(`[404] Path outside ROOT: ${resolvedPath}`);

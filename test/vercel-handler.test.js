@@ -137,7 +137,13 @@ test('Vercel handler routes requests and signs sessions across requests', async 
   assert.equal(loginPage.status, 200);
   const loginPageHtml = await loginPage.text();
   assert.match(loginPageHtml, /IMS Login/);
-  assert.match(loginPageHtml, /<script src="\/js\/data-store\.js"><\/script>/);
+  assert.doesNotMatch(loginPageHtml, /<script src="\/js\/data-store\.js"><\/script>/);
+
+  const dashboardPage = await request('/html/dashboard.html', {
+    headers: { Cookie: sessionCookie }
+  });
+  assert.equal(dashboardPage.status, 200);
+  assert.match(await dashboardPage.text(), /<script src="\/js\/data-store\.js"><\/script>/);
 
   const protectedStyles = await request('/html/css/dashboard.css');
   assert.equal(protectedStyles.status, 401);
