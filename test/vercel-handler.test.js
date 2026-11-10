@@ -136,7 +136,10 @@ test('Vercel serves the public login page and script from the bundled file root'
 });
 
 test('Vercel builds and bundles assets with the API function entrypoint', () => {
+  assert.equal(vercelConfig.installCommand, 'npm ci');
   assert.equal(vercelConfig.buildCommand, 'npm run build');
+  const packageLock = require('../package-lock.json');
+  assert.equal(packageLock.packages['node_modules/exceljs'].version, '4.4.0');
   const apiEntry = require('node:fs').readFileSync(require.resolve('../api/index.js'), 'utf8');
   assert.match(apiEntry, /require\('\.\/app-assets\.generated\.json'\)/);
   assert.equal(vercelConfig.rewrites.some(({ source }) => source === '/(.*)'), false);
