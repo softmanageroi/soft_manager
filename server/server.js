@@ -17,6 +17,10 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const scrypt = promisify(scryptCallback);
+const ASSET_BUNDLE_PATH = path.join(__dirname, 'app-assets.generated.json');
+const bundledAssets = fsSync.existsSync(ASSET_BUNDLE_PATH)
+  ? require('./app-assets.generated.json')
+  : null;
 function findAppRoot() {
   const candidates = new Set();
   for (const start of [process.cwd(), __dirname]) {
@@ -668,19 +672,24 @@ async function serveFile(request, response, pathname) {
   const assetPath = decodedPath.startsWith('/css/') || decodedPath.startsWith('/images/')
     ? path.join('html', decodedPath.slice(1))
     : decodedPath;
+  const assetKey = decodedPath === '/js/vendor/exceljs.min.js'
+    ? 'node_modules/exceljs/dist/exceljs.min.js'
+    : assetPath.startsWith('/') ? assetPath.slice(1) : assetPath;
   const resolvedPath = decodedPath === '/js/vendor/exceljs.min.js'
     ? path.join(ROOT, 'node_modules', 'exceljs', 'dist', 'exceljs.min.js')
-    : path.resolve(ROOT, assetPath.startsWith('/') ? assetPath.slice(1) : assetPath);
+    : path.resolve(ROOT, assetKey);
 
-  if (!resolvedPath.startsWith(ROOT)) {
+  const relativePath = path.relative(ROOT, resolvedPath);
+  if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
     console.log(`[404] Path outside ROOT: ${resolvedPath}`);
     sendJson(response, 404, { error: 'Not found.' });
     return;
   }
 
-  const allowedDirectory = decodedPath === '/js/vendor/exceljs.min.js'
-    || ['html', 'js', 'html/css', 'html/images', 'html/standalone']
-      .some((directory) => resolvedPath.startsWith(path.join(ROOT, directory)));
+  const allowedDirectory = assetKey === 'node_modules/exceljs/dist/exceljs.min.js'
+    || ['html', 'js'].some((directory) =>
+      assetKey === directory || assetKey.startsWith(`${directory}/`)
+    );
   
   const extension = path.extname(resolvedPath).toLowerCase();
   if (!allowedDirectory || !MIME_TYPES[extension] || path.basename(resolvedPath).startsWith('.')) {
@@ -690,12 +699,18 @@ async function serveFile(request, response, pathname) {
   }
 
   try {
-    const realPath = await fs.realpath(resolvedPath);
-    if (!realPath.startsWith(`${ROOT}${path.sep}`)) {
-      sendJson(response, 404, { error: 'Not found.' });
-      return;
+    let file;
+    if (bundledAssets && Object.hasOwn(bundledAssets, assetKey)) {
+      file = Buffer.from(bundledAssets[assetKey], 'base64');
+    } else {
+      const realPath = await fs.realpath(resolvedPath);
+      const realRelativePath = path.relative(ROOT, realPath);
+      if (realRelativePath.startsWith('..') || path.isAbsolute(realRelativePath)) {
+        sendJson(response, 404, { error: 'Not found.' });
+        return;
+      }
+      file = await fs.readFile(realPath);
     }
-    let file = await fs.readFile(realPath);
     if (extension === '.html' && pathname.startsWith('/html/') && pathname !== '/html/index.html') {
       const html = file.toString('utf8');
       file = Buffer.from(html.replace(/<\/head>/i, '<script src="/js/data-store.js"></script></head>'));

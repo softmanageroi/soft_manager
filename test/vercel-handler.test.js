@@ -117,10 +117,8 @@ test('Vercel serves the public login page and script from the bundled file root'
 test('Vercel bundles assets for the API function entrypoint', () => {
   const functionConfig = vercelConfig.functions['api/index.js'];
   assert.ok(functionConfig, 'the routed API entrypoint must have a function configuration');
-  for (const assetPath of ['html/**/*', 'js/**/*', 'api/html/**/*', 'api/js/**/*', 'server/html/**/*', 'server/js/**/*']) {
-    assert.ok(functionConfig.includeFiles.includes(assetPath));
-  }
-  assert.ok(functionConfig.includeFiles.includes('node_modules/exceljs/dist/exceljs.min.js'));
+  assert.equal(vercelConfig.buildCommand, 'npm run build');
+  assert.equal(functionConfig.includeFiles, 'server/app-assets.generated.json');
 });
 
 test('Vercel handler routes requests and signs sessions across requests', async (context) => {

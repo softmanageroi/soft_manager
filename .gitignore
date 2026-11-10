@@ -8,3 +8,4 @@ npm-debug.log*
 .auth/
 .vercel
 .env*
+server/app-assets.generated.json
