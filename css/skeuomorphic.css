@@ -291,7 +291,7 @@ a.toolbar-btn {
 }
 
 body:has(.login-box) {
-  background-image: url("../images/login-wallpaper.png");
+  background-image: url("../html/images/login-wallpaper.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
