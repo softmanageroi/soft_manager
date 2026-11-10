@@ -109,6 +109,8 @@ Open [http://localhost:3000](http://localhost:3000) on the computer running the 
 
 The Vercel function routes requests through the app's authentication and static-file handler. In the Vercel project settings, configure `APP_USERNAME` and `APP_PASSWORD` (at least 12 characters) for the Production environment. If using MySQL-backed accounts instead, configure the `MYSQL_*` connection values and set `SESSION_SECRET` to a random secret of at least 32 characters. `APP_PASSWORD` is used to sign sessions when `SESSION_SECRET` is not set. MySQL must be reachable from Vercel; a local `localhost` database will not work. After changing environment variables, redeploy the latest Production deployment for them to take effect.
 
+The API function packages the `html/`, `js/`, and ExcelJS distribution files so it can serve the app's static pages and assets from Vercel's read-only filesystem.
+
 Vercel's filesystem is read-only, so the app does not create local `.auth` credentials there. Configure one of the authentication options above before deploying. Without valid configuration, requests return an explicit configuration error rather than attempting to write under `.auth`. Session cookies are signed and expire after eight hours so they work across serverless function instances.
 
 ## App data storage and migration

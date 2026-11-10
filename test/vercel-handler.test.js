@@ -12,7 +12,7 @@ for (const name of ['MYSQL_HOST', 'MYSQL_PORT', 'MYSQL_USER', 'MYSQL_PASSWORD', 
   process.env[name] = '';
 }
 
-const vercelHandler = require('../server');
+const vercelHandler = require('../api');
 
 test('unauthenticated New Indent route preserves the requested form after login', async () => {
   const response = {
@@ -104,7 +104,7 @@ test('direct API entrypoint requests return health instead of a static-file 404'
   assert.match(vercelQueryResponse.body.toString(), /IMS Login/);
 });
 
-test('Vercel serves the public login page and script from the bundled file root', async () => {
+test('Vercel API function serves public login files from its packaged file root', async () => {
   const request = async (path) => {
     const response = {
       headersSent: false,
@@ -135,13 +135,19 @@ test('Vercel serves the public login page and script from the bundled file root'
   assert.match(script.body.toString(), /loginForm/);
 });
 
-test('Vercel builds and bundles assets with the API function entrypoint', () => {
+test('Vercel packages runtime assets with the API function entrypoint', () => {
   assert.equal(vercelConfig.installCommand, 'npm ci');
-  assert.equal(vercelConfig.buildCommand, 'npm run build');
-  const packageLock = require('../package-lock.json');
-  assert.equal(packageLock.packages['node_modules/exceljs'].version, '4.4.0');
-  const apiEntry = require('node:fs').readFileSync(require.resolve('../api/index.js'), 'utf8');
-  assert.match(apiEntry, /require\('\.\/app-assets\.generated\.json'\)/);
+  assert.equal(
+    vercelConfig.functions['api/index.js'].includeFiles,
+    '{html,js,node_modules/exceljs/dist}/**'
+  );
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const apiEntry = fs.readFileSync(require.resolve('../api/index.js'), 'utf8');
+  assert.doesNotMatch(apiEntry, /app-assets\.generated\.json/);
+  assert.ok(fs.existsSync(path.join(process.cwd(), 'html/index.html')));
+  assert.ok(fs.existsSync(path.join(process.cwd(), 'js/login.js')));
+  assert.ok(fs.existsSync(path.join(process.cwd(), 'node_modules/exceljs/dist/exceljs.min.js')));
   assert.equal(vercelConfig.rewrites.some(({ source }) => source === '/(.*)'), false);
   assert.ok(vercelConfig.rewrites.some(({ source, destination }) =>
     source === '/' && destination === '/api/index?__path=/html/index.html'
@@ -149,19 +155,6 @@ test('Vercel builds and bundles assets with the API function entrypoint', () => 
   assert.ok(vercelConfig.rewrites.some(({ source, destination }) =>
     source === '/html/:path*' && destination === '/api/index?__path=/html/:path*'
   ));
-});
-
-test('Vercel asset build includes the installed ExcelJS browser bundle', () => {
-  const result = spawnSync(process.execPath, ['scripts/build-vercel-assets.js'], {
-    cwd: process.cwd(),
-    encoding: 'utf8'
-  });
-  assert.equal(result.status, 0, result.stderr);
-
-  const assets = JSON.parse(
-    require('node:fs').readFileSync(require.resolve('../api/app-assets.generated.json'), 'utf8')
-  );
-  assert.ok(Buffer.from(assets['node_modules/exceljs/dist/exceljs.min.js'], 'base64').length > 0);
 });
 
 test('Vercel handler routes requests and signs sessions across requests', async (context) => {

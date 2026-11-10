@@ -1,9 +1,8 @@
 {
   "installCommand": "npm ci",
-  "buildCommand": "npm run build",
   "functions": {
     "api/index.js": {
-      "includeFiles": "{html,js,css,images}/**"
+      "includeFiles": "{html,js,node_modules/exceljs/dist}/**"
     }
   },
   "rewrites": [
