@@ -137,6 +137,8 @@ test('Vercel API function serves public login files from its packaged file root'
 
 test('Vercel packages runtime assets with the API function entrypoint', () => {
   assert.equal(vercelConfig.installCommand, 'npm ci');
+  assert.equal(vercelConfig.buildCommand, 'npm run build');
+  assert.equal(require('../package.json').scripts.build, 'node scripts/verify-vercel-assets.js');
   assert.equal(
     vercelConfig.functions['api/index.js'].includeFiles,
     '{html,js,node_modules/exceljs/dist}/**'
@@ -148,6 +150,11 @@ test('Vercel packages runtime assets with the API function entrypoint', () => {
   assert.ok(fs.existsSync(path.join(process.cwd(), 'html/index.html')));
   assert.ok(fs.existsSync(path.join(process.cwd(), 'js/login.js')));
   assert.ok(fs.existsSync(path.join(process.cwd(), 'node_modules/exceljs/dist/exceljs.min.js')));
+  const build = spawnSync(process.execPath, ['scripts/verify-vercel-assets.js'], {
+    cwd: process.cwd(),
+    encoding: 'utf8'
+  });
+  assert.equal(build.status, 0, build.stderr);
   assert.equal(vercelConfig.rewrites.some(({ source }) => source === '/(.*)'), false);
   assert.ok(vercelConfig.rewrites.some(({ source, destination }) =>
     source === '/' && destination === '/api/index?__path=/html/index.html'
