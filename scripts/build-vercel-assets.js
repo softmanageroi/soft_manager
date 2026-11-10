@@ -19,7 +19,11 @@ function addDirectory(directory) {
 addDirectory(path.join(root, 'html'));
 addDirectory(path.join(root, 'js'));
 
-const excelJsPath = path.join(root, 'node_modules/exceljs/dist/exceljs.min.js');
+const excelJsPackagePath = path.dirname(require.resolve('exceljs'));
+const excelJsPath = path.join(excelJsPackagePath, 'dist', 'exceljs.min.js');
+if (!fs.existsSync(excelJsPath)) {
+  throw new Error(`ExcelJS browser bundle was not found at its resolved package location: ${excelJsPath}`);
+}
 assets['node_modules/exceljs/dist/exceljs.min.js'] = fs.readFileSync(excelJsPath).toString('base64');
 
 fs.writeFileSync(

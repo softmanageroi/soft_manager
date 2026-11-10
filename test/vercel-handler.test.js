@@ -145,6 +145,19 @@ test('Vercel builds and bundles assets with the API function entrypoint', () => 
   ));
 });
 
+test('Vercel asset build includes the installed ExcelJS browser bundle', () => {
+  const result = spawnSync(process.execPath, ['scripts/build-vercel-assets.js'], {
+    cwd: process.cwd(),
+    encoding: 'utf8'
+  });
+  assert.equal(result.status, 0, result.stderr);
+
+  const assets = JSON.parse(
+    require('node:fs').readFileSync(require.resolve('../api/app-assets.generated.json'), 'utf8')
+  );
+  assert.ok(Buffer.from(assets['node_modules/exceljs/dist/exceljs.min.js'], 'base64').length > 0);
+});
+
 test('Vercel handler routes requests and signs sessions across requests', async (context) => {
   const server = createServer(vercelHandler);
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
