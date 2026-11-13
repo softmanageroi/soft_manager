@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Backup | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261103-glass-ui" />
+    <link rel="stylesheet" href="../css/theme-brown-beige.css?v=20261113-brown-beige-11" />
+</head>
+<body class="erp-page">
+    <main class="erp-content" style="max-width: 760px; margin: 40px auto;">
+        <section class="erp-card">
+            <div class="erp-card-header">
+                <div>
+                    <h1 style="margin: 0;">Data Backup &amp; Restore</h1>
+                    <p style="margin: 6px 0 0; color: var(--erp-text-muted);">Download a private copy of this browser's Soft Manager data, or restore a backup on another app URL.</p>
+                </div>
+            </div>
+            <div class="erp-card-body">
+                <p><strong>Important:</strong> This page only reads or writes this browser's local storage. It does not upload your backup file anywhere. Keep the downloaded file private.</p>
+                <p id="backupSummary" role="status" aria-live="polite">Checking browser data...</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0;">
+                    <button id="exportBackupBtn" class="btn-primary" type="button">Download backup</button>
+                    <label class="btn-secondary" for="backupFile" style="cursor: pointer;">Choose backup file</label>
+                    <input id="backupFile" type="file" accept=".json,application/json" hidden />
+                    <button id="importBackupBtn" class="btn-secondary" type="button" disabled>Restore backup</button>
+                </div>
+                <p id="backupMessage" class="status-message" role="status" aria-live="polite" hidden></p>
+                <a href="index.html">Back to login</a>
+            </div>
+        </section>
+    </main>
+    <script src="../js/data-backup.js?v=github-pages-local-only"></script>
+</body>
+</html>

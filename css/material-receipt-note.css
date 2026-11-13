@@ -1,0 +1,181 @@
+#mrnAllView .voucher-table-wrapper,
+#mrnPendingPoView .voucher-table-wrapper {
+    height: min(94vh, 760px);
+    max-height: min(94vh, 760px);
+    overflow: auto;
+    border: 1px solid #c8c8c8;
+    border-radius: 0;
+    background: #fff;
+}
+
+#mrnAllView .voucher-table,
+#mrnPendingPoView .voucher-table {
+    width: 100%;
+    min-width: 900px;
+    table-layout: auto;
+}
+
+#mrnAllView .voucher-table {
+    min-width: 1500px;
+}
+
+#mrnPendingPoView .voucher-table {
+    min-width: 1500px;
+}
+
+#mrnAllBody td:nth-child(10) {
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#mrnAllView .voucher-table th,
+#mrnAllView .voucher-table td,
+#mrnPendingPoView .voucher-table th,
+#mrnPendingPoView .voucher-table td {
+    height: 38px;
+    padding: 7px 8px;
+    border: 1px solid #d1d1d1;
+    color: #444;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+#mrnAllView .voucher-table th,
+#mrnPendingPoView .voucher-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: 40px;
+    padding: 5px 7px;
+    background: #477f9e;
+    color: #fff;
+    font-weight: 600;
+}
+
+#mrnAllView .voucher-table tbody tr:nth-child(even),
+#mrnPendingPoView .voucher-table tbody tr:nth-child(even) {
+    background: #f4f6f8;
+}
+
+#mrnAllBody tr[data-open-mrn] {
+    cursor: pointer;
+}
+
+#mrnPendingPoBody tr[data-open-pending-po] {
+    cursor: pointer;
+}
+
+#mrnPendingPoView .mrn-create-action {
+    width: 28px;
+    min-width: 28px;
+    height: 20px;
+    min-height: 20px;
+    padding: 0;
+    border-radius: 4px;
+}
+
+#mrnPendingPoView .mrn-authorize-action {
+    display: inline-flex;
+    width: auto;
+    min-width: 0;
+    min-height: 20px;
+    height: 20px;
+    align-items: center;
+    padding: 2px 6px;
+    border: 1px solid #c8c8c8;
+    border-radius: 4px;
+    background: #fff;
+    color: #315f7b;
+    font-size: 11px;
+}
+
+.mrn-meta-grid {
+    margin-bottom: 16px;
+}
+
+.mrn-po-items-heading {
+    margin-top: 18px;
+}
+
+.mrn-po-items-wrapper .mrn-lines-table {
+    min-width: 1650px;
+}
+
+.mrn-po-total-row th {
+    background: #edf2f5;
+    font-weight: 700;
+}
+
+.mrn-po-grand-total {
+    display: flex;
+    justify-content: flex-end;
+    gap: 24px;
+    padding: 12px 8px;
+    border-top: 1px solid #c8c8c8;
+    font-size: 16px;
+}
+
+.mrn-lines-wrapper {
+    overflow: auto;
+}
+
+.mrn-lines-table {
+    min-width: 900px;
+}
+
+.mrn-lines-table th,
+.mrn-lines-table td {
+    height: 38px;
+    padding: 6px 8px;
+}
+
+.mrn-qty-input {
+    width: 100%;
+    min-width: 90px;
+}
+
+.mrn-form-actions {
+    margin-top: 12px;
+}
+
+.mrn-lines-table tbody tr[data-mrn-saved-line] {
+    cursor: context-menu;
+}
+
+.mrn-context-menu {
+    position: fixed;
+    z-index: 10000;
+    min-width: 220px;
+    padding: 4px;
+    border: 1px solid #c8c8c8;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgb(0 0 0 / 18%);
+}
+
+.mrn-context-menu[hidden] {
+    display: none;
+}
+
+.mrn-context-menu button {
+    display: flex;
+    width: 100%;
+    min-height: 34px;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 3px;
+    background: transparent;
+    color: #a12622;
+    text-align: left;
+    cursor: pointer;
+}
+
+.mrn-context-menu button:hover {
+    background: #fff0ef;
+}

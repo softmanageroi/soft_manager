@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Purchase Orders | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261103-glass-ui" />
+    <link rel="stylesheet" href="../css/purchase.css?v=20261101-po-list-fit" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet" href="../css/theme-brown-beige.css?v=20261113-brown-beige-11" />
+</head>
+<body class="erp-page">
+    <aside class="erp-sidebar">
+        <a class="erp-brand" href="dashboard.html">
+            <div class="erp-brand-mark"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <span><strong>Soft Manager</strong><small style="display:block; font-size: 10px; color: #a7bad4;">Warehouse & Purchase</small></span>
+        </a>
+        <nav class="erp-nav">
+            <a class="erp-nav-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            
+            <div class="erp-nav-heading">Purchase Process</div>
+            <a class="erp-nav-link" href="purchase-indent.html"><i class="fa-solid fa-file-circle-plus"></i><span>Purchase Indent</span></a>
+            <a class="erp-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
+            <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
+            <a class="erp-nav-link active" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
+            
+            <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue Slip</span></a>
+            <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
+            
+            <div class="erp-nav-heading">Inventory & Stock</div>
+            <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html#warehouse-stock"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            
+            <div class="erp-nav-heading">Reports</div>
+            <a class="erp-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Purchase Reports</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Reports</span></a>
+        </nav>
+    </aside>
+
+    <div class="erp-main">
+        <header class="erp-topbar">
+            <div class="erp-search">
+                <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                <input id="searchBox" type="search" placeholder="Global Search..." />
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 28, 2026</span></div>
+                <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="erp-content">
+            <div class="workflow-page-heading po-page-heading">
+                <div class="po-heading-copy">
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Purchase Orders</h1>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Generate and manage formal purchase orders from approved quotations.</p>
+                    <div class="po-tabs-ribbon" style="display: flex; gap: 8px;">
+                        <button id="tabAllPo" class="status-badge status-neutral active" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">All Vouchers</button>
+                        <button id="tabPendingQr" class="status-badge status-pending" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">Pending Quotations</button>
+                    </div>
+                </div>
+                <aside class="workflow-overview-panel po-overview-panel" data-workflow-overview="purchase-order" aria-label="Purchase order overview">
+                    <div class="po-overview-title">
+                        <span class="po-overview-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+                        <span><strong>Procurement overview</strong><small>Current workflow activity</small></span>
+                    </div>
+                    <div class="po-overview-stats">
+                        <div><strong data-overview-primary>0</strong><span>Purchase orders</span></div>
+                        <div><strong data-overview-secondary>0</strong><span>Pending quotations</span></div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- List View -->
+            <section id="allPoView" class="erp-card">
+                <div class="erp-card-header">
+                    <h2 style="font-size: 14px;">All Purchase Orders (<span id="poCount">0</span>)</h2>
+                    <button id="togglePoFiltersBtn" class="btn-secondary" style="font-size: 11px; padding: 5px 10px;">
+                        <i class="fa-solid fa-filter"></i> Filter
+                    </button>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-table-container">
+                        <table class="erp-table po-orders-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>PO No.</th>
+                                    <th>Date</th>
+                                    <th>Supplier</th>
+                                    <th>Quotation</th>
+                                    <th>Total Amount</th>
+                                    <th>Status</th>
+                                    <th>Authorization</th>
+                                    <th>Lines</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allPoBody">
+                                <!-- Injected by purchase-order.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pending QR View -->
+            <section id="pendingQrView" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <h2 style="font-size: 14px;">Pending Quotations</h2>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>QR No.</th>
+                                    <th>Supplier</th>
+                                    <th>Total</th>
+                                    <th>Lines</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingQrBody">
+                                <!-- Injected by purchase-order.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Form View -->
+            <section id="poFormView" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <h2 style="font-size: 16px;">Create Purchase Order</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="printOrderBtn" class="btn-secondary" type="button" hidden>Print PO</button>
+                        <button id="cancelOrderBtn" class="btn-secondary" type="button">Cancel</button>
+                        <button id="saveOrderBtn" class="btn-primary" type="button">Save Order</button>
+                    </div>
+                </div>
+                <div class="erp-card-body">
+                    <input id="orderId" type="hidden" />
+                    <input id="totalAmount" type="hidden" value="0" />
+                    <input id="poStatus" type="hidden" value="Pending" />
+                    <div class="erp-form-grid">
+                        <div class="erp-field">
+                            <label for="poNo">Document No.</label>
+                            <input id="poNo" type="text" readonly />
+                        </div>
+                        <div class="erp-field">
+                            <label for="poDate">Date</label>
+                            <input id="poDate" type="date" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="supplier">Vendor Account</label>
+                            <input id="supplier" type="text" list="supplierAccounts" placeholder="Enter supplier" />
+                            <datalist id="supplierAccounts"></datalist>
+                            <div id="vendorAccountDetails" class="po-vendor-account-details" hidden></div>
+                            <p id="vendorAccountMessage" class="po-vendor-account-message" hidden></p>
+                        </div>
+                        <div class="erp-field">
+                            <label for="poPaymentTerms">Payment Terms</label>
+                            <input id="poPaymentTerms" type="text" placeholder="e.g. 30 Days Net" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="poLocation">Location</label>
+                            <input id="poLocation" type="text" placeholder="Location" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="poWarehouse">Warehouse</label>
+                            <select id="poWarehouse"></select>
+                        </div>
+                        <div class="erp-field">
+                            <label for="poWarehouseGstin">Warehouse GSTIN</label>
+                            <input id="poWarehouseGstin" type="text" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="poWarehousePan">Warehouse PAN</label>
+                            <input id="poWarehousePan" type="text" />
+                        </div>
+                        <div class="erp-field" style="grid-column: span 2;">
+                            <label for="poBillingAddress">Billing Address</label>
+                            <textarea id="poBillingAddress" rows="2"></textarea>
+                        </div>
+                        <div class="erp-field" style="grid-column: span 2;">
+                            <label for="poWarehouseAddress">Shipping Address</label>
+                            <textarea id="poWarehouseAddress" rows="2"></textarea>
+                        </div>
+                        <div class="erp-field">
+                            <label for="poEmployee">Employee</label>
+                            <select id="poEmployee"></select>
+                        </div>
+                        <div class="erp-field">
+                            <label for="poRequestedBy">Requested By</label>
+                            <select id="poRequestedBy"></select>
+                        </div>
+                        <div class="erp-field" style="grid-column: span 2;">
+                            <label for="orderNotes">Narration</label>
+                            <textarea id="orderNotes" rows="3" placeholder="Enter order notes..."></textarea>
+                        </div>
+                        <div class="erp-field">
+                            <label for="workflowSelect">Quotation Ref</label>
+                            <select id="workflowSelect"></select>
+                        </div>
+                        <div class="erp-field">
+                            <label for="poQuotationDate">Quotation Date</label>
+                            <input id="poQuotationDate" type="date" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="poSupplierRefNo">Supplier Ref No.</label>
+                            <input id="poSupplierRefNo" type="text" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="poSupplierRefDate">Supplier Ref Date</label>
+                            <input id="poSupplierRefDate" type="date" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="poPlaceOfSupply">Place of Supply</label>
+                            <input id="poPlaceOfSupply" type="text" placeholder="State" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="poIsIgst">Is IGST</label>
+                            <select id="poIsIgst"><option value="No">No</option><option value="Yes">Yes</option></select>
+                        </div>
+                        <div class="erp-field">
+                            <label for="poReqNo">Req No.</label>
+                            <input id="poReqNo" type="text" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="poRequestType">Request Type</label>
+                            <select id="poRequestType">
+                                <option value="Civil Items">Civil Items</option>
+                                <option value="Electrical Items">Electrical Items</option>
+                                <option value="General Items">General Items</option>
+                                <option value="Services">Services</option>
+                            </select>
+                        </div>
+                        <div class="erp-field">
+                            <label for="poStoreMobile">Store Mobile No.</label>
+                            <input id="poStoreMobile" type="tel" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="poItcEligible">ITC Eligible</label>
+                            <select id="poItcEligible"><option value="NA">NA</option><option value="Yes">Yes</option><option value="No">No</option></select>
+                        </div>
+                    </div>
+
+                    <div class="erp-card" style="background: #fcfdfe; border-style: dashed;">
+                        <div class="erp-card-header">
+                            <h2 style="font-size: 14px;"><i class="fa-solid fa-list"></i> Order Item Details</h2>
+                        </div>
+                        <div class="erp-table-container">
+                            <table class="erp-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th>Category</th>
+                                        <th>Brand</th>
+                                        <th>Item</th>
+                                        <th>Description</th>
+                                        <th>Units</th>
+                                        <th>Quantity</th>
+                                        <th>L-Quotation</th>
+                                        <th>Rate</th>
+                                        <th>Gross</th>
+                                        <th>Disc.</th>
+                                        <th>Freight</th>
+                                        <th>GST %</th>
+                                        <th>CGST</th>
+                                        <th>SGST</th>
+                                        <th>IGST</th>
+                                        <th>Taxable</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="poLinesBody">
+                                    <!-- Injected by purchase-order.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: flex-end; margin-top: 20px; gap: 20px; align-items: center;">
+                        <div class="erp-field" style="min-width: 250px; text-align: right;">
+                            <label style="display: inline-block; margin-right: 10px; font-size: 14px; font-weight: 600;">Order Net Total:</label>
+                            <input id="poNetDisplay" readonly value="0.00" style="width: 120px; text-align: right; font-weight: 700; font-size: 16px;" />
+                        </div>
+                    </div>
+                    <p id="poMessage" style="margin-top: 15px; font-size: 12px; color: var(--erp-text-muted);"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <section id="poPrintView" class="po-print-preview" aria-label="Purchase order print preview" hidden></section>
+    <script src="../js/data-store.js?v=20261113-storage-timeout"></script>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js?v=github-pages-local-only"></script>
+    <script src="../js/purchase-order.js?v=20261101-po-double-click"></script>
+    <script src="../js/workflow-overview.js?v=20261101-overview-cards"></script>
+    <script src="../js/voucher-toolbar.js?v=20261102-filter-fields"></script>
+</body>
+</html>

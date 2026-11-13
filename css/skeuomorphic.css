@@ -1,0 +1,2225 @@
+:root {
+  --skeuo-page: #f5f7fa;
+  --skeuo-surface: #ffffff;
+  --skeuo-surface-light: #f8fafc;
+  --skeuo-edge: #dfe7ee;
+  --skeuo-ink: #1f2937;
+  --skeuo-blue: #2563eb;
+  --skeuo-blue-deep: #0f172a;
+  --skeuo-shadow: rgba(15, 23, 42, 0.08);
+}
+
+html {
+  background: var(--skeuo-page);
+}
+
+body {
+  color: var(--skeuo-ink);
+  background-color: var(--skeuo-page);
+  background-image: linear-gradient(180deg, #f9fbfc 0%, #edf2f6 100%);
+  background-attachment: fixed;
+}
+
+.top-strip {
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 52%, #edf2f6 100%);
+  border-bottom: 1px solid #d9e1e8;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9),
+              0 4px 12px rgba(15,23,42,.06);
+}
+
+.brand,
+.brand i,
+.top-home,
+.top-user,
+.top-back {
+  text-shadow: 0 1px 1px rgba(20, 43, 56, .55);
+}
+
+.top-strip #searchBox,
+.search-group,
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  border: 1px solid #aab6bb;
+  border-top-color: #929fa5;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #dfe5e6 0%, #f7f9f8 22%, #f7f9f8 100%);
+  color: #263b49;
+  box-shadow: inset 0 2px 4px rgba(50, 67, 74, .16),
+              inset 0 1px 0 rgba(255,255,255,.9),
+              0 1px 0 rgba(255,255,255,.7);
+}
+
+.search-group input {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.top-strip #searchBox:focus {
+  border-color: #4f88a4;
+  outline: 2px solid rgba(67, 132, 164, .2);
+  outline-offset: 1px;
+  box-shadow: inset 0 2px 4px rgba(50,67,74,.12),
+              0 0 0 2px rgba(255,255,255,.55),
+              0 0 0 4px rgba(67,132,164,.16);
+}
+
+.voucher-header,
+.inventory-breadcrumb,
+.inventory-toolbar,
+.voucher-form-card,
+.voucher-table-card,
+.inventory-card,
+.filter-dialog,
+.dash-tile,
+.login-box {
+  border: 1px solid #c2cbcc;
+  background: linear-gradient(145deg, #fbfcfa 0%, #eef1ef 52%, #e5e9e8 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.96),
+              inset 1px 0 0 rgba(255,255,255,.52),
+              0 2px 3px rgba(255,255,255,.62),
+              0 7px 16px var(--skeuo-shadow);
+}
+
+.voucher-header,
+.inventory-breadcrumb {
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+
+.voucher-form-card,
+.voucher-table-card,
+.inventory-card {
+  border-radius: 14px;
+}
+
+.voucher-card-header,
+.inventory-card-header {
+  color: var(--skeuo-ink);
+}
+
+.breadcrumb-title,
+.voucher-card-header h2,
+.inventory-card-header h2 {
+  color: #2e5267;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.breadcrumb-path,
+.dashboard-flow-caption {
+  color: #5c7079;
+}
+
+button,
+.toolbar-btn,
+.page-btn,
+.action-btn,
+.nav-link,
+.top-btn,
+.tab,
+.top-user,
+.top-back,
+.logout-btn,
+.button,
+a.toolbar-btn {
+  border: 1px solid #9aaab1;
+  border-top-color: #c4cdd0;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #ffffff 0%, #e9eeed 48%, #d7dfdf 100%);
+  color: #304c5c;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.96),
+              inset 0 -1px 0 rgba(100,119,126,.13),
+              0 2px 3px rgba(36,54,62,.2);
+  text-shadow: 0 1px 0 rgba(255,255,255,.75);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+
+button:hover,
+.toolbar-btn:hover,
+.page-btn:hover,
+.action-btn:hover,
+.nav-link:hover,
+.top-btn:hover,
+.tab:hover,
+.button:hover,
+a.toolbar-btn:hover {
+  color: #163e54;
+  background: linear-gradient(180deg, #fff 0%, #e7f1f4 50%, #cbdfe7 100%);
+  border-color: #7299aa;
+  filter: saturate(1.08);
+}
+
+button:active,
+.toolbar-btn:active,
+.page-btn:active,
+.action-btn:active,
+.tab:active,
+.button:active,
+a.toolbar-btn:active {
+  transform: translateY(1px);
+  background: linear-gradient(180deg, #cbd5d7 0%, #e1e7e7 100%);
+  box-shadow: inset 0 2px 4px rgba(33,52,60,.22),
+              0 1px 0 rgba(255,255,255,.65);
+}
+
+.top-user,
+.top-back {
+  border-color: rgba(218,235,242,.68);
+  background: linear-gradient(180deg, rgba(255,255,255,.2), rgba(17,52,72,.18));
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(14,35,47,.7);
+}
+
+.top-user:hover,
+.top-back:hover {
+  color: #fff;
+  background: linear-gradient(180deg, rgba(255,255,255,.32), rgba(17,52,72,.12));
+}
+
+.toolbar-btn,
+.action-btn,
+.page-btn,
+.button,
+a.toolbar-btn {
+  min-height: 36px;
+}
+
+.tab.active,
+.ims-tabs .tab.active,
+.ims-tabs .active {
+  border-color: #254d64;
+  background: linear-gradient(180deg, #75a4bb 0%, #477f9a 45%, #315f78 100%);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(17,43,58,.72);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.42),
+              inset 0 -2px 0 rgba(17,43,58,.25),
+              0 2px 4px rgba(37,58,67,.24);
+}
+
+.voucher-table-wrapper {
+  border: 1px solid #aab8bc;
+  border-radius: 8px;
+  background: #e4e9e8;
+  box-shadow: inset 0 2px 5px rgba(42,58,65,.16),
+              0 1px 0 rgba(255,255,255,.8);
+}
+
+.voucher-table th,
+.inventory-table th {
+  background: linear-gradient(180deg, #7198aa 0%, #47768d 48%, #355c70 100%);
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(20,43,56,.65);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.34),
+              inset 0 -1px 0 rgba(18,43,57,.28);
+}
+
+.voucher-table td,
+.inventory-table td {
+  border-color: #ccd4d4;
+}
+
+.voucher-table tbody tr:nth-child(even),
+.inventory-table tbody tr:nth-child(even) {
+  background: #e7edec;
+}
+
+.voucher-table tbody tr:hover,
+.inventory-table tbody tr:hover {
+  background: #d9e8ec;
+}
+
+.dash-tile {
+  border-radius: 12px;
+  color: var(--skeuo-ink);
+  text-shadow: 0 1px 0 #fff;
+}
+
+.dash-tile .tile-icon {
+  border: 1px solid #b3c0c3;
+  background: linear-gradient(145deg, #fdfefd, #dce5e6);
+  box-shadow: inset 0 1px 0 #fff, 0 2px 3px rgba(40,58,65,.16);
+  color: #386b84;
+}
+
+.dash-tile .tile-sub {
+  color: #586b72;
+}
+
+.dash-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 #fff, 0 3px 5px rgba(255,255,255,.7),
+              0 10px 18px rgba(48,63,70,.25);
+}
+
+.top-strip .search-dropdown {
+  border: 1px solid #aab8bc;
+  background: linear-gradient(145deg, #fff, #edf1f0);
+  box-shadow: inset 0 1px 0 #fff, 0 8px 18px rgba(30,49,57,.25);
+}
+
+.top-strip .search-dropdown li a:hover {
+  background: linear-gradient(180deg, #eef6f7, #d7e6ea);
+}
+
+.login-box {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  width: min(410px, 96vw, max(38vw, 67vh));
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 24px 28px;
+  transform: translate(-50%, -50%);
+  color: #304b5b;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(255,255,255,.9) 0%, rgba(237,241,240,.88) 58%, rgba(223,230,229,.9) 100%);
+  box-shadow: inset 0 1px 0 #fff, inset 1px 0 0 rgba(255,255,255,.7),
+              0 3px 6px rgba(255,255,255,.6), 0 8px 18px rgba(22,42,51,.28);
+}
+
+.login-box h2 {
+  color: #2f5c73;
+  text-shadow: 0 1px 0 #fff;
+}
+
+body:has(.login-box) {
+  background-image: url("../html/images/login-wallpaper.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-box input {
+  height: 38px;
+  padding: 0 11px;
+  border-radius: 6px;
+}
+
+.login-box .button {
+  background: linear-gradient(180deg, #77a6bc 0%, #477f9a 48%, #315f78 100%);
+  border-color: #2c586e;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(17,43,58,.7);
+}
+
+@media (max-width: 700px) {
+  .voucher-header,
+  .inventory-breadcrumb,
+  .inventory-toolbar,
+  .voucher-form-card,
+  .voucher-table-card,
+  .inventory-card {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.94),
+                0 3px 8px rgba(48,63,70,.17);
+  }
+
+  .login-box {
+    padding: 16px 20px;
+  }
+
+  .login-box h2 {
+    margin: 8px 0 12px;
+    font-size: 25px;
+  }
+
+  .login-box input {
+    height: 34px;
+    margin: 8px auto;
+  }
+
+  .login-box .button {
+    padding: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Clean white & stone palette with refined borders, no brown theme. */
+body {
+  color: #1f2937;
+  background-color: #f3f6f9;
+  background-image: linear-gradient(180deg, #f9fbfc 0%, #edf2f6 100%);
+}
+
+.top-strip {
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 52%, #edf2f6 100%);
+  border-bottom-color: #d9e1e8;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9),
+              0 4px 12px rgba(15,23,42,.06);
+}
+
+.top-strip #searchBox,
+.search-group,
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  border-color: #d4dce5;
+  border-top-color: #c5ced8;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafb 100%);
+  color: #1f2937;
+  box-shadow: inset 0 1px 2px rgba(148,163,184,.08),
+              0 1px 0 rgba(255,255,255,.9);
+}
+
+.search-group input {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.top-strip #searchBox:focus {
+  border-color: #94a3b8;
+  outline-color: rgba(148,163,184,.22);
+  box-shadow: inset 0 1px 2px rgba(148,163,184,.08),
+              0 0 0 2px rgba(255,255,255,.9),
+              0 0 0 4px rgba(148,163,184,.12);
+}
+
+.voucher-header,
+.inventory-breadcrumb,
+.inventory-toolbar,
+.voucher-form-card,
+.voucher-table-card,
+.inventory-card,
+.filter-dialog,
+.dash-tile,
+.login-box {
+  border-color: #dfe7ee;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 1px 0 rgba(255,255,255,.9),
+              0 8px 18px rgba(15,23,42,.04);
+}
+
+.breadcrumb-title,
+.voucher-card-header h2,
+.inventory-card-header h2 {
+  color: #243447;
+}
+
+.breadcrumb-path,
+.dashboard-flow-caption,
+.dash-tile .tile-sub {
+  color: #5f6f81;
+}
+
+button,
+.toolbar-btn,
+.page-btn,
+.action-btn,
+.nav-link,
+.top-btn,
+.tab,
+.logout-btn,
+.button,
+a.toolbar-btn {
+  border-color: #d0d8e2;
+  border-top-color: #edf2f6;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 48%, #edf2f6 100%);
+  color: #243447;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.96),
+              0 2px 3px rgba(15,23,42,.04);
+}
+
+button:hover,
+.toolbar-btn:hover,
+.page-btn:hover,
+.action-btn:hover,
+.nav-link:hover,
+.top-btn:hover,
+.tab:hover,
+.button:hover,
+a.toolbar-btn:hover {
+  color: #0f172a;
+  background: linear-gradient(180deg, #ffffff 0%, #eef4fb 50%, #e7edf4 100%);
+  border-color: #b7c5d4;
+}
+
+button:active,
+.toolbar-btn:active,
+.page-btn:active,
+.action-btn:active,
+.tab:active,
+.button:active,
+a.toolbar-btn:active {
+  background: linear-gradient(180deg, #edf2f6 0%, #e5ebf2 100%);
+  box-shadow: inset 0 2px 4px rgba(15,23,42,.08),
+              0 1px 0 rgba(255,255,255,.8);
+}
+
+.top-user,
+.top-back {
+  border-color: rgba(148,163,184,.35);
+  background: linear-gradient(180deg, rgba(255,255,255,.45), rgba(148,163,184,.12));
+  color: #243447;
+}
+
+.top-user:hover,
+.top-back:hover {
+  background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(148,163,184,.18));
+}
+
+.tab.active,
+.ims-tabs .tab.active,
+.ims-tabs .active {
+  border-color: #94a3b8;
+  background: linear-gradient(180deg, #f8fafc 0%, #eaf0f5 48%, #dfeaf3 100%);
+  color: #1f2937;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9),
+              0 2px 4px rgba(148,163,184,.12);
+}
+
+.voucher-table-wrapper {
+  border-color: #d8e1ea;
+  background: #ffffff;
+  box-shadow: 0 1px 0 rgba(255,255,255,.8), 0 8px 16px rgba(15,23,42,.03);
+}
+
+.voucher-table th,
+.inventory-table th {
+  background: linear-gradient(180deg, #edf3f8 0%, #e3ebf2 48%, #dfeaf3 100%);
+  color: #243447;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9),
+              inset 0 -1px 0 rgba(148,163,184,.18);
+}
+
+.voucher-table td,
+.inventory-table td {
+  border-color: #e4ebf2;
+}
+
+.voucher-table tbody tr:nth-child(even),
+.inventory-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.voucher-table tbody tr:hover,
+.inventory-table tbody tr:hover {
+  background: #eef6ff;
+}
+
+.dash-tile .tile-icon {
+  border-color: #d3dce7;
+  background: linear-gradient(180deg, #ffffff 0%, #edf3f8 100%);
+  color: #3b4a5a;
+}
+
+.top-strip .search-dropdown {
+  border-color: #d7dee7;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f8fb 100%);
+  box-shadow: 0 8px 20px rgba(15,23,42,.08);
+}
+
+.top-strip .search-dropdown li a:hover {
+  background: linear-gradient(180deg, #f3f8fc 0%, #ebf2f8 100%);
+}
+
+.login-box {
+  color: #243447;
+  background: linear-gradient(180deg, rgba(255,255,255,.96) 0%, rgba(246,249,252,.96) 100%);
+}
+
+.login-box h2 {
+  color: #243447;
+}
+
+.login-box .button {
+  background: linear-gradient(180deg, #1f6feb 0%, #1d4ed8 100%);
+  border-color: #1d4ed8;
+  color: #ffffff;
+}
+
+@media screen {
+  .ims-tabs,
+  .inventory-tabs,
+  .master-tabs,
+  .form-tabs {
+    background: linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
+    border-color: #dfeaf3;
+  }
+
+  body.purchase-voucher-page {
+    background: linear-gradient(180deg, #f9fbfc 0%, #eef3f8 100%);
+  }
+
+  body:has(.purchase-indent-shell),
+  body:has(.purchase-indent-shell) .purchase-indent-shell {
+    background: linear-gradient(180deg, #f9fbfc 0%, #eef3f8 100%);
+  }
+
+  .voucher-header,
+  .inventory-breadcrumb,
+  .inventory-toolbar,
+  .voucher-form-card,
+  .voucher-table-card,
+  .inventory-card,
+  .voucher-import-card,
+  .filter-dialog,
+  .dash-tile,
+  .purchase-form-card,
+  .purchase-page-header,
+  .purchase-table-shell,
+  .purchase-footer-bar,
+  .account-master-panel,
+  .department-master-panel,
+  .warehouse-form,
+  .category-panel,
+  .items-panel {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  }
+
+  .po-form-active,
+  body.purchase-voucher-page.po-form-active,
+  .po-form-active .voucher-form-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  }
+
+  .voucher-table-wrapper,
+  .purchase-table-shell,
+  body #piListView .voucher-table-wrapper,
+  body #rfqAllView .voucher-table-wrapper,
+  body #rfqPendingView .voucher-table-wrapper,
+  body #qrAllView .voucher-table-wrapper,
+  body #qrPendingView .voucher-table-wrapper,
+  body #allPoView .voucher-table-wrapper,
+  body #pendingQrView .voucher-table-wrapper {
+    background: #ffffff;
+  }
+
+  .search-group,
+  .filter-field select,
+  .form-row input,
+  .form-row select,
+  .form-row textarea,
+  .row-action,
+  .icon-btn {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  }
+
+  body.purchase-voucher-page .field-group input,
+  body.purchase-voucher-page .field-group select,
+  body.purchase-voucher-page .field-group textarea,
+  body.purchase-voucher-page .filter-field input,
+  body.purchase-voucher-page .filter-field select,
+  body.purchase-voucher-page.po-form-active #poLinesBody .ims-lines-input,
+  body.purchase-voucher-page.po-form-active .field-group input,
+  body.purchase-voucher-page.po-form-active .field-group select,
+  body.purchase-voucher-page.po-form-active .field-group textarea,
+  body:has(.purchase-indent-shell) .field-group input,
+  body:has(.purchase-indent-shell) .field-group select,
+  body:has(.purchase-indent-shell) .purchase-table td input:focus,
+  body:has(.purchase-indent-shell) .purchase-table td select:focus {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  }
+
+  body.purchase-voucher-page input:not([type="checkbox"]):not([type="radio"]),
+  body.purchase-voucher-page select,
+  body.purchase-voucher-page textarea,
+  body:has(.purchase-indent-shell) input:not([type="checkbox"]):not([type="radio"]),
+  body:has(.purchase-indent-shell) select,
+  body:has(.purchase-indent-shell) textarea {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  }
+
+  body.purchase-voucher-page.material-requisition-page .voucher-header,
+  body.purchase-voucher-page.po-form-active #poFormView > .voucher-form-card,
+  body:has(.purchase-indent-shell) .purchase-form-card,
+  body:has(.purchase-indent-shell) .purchase-table-shell,
+  body:has(.purchase-indent-shell) .purchase-footer-bar,
+  body.purchase-voucher-page .qr-context-menu,
+  body.purchase-voucher-page .mrn-context-menu {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  }
+
+  body.purchase-voucher-page .voucher-table-wrapper,
+  body.purchase-voucher-page .voucher-table .ims-lines-input,
+  body.purchase-voucher-page .po-entry-grid input,
+  body.purchase-voucher-page .po-entry-grid select,
+  body.purchase-voucher-page .po-entry-grid textarea {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  }
+
+  body.purchase-voucher-page #mrnAllView .voucher-table-wrapper,
+  body.purchase-voucher-page #mrnPendingPoView .voucher-table-wrapper {
+    background: #ffffff;
+  }
+
+  #mrnAllView .voucher-table tbody tr:nth-child(even),
+  #mrnPendingPoView .voucher-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  .voucher-table tbody > tr,
+  .inventory-table tbody > tr,
+  .purchase-table tbody > tr {
+    background: #f8fafc !important;
+    transition: background-color .14s ease;
+  }
+
+  .voucher-table tbody > tr > td,
+  .inventory-table tbody > tr > td,
+  .purchase-table tbody > tr > td {
+    background: #f8fafc !important;
+    transition: background-color .14s ease;
+  }
+
+  .voucher-table tbody > tr:hover,
+  .inventory-table tbody > tr:hover,
+  .purchase-table tbody > tr:hover,
+  .voucher-table tbody > tr:hover > td,
+  .inventory-table tbody > tr:hover > td,
+  .purchase-table tbody > tr:hover > td {
+    background: #ffffff !important;
+  }
+
+  .purchase-table tbody tr:nth-child(even) {
+    background: #f8fafc !important;
+  }
+
+  .purchase-table tbody tr:hover {
+    background: #ffffff !important;
+  }
+
+  .login-box {
+    background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(248,250,252,.98) 100%);
+  }
+}
+
+body:has(.purchase-indent-shell) #piLinesBody input {
+  border-color: #cbd5e1;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: inset 0 1px 2px rgba(148, 163, 184, .08),
+              0 1px 0 rgba(255, 255, 255, .9);
+}
+
+body:has(.purchase-indent-shell) #piLinesBody input:focus {
+  border-color: #4f88a4;
+  outline: 2px solid rgba(67, 132, 164, .2);
+  outline-offset: 1px;
+}
+
+.brand-with-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.purchase-indent-brand-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 8px;
+}
+
+.purchase-indent-brand-tools .toolbar-btn {
+  min-height: 34px;
+  padding: 6px 12px;
+  text-decoration: none;
+}
+
+@media (max-width: 1050px) {
+  .brand-with-actions {
+    max-width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    row-gap: 7px;
+  }
+
+  .purchase-indent-brand-tools {
+    margin-left: 0;
+  }
+}
+
+/* Shared UI refresh: preserve the existing pages and workflow while
+   bringing their surfaces, controls, and tables into one visual system. */
+:root {
+  --brand-blue: #102a4c;
+  --action-blue: #1769e8;
+  --action-blue-hover: #0e57c7;
+  --page-background: #f3f6fb;
+}
+
+html,
+body {
+  background-color: #f3f6fb;
+}
+
+body {
+  color: #1d2b43;
+  background-image: none;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.top-strip {
+  position: sticky;
+  top: 0;
+  min-height: 60px;
+  padding: 9px 24px;
+  border-bottom: 1px solid #e5ebf3;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(24, 49, 82, .05);
+}
+
+.brand {
+  padding: 6px 0;
+  border: 0;
+  color: #17243b;
+  font-size: 15px;
+  letter-spacing: -.02em;
+}
+
+.brand i {
+  color: #1769e8;
+  font-size: 19px;
+}
+
+.brand,
+.brand i,
+.top-home,
+.top-user,
+.top-back {
+  text-shadow: none;
+}
+
+.top-strip .search {
+  width: min(440px, 100%);
+}
+
+.top-strip #searchBox,
+.search-group,
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  border: 1px solid #dfe6ef;
+  border-radius: 8px;
+  background: #fff;
+  color: #243247;
+  box-shadow: none;
+}
+
+.top-strip #searchBox {
+  height: 36px;
+  background: #f8fafd;
+  font-size: 12px;
+}
+
+.search-group input {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.top-strip #searchBox:focus {
+  border-color: #8bb8f5;
+  outline: 3px solid rgba(23, 105, 232, .12);
+  outline-offset: 1px;
+  box-shadow: none;
+}
+
+.top-home {
+  color: #52647e;
+  font-size: 12px;
+}
+
+.top-home:hover {
+  color: #1769e8;
+}
+
+.top-user,
+.top-back {
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid #e2e9f2;
+  border-radius: 8px;
+  background: #fff;
+  color: #52647e;
+  font-size: 12px;
+}
+
+.top-user:hover,
+.top-back:hover {
+  border-color: #c5daf8;
+  background: #f5f9ff;
+  color: #1769e8;
+}
+
+.voucher-header,
+.inventory-breadcrumb,
+.inventory-toolbar,
+.voucher-form-card,
+.voucher-table-card,
+.inventory-card,
+.filter-dialog,
+.dash-tile,
+.login-box,
+.voucher-import-card,
+.purchase-form-card,
+.purchase-page-header,
+.purchase-table-shell,
+.purchase-footer-bar,
+.account-master-panel,
+.department-master-panel,
+.warehouse-form,
+.category-panel,
+.items-panel {
+  border: 1px solid #e4eaf2;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(30, 53, 85, .045);
+}
+
+.voucher-header,
+.inventory-breadcrumb {
+  padding: 14px 18px;
+}
+
+.breadcrumb-title,
+.voucher-card-header h2,
+.inventory-card-header h2 {
+  color: #1d2b43;
+  text-shadow: none;
+}
+
+.breadcrumb-path,
+.dashboard-flow-caption,
+.dash-tile .tile-sub {
+  color: #74839b;
+}
+
+button,
+.toolbar-btn,
+.page-btn,
+.action-btn,
+.nav-link,
+.top-btn,
+.tab,
+.logout-btn,
+.button,
+a.toolbar-btn {
+  border: 1px solid #dce5f0;
+  border-radius: 7px;
+  background: #fff;
+  color: #3a4b64;
+  box-shadow: none;
+  text-shadow: none;
+  transition: color .15s ease, background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+button:hover,
+.toolbar-btn:hover,
+.page-btn:hover,
+.action-btn:hover,
+.nav-link:hover,
+.top-btn:hover,
+.tab:hover,
+.button:hover,
+a.toolbar-btn:hover {
+  border-color: #b8d2f6;
+  background: #f4f8ff;
+  color: #145fcf;
+  filter: none;
+}
+
+button:active,
+.toolbar-btn:active,
+.page-btn:active,
+.action-btn:active,
+.tab:active,
+.button:active,
+a.toolbar-btn:active {
+  background: #eaf2ff;
+  box-shadow: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(23, 105, 232, .22);
+  outline-offset: 2px;
+}
+
+.toolbar-btn,
+.action-btn,
+.page-btn,
+.button,
+a.toolbar-btn {
+  min-height: 36px;
+}
+
+.tab.active,
+.ims-tabs .tab.active,
+.ims-tabs .active {
+  border-color: #1769e8;
+  background: #1769e8;
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(23, 105, 232, .16);
+  text-shadow: none;
+}
+
+.tab.active:hover,
+.ims-tabs .tab.active:hover {
+  border-color: #0e57c7;
+  background: #0e57c7;
+  color: #fff;
+}
+
+.voucher-table-wrapper,
+.purchase-table-shell {
+  border: 1px solid #e1e8f0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: none;
+}
+
+.voucher-table th,
+.inventory-table th,
+.purchase-table th {
+  background: #edf3fb;
+  color: #405570;
+  box-shadow: inset 0 -1px 0 #e1e8f0;
+  text-shadow: none;
+}
+
+.voucher-table td,
+.inventory-table td,
+.purchase-table td {
+  border-color: #e8edf4;
+}
+
+.voucher-table tbody tr:nth-child(even),
+.inventory-table tbody tr:nth-child(even),
+.purchase-table tbody tr:nth-child(even) {
+  background: #fafbfd;
+}
+
+.voucher-table tbody tr:hover,
+.inventory-table tbody tr:hover,
+.purchase-table tbody tr:hover {
+  background: #f1f6ff;
+}
+
+.top-strip .search-dropdown {
+  border: 1px solid #e1e8f0;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 12px 24px rgba(24, 49, 82, .12);
+}
+
+.top-strip .search-dropdown li a:hover {
+  background: #f2f7ff;
+}
+
+.filter-dialog {
+  max-width: min(920px, 100%);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 20px 60px rgba(15, 35, 65, .18);
+}
+
+.filter-dialog-header {
+  padding: 24px 28px 18px;
+}
+
+.filter-title {
+  color: #1d2b43;
+  font-size: 24px;
+}
+
+.filter-subtitle {
+  color: #74839b;
+  font-size: 13px;
+}
+
+.filter-divider {
+  margin: 0 28px;
+  background: #e8edf4;
+}
+
+.filter-dialog-body {
+  padding: 22px 28px 26px;
+}
+
+.filter-row {
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.filter-field {
+  gap: 7px;
+}
+
+.filter-field > label,
+.filter-field > span {
+  color: #43536b;
+  font-size: 13px;
+}
+
+.filter-field input,
+.filter-field select,
+body .filter-dialog .filter-field input,
+body .filter-dialog .filter-field select {
+  min-height: 40px;
+  height: 40px;
+  padding: 8px 11px;
+  border: 1px solid #dfe6ef;
+  border-radius: 7px;
+  font-size: 13px;
+}
+
+.filter-save-label {
+  gap: 9px;
+  font-size: 14px;
+}
+
+.filter-save-label input {
+  width: 17px;
+  height: 17px;
+}
+
+.filter-actions {
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.filter-actions .page-btn {
+  min-width: 100px;
+  min-height: 38px;
+  border-radius: 7px;
+  font-size: 13px;
+}
+
+.filter-actions .page-btn:not(.filter-clear-btn):not(:last-child) {
+  border-color: #1769e8;
+  background: #1769e8;
+  color: #fff;
+}
+
+.filter-actions .page-btn:not(.filter-clear-btn):not(:last-child):hover {
+  background: #0e57c7;
+}
+
+.shared-voucher-action {
+  color: #3a4b64;
+  background: #fff;
+  border-color: #dce5f0;
+  box-shadow: none;
+}
+
+.shared-voucher-action:hover,
+.shared-voucher-action:focus-visible {
+  border-color: #b8d2f6;
+  background: #f4f8ff;
+  color: #145fcf;
+}
+
+body.purchase-voucher-page,
+body:has(.purchase-indent-shell),
+body:has(.purchase-indent-shell) .purchase-indent-shell {
+  background: #f3f6fb;
+  background-image: none;
+}
+
+body.purchase-voucher-page .inventory-page {
+  padding: 0 20px 32px;
+}
+
+body.purchase-voucher-page .voucher-header {
+  min-height: 56px;
+  margin: 0 -20px 16px;
+  padding: 10px 20px;
+  border: 0;
+  border-bottom: 1px solid #e4eaf2;
+  border-radius: 0;
+  background: #fff;
+  box-shadow: none;
+}
+
+body.purchase-voucher-page .breadcrumb-title {
+  color: #1d2b43;
+  font-size: 18px;
+}
+
+body.purchase-voucher-page .voucher-table-card,
+body.purchase-voucher-page .voucher-form-card,
+body.purchase-voucher-page .inventory-card {
+  padding: 14px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(30, 53, 85, .035);
+}
+
+body.purchase-voucher-page .voucher-card-header h2,
+body.purchase-voucher-page .inventory-card-header h2 {
+  color: #253650;
+}
+
+body.purchase-voucher-page .voucher-table-wrapper {
+  border-color: #e1e8f0;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+body.purchase-voucher-page .voucher-table th,
+body.purchase-voucher-page #mrnAllView .voucher-table th,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table th {
+  background: #edf3fb;
+  color: #405570;
+  text-shadow: none;
+  box-shadow: inset 0 -1px 0 #e1e8f0;
+}
+
+body.purchase-voucher-page .voucher-table th,
+body.purchase-voucher-page .voucher-table td {
+  border-color: #e8edf4;
+  color: #43536b;
+}
+
+body.purchase-voucher-page .field-group label {
+  color: #43536b;
+}
+
+body.purchase-voucher-page .field-group input,
+body.purchase-voucher-page .field-group select,
+body.purchase-voucher-page .field-group textarea,
+body.purchase-voucher-page.po-form-active .field-group input,
+body.purchase-voucher-page.po-form-active .field-group select,
+body.purchase-voucher-page.po-form-active .field-group textarea {
+  border: 1px solid #dfe6ef;
+  border-radius: 7px;
+  background: #fff;
+  color: #243247;
+  box-shadow: none;
+}
+
+body.purchase-voucher-page.po-form-active .field-group input,
+body.purchase-voucher-page.po-form-active .field-group select,
+body.purchase-voucher-page.po-form-active .field-group textarea {
+  min-height: 42px;
+}
+
+body.purchase-voucher-page .ims-tabs .tab {
+  border-radius: 7px;
+  color: #52647e;
+}
+
+body.purchase-voucher-page .ims-tabs .tab.active,
+body.purchase-voucher-page .ims-tabs .tab:hover {
+  border-bottom-color: #1769e8;
+  color: #1769e8;
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table tbody > tr,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table tbody > tr,
+body.purchase-voucher-page #mrnAllView .voucher-table tbody > tr > td,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table tbody > tr > td {
+  background: #fff !important;
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table tbody > tr:nth-child(even),
+body.purchase-voucher-page #mrnPendingPoView .voucher-table tbody > tr:nth-child(even),
+body.purchase-voucher-page #mrnAllView .voucher-table tbody > tr:nth-child(even) > td,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table tbody > tr:nth-child(even) > td {
+  background: #fafbfd !important;
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table tbody > tr:hover,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table tbody > tr:hover,
+body.purchase-voucher-page #mrnAllView .voucher-table tbody > tr:hover > td,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table tbody > tr:hover > td {
+  background: #f1f6ff !important;
+}
+
+.dash-tile {
+  color: #243247;
+  text-shadow: none;
+}
+
+.dash-tile .tile-icon {
+  border: 0;
+  background: #eaf3ff;
+  box-shadow: none;
+  color: #1769e8;
+}
+
+.dash-tile:hover {
+  box-shadow: 0 8px 20px rgba(30, 53, 85, .09);
+}
+
+.login-box {
+  border: 1px solid #e4eaf2;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 16px 40px rgba(15, 35, 65, .16);
+}
+
+.login-box h2 {
+  color: #1d2b43;
+  text-shadow: none;
+}
+
+.login-box .button {
+  border-color: #1769e8;
+  background: #1769e8;
+  color: #fff;
+  text-shadow: none;
+}
+
+.login-box .button:hover {
+  border-color: #0e57c7;
+  background: #0e57c7;
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  body.purchase-voucher-page .inventory-page {
+    padding: 0 10px 24px;
+  }
+
+  body.purchase-voucher-page .voucher-header {
+    margin: 0 -10px 12px;
+    padding: 10px;
+  }
+
+  body.purchase-voucher-page .voucher-table-card,
+  body.purchase-voucher-page .voucher-form-card,
+  body.purchase-voucher-page .inventory-card {
+    padding: 11px;
+  }
+
+  .filter-dialog-header {
+    padding: 18px 18px 14px;
+  }
+
+  .filter-title {
+    font-size: 21px;
+  }
+
+  .filter-subtitle {
+    font-size: 12px;
+  }
+
+  .filter-divider {
+    margin: 0 18px;
+  }
+
+  .filter-dialog-body {
+    padding: 18px;
+  }
+}
+
+body:has(.purchase-indent-shell) {
+  color: #1d2b43;
+  background: #f3f6fb;
+}
+
+body:has(.purchase-indent-shell) .purchase-indent-shell {
+  min-height: calc(100vh - 60px);
+  background: #f3f6fb;
+}
+
+body:has(.purchase-indent-shell) .purchase-indent-page {
+  padding: 14px 20px 28px;
+}
+
+body:has(.purchase-indent-shell) .purchase-page-header {
+  min-height: 54px;
+  margin: 0 0 14px;
+  padding: 8px 14px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(30, 53, 85, .035);
+}
+
+body:has(.purchase-indent-shell) .page-header-title-wrap h1 {
+  color: #1d2b43;
+  font-size: 20px;
+}
+
+body:has(.purchase-indent-shell) #piListView {
+  padding: 16px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(30, 53, 85, .035);
+}
+
+body:has(.purchase-indent-shell) #piListView .voucher-card-header {
+  margin-bottom: 12px;
+}
+
+body:has(.purchase-indent-shell) #piListView .voucher-card-header h2 {
+  color: #1d2b43;
+  font-size: 16px;
+}
+
+body:has(.purchase-indent-shell) #piListView .voucher-table-wrapper {
+  height: auto;
+  max-height: min(65vh, 560px);
+  border: 1px solid #e1e8f0;
+  border-radius: 8px;
+  background: #fff;
+}
+
+body:has(.purchase-indent-shell) #piListView .voucher-table {
+  min-width: 760px;
+}
+
+body:has(.purchase-indent-shell) #piListView .voucher-table th,
+body:has(.purchase-indent-shell) #piListView .voucher-table td {
+  height: 36px;
+  padding: 7px 10px;
+  border-color: #e8edf4;
+  color: #43536b;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+body:has(.purchase-indent-shell) #piListView .voucher-table th {
+  background: #edf3fb;
+  color: #405570;
+  box-shadow: inset 0 -1px 0 #e1e8f0;
+}
+
+body:has(.purchase-indent-shell) #piListView .voucher-table tbody tr,
+body:has(.purchase-indent-shell) #piListView .voucher-table tbody tr > td {
+  background: #fff !important;
+}
+
+body:has(.purchase-indent-shell) #piListView .voucher-table tbody tr:nth-child(even),
+body:has(.purchase-indent-shell) #piListView .voucher-table tbody tr:nth-child(even) > td {
+  background: #fafbfd !important;
+}
+
+body:has(.purchase-indent-shell) #piListView .voucher-table tbody tr:hover,
+body:has(.purchase-indent-shell) #piListView .voucher-table tbody tr:hover > td {
+  background: #f1f6ff !important;
+}
+
+body:has(.purchase-indent-shell) .page-header-tools .toolbar-btn.has-label {
+  min-height: 34px;
+  border: 1px solid #dce5f0;
+  border-radius: 7px;
+  background: #fff;
+  color: #3a4b64;
+}
+
+body:has(.purchase-indent-shell) .page-header-tools .toolbar-btn.has-label:hover {
+  border-color: #b8d2f6;
+  background: #f4f8ff;
+  color: #145fcf;
+}
+
+@media (max-width: 700px) {
+  body:has(.purchase-indent-shell) .purchase-indent-page {
+    padding: 10px 10px 20px;
+  }
+
+  body:has(.purchase-indent-shell) #piListView {
+    padding: 12px;
+  }
+}
+
+body.purchase-voucher-page {
+  min-width: 320px;
+  background: #f3f6fb;
+}
+
+body.purchase-voucher-page > .top-strip {
+  position: sticky;
+  z-index: 20;
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: 60px;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 18px;
+  background: #fff;
+}
+
+body.purchase-voucher-page > .top-strip .brand {
+  flex: 0 0 auto;
+}
+
+body.purchase-voucher-page > .top-strip .search {
+  flex: 1 1 220px;
+  width: auto;
+  min-width: 120px;
+  max-width: 420px;
+  margin: 0;
+}
+
+body.purchase-voucher-page > .top-strip .top-actions {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+body.purchase-voucher-page > .top-strip .top-home,
+body.purchase-voucher-page > .top-strip .top-user,
+body.purchase-voucher-page > .top-strip .top-back {
+  font-size: 11px;
+}
+
+body.purchase-voucher-page > .inventory-page,
+body.purchase-voucher-page > .inventory-page.inventory-page {
+  width: min(1600px, 100%);
+  max-width: 1600px;
+  margin: 18px auto 0;
+  padding: 0 22px 32px;
+}
+
+body.purchase-voucher-page > .voucher-header,
+body.purchase-voucher-page .inventory-page > .voucher-header {
+  min-height: 58px;
+  margin: 0 0 14px;
+  padding: 10px 16px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(30, 53, 85, .035);
+}
+
+body.purchase-voucher-page .breadcrumb-title {
+  color: #1d2b43;
+  font-size: 19px;
+}
+
+body.purchase-voucher-page .breadcrumb-path {
+  display: block;
+  margin-top: 3px;
+  color: #74839b;
+  font-size: 11px;
+}
+
+body.purchase-voucher-page .voucher-actions {
+  gap: 8px;
+}
+
+body.purchase-voucher-page .ims-tabs {
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 4px;
+  border: 1px solid #e5ebf3;
+  border-radius: 9px;
+  background: #fff;
+}
+
+body.purchase-voucher-page .ims-tabs .tab {
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #60718a;
+  font-size: 12px;
+}
+
+body.purchase-voucher-page .ims-tabs .tab.active,
+body.purchase-voucher-page .ims-tabs .tab.active:hover {
+  border-color: #1769e8;
+  background: #1769e8;
+  color: #fff;
+}
+
+body.purchase-voucher-page .voucher-table-card,
+body.purchase-voucher-page .inventory-card,
+body.purchase-voucher-page .voucher-form-card {
+  margin: 0 0 14px;
+  padding: 16px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(30, 53, 85, .035);
+}
+
+body.purchase-voucher-page .voucher-card-header,
+body.purchase-voucher-page .inventory-card-header {
+  margin-bottom: 12px;
+}
+
+body.purchase-voucher-page .voucher-card-header h2,
+body.purchase-voucher-page .inventory-card-header h2 {
+  color: #253650;
+  font-size: 15px;
+}
+
+body.purchase-voucher-page .voucher-table-wrapper {
+  height: auto;
+  max-height: min(65vh, 560px);
+  overflow: auto;
+  border: 1px solid #e1e8f0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: none;
+}
+
+body.purchase-voucher-page .voucher-table {
+  min-width: 900px;
+}
+
+body.purchase-voucher-page .voucher-table th,
+body.purchase-voucher-page .voucher-table td {
+  height: 36px;
+  padding: 7px 9px;
+  border-color: #e8edf4;
+  color: #43536b;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+body.purchase-voucher-page .voucher-table th {
+  background: #edf3fb;
+  color: #405570;
+  font-weight: 650;
+  text-shadow: none;
+  box-shadow: inset 0 -1px 0 #e1e8f0;
+}
+
+body.purchase-voucher-page .voucher-table tbody tr,
+body.purchase-voucher-page .voucher-table tbody tr > td {
+  background: #fff !important;
+}
+
+body.purchase-voucher-page .voucher-table tbody tr:nth-child(even),
+body.purchase-voucher-page .voucher-table tbody tr:nth-child(even) > td {
+  background: #fafbfd !important;
+}
+
+body.purchase-voucher-page .voucher-table tbody tr:hover,
+body.purchase-voucher-page .voucher-table tbody tr:hover > td {
+  background: #f1f6ff !important;
+}
+
+body.purchase-voucher-page .voucher-form-card {
+  padding: 18px;
+}
+
+body.purchase-voucher-page .voucher-form-card > .voucher-card-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e8edf4;
+}
+
+body.purchase-voucher-page .voucher-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px 18px;
+  padding: 10px 0 16px;
+}
+
+body.purchase-voucher-page .field-group {
+  gap: 6px;
+}
+
+body.purchase-voucher-page .field-group label {
+  color: #43536b;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+body.purchase-voucher-page .field-group input,
+body.purchase-voucher-page .field-group select,
+body.purchase-voucher-page .field-group textarea,
+body.purchase-voucher-page.po-form-active .field-group input,
+body.purchase-voucher-page.po-form-active .field-group select,
+body.purchase-voucher-page.po-form-active .field-group textarea {
+  min-height: 38px;
+  height: auto;
+  padding: 8px 10px;
+  border: 1px solid #dfe6ef;
+  border-radius: 7px;
+  border-left: 1px solid #dfe6ef;
+  background: #fff;
+  color: #243247;
+  font-size: 12px;
+  box-shadow: none;
+}
+
+body.purchase-voucher-page .field-group textarea,
+body.purchase-voucher-page.po-form-active .field-group textarea {
+  min-height: 70px;
+}
+
+body.purchase-voucher-page .toolbar-btn,
+body.purchase-voucher-page .action-btn,
+body.purchase-voucher-page .page-btn,
+body.purchase-voucher-page .voucher-actions > button,
+body.purchase-voucher-page .voucher-actions > a {
+  min-height: 34px;
+  padding: 7px 11px;
+  border: 1px solid #dce5f0;
+  border-radius: 7px;
+  background: #fff;
+  color: #3a4b64;
+  font-size: 11px;
+  text-decoration: none;
+  box-shadow: none;
+}
+
+body.purchase-voucher-page .toolbar-btn:hover,
+body.purchase-voucher-page .action-btn:hover,
+body.purchase-voucher-page .page-btn:hover,
+body.purchase-voucher-page .voucher-actions > button:hover,
+body.purchase-voucher-page .voucher-actions > a:hover {
+  border-color: #b8d2f6;
+  background: #f4f8ff;
+  color: #145fcf;
+}
+
+body.purchase-voucher-page button[id*="Save"],
+body.purchase-voucher-page button[id*="Submit"],
+body.purchase-voucher-page button[id*="Create"],
+body.purchase-voucher-page .button-primary {
+  border-color: #1769e8;
+  background: #1769e8;
+  color: #fff;
+}
+
+body.purchase-voucher-page button[id*="Save"]:hover,
+body.purchase-voucher-page button[id*="Submit"]:hover,
+body.purchase-voucher-page button[id*="Create"]:hover,
+body.purchase-voucher-page .button-primary:hover {
+  border-color: #0e57c7;
+  background: #0e57c7;
+  color: #fff;
+}
+
+body.purchase-voucher-page.po-form-active > .inventory-page {
+  width: min(1600px, 100%);
+  margin: 18px auto 0;
+  padding: 0 22px 32px;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-header {
+  min-height: 58px;
+  margin: 0 0 14px;
+  padding: 10px 16px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fff;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-form-card {
+  padding: 18px;
+  border: 1px solid #e4eaf2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(30, 53, 85, .035);
+}
+
+body.purchase-voucher-page.po-form-active .po-main-tab {
+  margin: 0 0 14px;
+  padding: 0 0 8px;
+  border-bottom: 2px solid #1769e8;
+  color: #1769e8;
+  font-size: 13px;
+}
+
+body.purchase-voucher-page.po-form-active .po-entry-grid {
+  gap: 14px 18px;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-table-wrapper:has(#poLinesBody) {
+  max-height: min(45vh, 380px);
+  border: 1px solid #e1e8f0;
+  border-radius: 8px;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) th {
+  background: #edf3fb;
+  color: #405570;
+}
+
+body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) th,
+body.purchase-voucher-page.po-form-active .voucher-table:has(#poLinesBody) td {
+  border-color: #e8edf4;
+}
+
+body.purchase-voucher-page .filter-dialog {
+  max-width: min(920px, 100%);
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table-wrapper,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table-wrapper,
+body.purchase-voucher-page #piListView .voucher-table-wrapper,
+body.purchase-voucher-page #rfqAllView .voucher-table-wrapper,
+body.purchase-voucher-page #rfqPendingView .voucher-table-wrapper,
+body.purchase-voucher-page #qrAllView .voucher-table-wrapper,
+body.purchase-voucher-page #qrPendingView .voucher-table-wrapper,
+body.purchase-voucher-page #allPoView .voucher-table-wrapper,
+body.purchase-voucher-page #pendingQrView .voucher-table-wrapper,
+body.purchase-voucher-page #issueAllView .voucher-table-wrapper,
+body.purchase-voucher-page #issuePendingView .voucher-table-wrapper {
+  height: auto;
+  max-height: min(65vh, 560px);
+  border: 1px solid #e1e8f0;
+  border-radius: 8px;
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table,
+body.purchase-voucher-page #piListView .voucher-table,
+body.purchase-voucher-page #rfqAllView .voucher-table,
+body.purchase-voucher-page #rfqPendingView .voucher-table,
+body.purchase-voucher-page #qrAllView .voucher-table,
+body.purchase-voucher-page #qrPendingView .voucher-table,
+body.purchase-voucher-page #allPoView .voucher-table,
+body.purchase-voucher-page #pendingQrView .voucher-table,
+body.purchase-voucher-page #issueAllView .voucher-table,
+body.purchase-voucher-page #issuePendingView .voucher-table {
+  min-width: 900px;
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table th,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table th {
+  background: #edf3fb;
+  color: #405570;
+  text-shadow: none;
+  box-shadow: inset 0 -1px 0 #e1e8f0;
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table th,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table th,
+body.purchase-voucher-page #allPoView .voucher-table th,
+body.purchase-voucher-page #pendingQrView .voucher-table th,
+body.purchase-voucher-page #rfqAllView .voucher-table th,
+body.purchase-voucher-page #rfqPendingView .voucher-table th,
+body.purchase-voucher-page #qrAllView .voucher-table th,
+body.purchase-voucher-page #qrPendingView .voucher-table th,
+body.purchase-voucher-page #piListView .voucher-table th,
+body.purchase-voucher-page #issueAllView .voucher-table th,
+body.purchase-voucher-page #issuePendingView .voucher-table th {
+  height: 36px;
+  padding: 7px 9px;
+  border-color: #e1e8f0;
+  background: #edf3fb !important;
+  color: #405570 !important;
+  font-size: 11px;
+  font-weight: 650;
+  text-shadow: none;
+  box-shadow: inset 0 -1px 0 #e1e8f0;
+}
+
+body.purchase-voucher-page #mrnAllView .voucher-table td,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table td,
+body.purchase-voucher-page #allPoView .voucher-table td,
+body.purchase-voucher-page #pendingQrView .voucher-table td,
+body.purchase-voucher-page #rfqAllView .voucher-table td,
+body.purchase-voucher-page #rfqPendingView .voucher-table td,
+body.purchase-voucher-page #qrAllView .voucher-table td,
+body.purchase-voucher-page #qrPendingView .voucher-table td,
+body.purchase-voucher-page #piListView .voucher-table td,
+body.purchase-voucher-page #issueAllView .voucher-table td,
+body.purchase-voucher-page #issuePendingView .voucher-table td {
+  height: 36px;
+  padding: 7px 9px;
+  border-color: #e8edf4;
+  color: #43536b !important;
+  font-size: 11px;
+}
+
+body.purchase-voucher-page .shared-voucher-filter-panel,
+body.purchase-voucher-page .filter-modal {
+  background: rgba(15, 35, 65, .42);
+}
+
+body:has(.purchase-indent-shell) > .top-strip {
+  position: sticky;
+  z-index: 20;
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: 60px;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 18px;
+}
+
+body:has(.purchase-indent-shell) > .top-strip .brand {
+  flex: 0 0 auto;
+}
+
+body:has(.purchase-indent-shell) > .top-strip .search {
+  flex: 1 1 220px;
+  width: auto;
+  min-width: 120px;
+  max-width: 420px;
+  margin: 0;
+}
+
+body:has(.purchase-indent-shell) > .top-strip .top-actions {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+@media (max-width: 760px) {
+  body.purchase-voucher-page > .top-strip,
+  body:has(.purchase-indent-shell) > .top-strip {
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+  }
+
+  body.purchase-voucher-page > .top-strip .search,
+  body:has(.purchase-indent-shell) > .top-strip .search {
+    flex: 1 1 100%;
+    order: 3;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  body.purchase-voucher-page > .top-strip .top-actions,
+  body:has(.purchase-indent-shell) > .top-strip .top-actions {
+    margin-left: auto;
+  }
+
+  body.purchase-voucher-page > .top-strip .top-home,
+  body.purchase-voucher-page > .top-strip .top-user,
+  body.purchase-voucher-page > .top-strip .top-back {
+    font-size: 12px;
+  }
+
+  body.purchase-voucher-page > .inventory-page,
+  body.purchase-voucher-page.po-form-active > .inventory-page {
+    margin-top: 10px;
+    padding: 0 10px 24px;
+  }
+
+  body.purchase-voucher-page .voucher-header {
+    align-items: flex-start;
+  }
+
+  body.purchase-voucher-page .voucher-grid,
+  body.purchase-voucher-page.po-form-active .po-entry-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body.purchase-voucher-page .voucher-table-card,
+  body.purchase-voucher-page .inventory-card,
+  body.purchase-voucher-page .voucher-form-card {
+    padding: 12px;
+  }
+}
+
+:root {
+  color-scheme: dark;
+  --skeuo-page: #090a0f;
+  --skeuo-surface: #14141b;
+  --skeuo-surface-light: #191920;
+  --skeuo-edge: rgba(255, 255, 255, .09);
+  --skeuo-ink: #f0eff7;
+  --skeuo-blue: #a48aff;
+  --skeuo-blue-deep: #101017;
+  --skeuo-shadow: rgba(0, 0, 0, .24);
+  scroll-behavior: smooth;
+}
+
+html:not(:has(body.erp-page, body.dashboard-page)) {
+  background: #090a0f;
+}
+
+body:not(.erp-page):not(.dashboard-page):not(:has(.login-box)) {
+  color: #efedf5;
+  background:
+    radial-gradient(ellipse at 82% 0%, rgba(116, 77, 220, .12), transparent 38rem),
+    radial-gradient(ellipse at 8% 85%, rgba(45, 93, 154, .08), transparent 34rem),
+    #090a0f;
+  background-attachment: fixed;
+}
+
+.top-strip {
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+  background: rgba(13, 13, 19, .9);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .2);
+  backdrop-filter: blur(18px);
+}
+
+.brand,
+.brand i,
+.top-home,
+.top-user,
+.top-back {
+  color: #f0eff7;
+  text-shadow: none;
+}
+
+.top-strip #searchBox,
+.search-group,
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  border: 1px solid rgba(255, 255, 255, .12);
+  background: #15151d;
+  color: #efedf5;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .22);
+  color-scheme: dark;
+}
+
+.search-group input {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #858294;
+  opacity: 1;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.top-strip #searchBox:focus {
+  border-color: rgba(169, 144, 255, .72);
+  outline: 3px solid rgba(152, 120, 255, .15);
+  outline-offset: 1px;
+  box-shadow: 0 0 22px rgba(123, 86, 220, .1);
+}
+
+.voucher-header,
+.inventory-breadcrumb,
+.inventory-toolbar,
+.voucher-form-card,
+.voucher-table-card,
+.inventory-card,
+.filter-dialog,
+.dash-tile {
+  border: 1px solid rgba(255, 255, 255, .085);
+  background: linear-gradient(145deg, rgba(21, 21, 29, .97), rgba(15, 15, 22, .97));
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .2), inset 0 1px rgba(255, 255, 255, .025);
+  color: #efedf5;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.voucher-form-card:hover,
+.voucher-table-card:hover,
+.inventory-card:hover,
+.dash-tile:hover {
+  border-color: rgba(169, 144, 255, .2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .26), 0 0 24px rgba(123, 86, 220, .045);
+}
+
+.breadcrumb-title,
+.voucher-card-header h2,
+.inventory-card-header h2,
+.dash-tile,
+.dash-tile strong {
+  color: #f0eff7;
+  text-shadow: none;
+}
+
+.breadcrumb-path,
+.dashboard-flow-caption,
+.dash-tile .tile-sub,
+.select-group {
+  color: #a09dae;
+}
+
+button,
+.toolbar-btn,
+.page-btn,
+.action-btn,
+.nav-link,
+.top-btn,
+.tab,
+.logout-btn,
+.button,
+a.toolbar-btn {
+  border: 1px solid rgba(255, 255, 255, .11);
+  background: #191920;
+  color: #e3e0eb;
+  box-shadow: none;
+  text-shadow: none;
+  transition: color .18s ease, background-color .18s ease, border-color .18s ease,
+    box-shadow .18s ease, transform .18s ease;
+}
+
+button:hover,
+.toolbar-btn:hover,
+.page-btn:hover,
+.action-btn:hover,
+.nav-link:hover,
+.top-btn:hover,
+.tab:hover,
+.button:hover,
+a.toolbar-btn:hover {
+  border-color: rgba(169, 144, 255, .42);
+  background: rgba(152, 120, 255, .14);
+  color: #d3c6ff;
+}
+
+button:active,
+.toolbar-btn:active,
+.page-btn:active,
+.action-btn:active,
+.tab:active,
+.button:active,
+a.toolbar-btn:active {
+  background: rgba(152, 120, 255, .2);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, .2);
+  transform: translateY(1px);
+}
+
+.top-user,
+.top-back {
+  border-color: rgba(255, 255, 255, .15);
+  background: rgba(255, 255, 255, .055);
+  color: #f0eff7;
+}
+
+.top-user:hover,
+.top-back:hover {
+  background: rgba(152, 120, 255, .15);
+}
+
+.tab.active,
+.ims-tabs .tab.active,
+.ims-tabs .active {
+  border-color: rgba(184, 162, 255, .34);
+  background: linear-gradient(135deg, #9878ff, #7045dc);
+  color: #fff;
+  box-shadow: 0 5px 16px rgba(112, 69, 220, .23);
+}
+
+.voucher-table-wrapper,
+.inventory-table-wrapper {
+  border-color: rgba(255, 255, 255, .09);
+  background: #111117;
+  box-shadow: none;
+}
+
+.voucher-table th,
+.inventory-table th,
+body.purchase-voucher-page #mrnAllView .voucher-table th,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table th,
+body.purchase-voucher-page #allPoView .voucher-table th,
+body.purchase-voucher-page #pendingQrView .voucher-table th,
+body.purchase-voucher-page #rfqAllView .voucher-table th,
+body.purchase-voucher-page #rfqPendingView .voucher-table th,
+body.purchase-voucher-page #qrAllView .voucher-table th,
+body.purchase-voucher-page #qrPendingView .voucher-table th,
+body.purchase-voucher-page #piListView .voucher-table th,
+body.purchase-voucher-page #issueAllView .voucher-table th,
+body.purchase-voucher-page #issuePendingView .voucher-table th {
+  border-color: rgba(255, 255, 255, .09);
+  background: #1b1a23 !important;
+  color: #c1b1ff !important;
+  text-shadow: none;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, .06);
+}
+
+.voucher-table td,
+.inventory-table td,
+body.purchase-voucher-page #mrnAllView .voucher-table td,
+body.purchase-voucher-page #mrnPendingPoView .voucher-table td,
+body.purchase-voucher-page #allPoView .voucher-table td,
+body.purchase-voucher-page #pendingQrView .voucher-table td,
+body.purchase-voucher-page #rfqAllView .voucher-table td,
+body.purchase-voucher-page #rfqPendingView .voucher-table td,
+body.purchase-voucher-page #qrAllView .voucher-table td,
+body.purchase-voucher-page #qrPendingView .voucher-table td,
+body.purchase-voucher-page #piListView .voucher-table td,
+body.purchase-voucher-page #issueAllView .voucher-table td,
+body.purchase-voucher-page #issuePendingView .voucher-table td {
+  border-color: rgba(255, 255, 255, .065);
+  color: #e0dde8 !important;
+}
+
+.voucher-table tbody tr:nth-child(even),
+.inventory-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, .025);
+}
+
+.voucher-table tbody tr:hover,
+.inventory-table tbody tr:hover,
+body.purchase-voucher-page .line-row:hover {
+  background: rgba(152, 120, 255, .08) !important;
+}
+
+.top-strip .search-dropdown {
+  border-color: rgba(255, 255, 255, .1);
+  background: #16161e;
+  box-shadow: 0 16px 38px rgba(0, 0, 0, .4);
+}
+
+.top-strip .search-dropdown li {
+  border-color: rgba(255, 255, 255, .07);
+}
+
+.top-strip .search-dropdown li a {
+  color: #e3e0eb;
+}
+
+.top-strip .search-dropdown li a:hover,
+.top-strip .search-dropdown li a:focus-visible {
+  background: rgba(152, 120, 255, .13);
+}
+
+.filter-modal,
+.shared-voucher-filter-panel {
+  background: rgba(3, 3, 7, .76);
+  backdrop-filter: blur(8px);
+}
+
+.filter-dialog {
+  animation: skeuo-dialog-enter .24s cubic-bezier(.2, .75, .25, 1) both;
+}
+
+.filter-dialog-header {
+  border-color: rgba(255, 255, 255, .08);
+}
+
+.filter-title,
+.filter-field > label,
+.filter-field > span {
+  color: #f0eff7;
+}
+
+.filter-subtitle {
+  color: #a09dae;
+}
+
+.filter-close-btn {
+  background: #20202a;
+  color: #d4d0df;
+}
+
+@keyframes skeuo-dialog-enter {
+  from { opacity: 0; translate: 0 10px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter-dialog {
+    animation: none;
+  }
+
+  .voucher-form-card,
+  .voucher-table-card,
+  .inventory-card,
+  .dash-tile,
+  button,
+  a {
+    transition-duration: .01ms;
+  }
+}

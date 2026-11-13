@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Ledger | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261103-glass-ui" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet" href="../css/theme-brown-beige.css?v=20261113-brown-beige-11" />
+</head>
+<body class="erp-page">
+    <aside class="erp-sidebar">
+        <a class="erp-brand" href="dashboard.html">
+            <div class="erp-brand-mark"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <span><strong>Soft Manager</strong><small style="display:block; font-size: 10px; color: #a7bad4;">Warehouse & Purchase</small></span>
+        </a>
+        <nav class="erp-nav">
+            <a class="erp-nav-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            
+            <div class="erp-nav-heading">Purchase Process</div>
+            <a class="erp-nav-link" href="purchase-indent.html"><i class="fa-solid fa-file-circle-plus"></i><span>Purchase Indent</span></a>
+            <a class="erp-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
+            <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
+            <a class="erp-nav-link" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
+            
+            <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue Slip</span></a>
+            <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
+            
+            <div class="erp-nav-heading">Inventory & Stock</div>
+            <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
+            <a class="erp-nav-link active" data-sidebar-stock-view="ledger" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="erp-nav-link" data-sidebar-stock-view="warehouse" href="stock-ledger.html#warehouse-stock"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            
+            <div class="erp-nav-heading">Reports</div>
+            <a class="erp-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Purchase Reports</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Reports</span></a>
+        </nav>
+    </aside>
+
+    <div class="erp-main">
+        <header class="erp-topbar">
+            <div class="erp-search">
+                <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                <input id="searchBox" type="search" placeholder="Global Search..." />
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 28, 2026</span></div>
+                <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="erp-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <div>
+                    <h1 id="stockPageTitle" style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Stock Ledger</h1>
+                    <p id="stockPageDescription" style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Detailed movement history for items including receipts and issues.</p>
+                </div>
+                <a href="dashboard.html" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i> Dashboard
+                </a>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+                <a class="status-badge status-neutral" data-stock-view="ledger" href="stock-ledger.html">Stock Ledger</a>
+                <a class="status-badge status-neutral" data-stock-view="warehouse" href="stock-ledger.html#warehouse-stock">Warehouse Stock</a>
+            </div>
+
+            <div id="stockLedgerView">
+            <div style="display: grid; grid-template-columns: 1fr 300px; gap: 24px; margin-bottom: 24px;">
+                <!-- Filter Section -->
+                <section class="erp-card">
+                    <div class="erp-card-header">
+                        <h2 style="font-size: 14px;">Stock Filter</h2>
+                    </div>
+                    <div class="erp-card-body">
+                        <form id="stockLedgerForm" class="erp-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); align-items: end;">
+                            <div class="erp-field">
+                                <label for="ledgerItemSearch">Item Search</label>
+                                <input id="ledgerItemSearch" type="search" list="ledgerItemOptions" placeholder="Type item name or code" autocomplete="off" required />
+                                <datalist id="ledgerItemOptions"></datalist>
+                            </div>
+                            <div class="erp-field">
+                                <label for="ledgerDateOption">Date Range</label>
+                                <select id="ledgerDateOption">
+                                    <option value="as-on-date" selected>As on date</option>
+                                    <option value="current-month">Current month</option>
+                                    <option value="previous-month">Previous month</option>
+                                    <option value="current-week">Current week</option>
+                                    <option value="previous-week">Previous week</option>
+                                    <option value="today">Today</option>
+                                    <option value="current-year">Current year</option>
+                                    <option value="previous-year">Previous year</option>
+                                    <option value="current-financial-year">Current Financial Year</option>
+                                    <option value="previous-financial-year">Previous Financial Year</option>
+                                    <option value="yesterday">Yesterday</option>
+                                    <option value="current-quarter">Current Quarter</option>
+                                    <option value="previous-quarter">Previous Quarter</option>
+                                </select>
+                            </div>
+                            <div class="erp-field">
+                                <label for="ledgerFromDate">Start Date</label>
+                                <input id="ledgerFromDate" type="date" disabled />
+                            </div>
+                            <div class="erp-field">
+                                <label for="ledgerToDate">End Date</label>
+                                <input id="ledgerToDate" type="date" disabled />
+                            </div>
+                            <div class="erp-field" style="justify-content: flex-end;">
+                                <button id="showLedgerBtn" class="btn-primary" type="submit" style="width: 100%;">Generate Ledger</button>
+                            </div>
+                        </form>
+                        <p id="ledgerMessage" style="margin-top: 12px; font-size: 12px; color: var(--erp-text-muted);"></p>
+                    </div>
+                </section>
+
+                <!-- Department / Quick Select -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <section class="erp-card">
+                        <div class="erp-card-header">
+                            <h2 style="font-size: 14px;">Departments</h2>
+                        </div>
+                        <div class="erp-card-body" id="ledgerDepartmentList" style="display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Injected by stock-ledger.js -->
+                        </div>
+                    </section>
+                    <section class="erp-card">
+                        <div class="erp-card-header">
+                            <h2 style="font-size: 14px;">Quick Items</h2>
+                        </div>
+                        <div class="erp-card-body" id="ledgerDepartmentItems" style="display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Injected by stock-ledger.js -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <section id="ledgerResult" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <h2 id="selectedItemName" style="margin: 0; font-size: 18px;">Item Name</h2>
+                        <span id="selectedItemMeta" class="status-badge status-neutral" style="font-size: 10px;">Item Code</span>
+                    </div>
+                    <button id="printLedgerBtn" class="btn-secondary" type="button"><i class="fa-solid fa-print"></i> Print Ledger</button>
+                </div>
+                <div class="erp-card-body">
+                    <!-- Summary KPI Cards -->
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 24px;">
+                        <div class="erp-card" style="padding: 15px; text-align: center; background: #fff; border-color: var(--erp-border);">
+                            <span style="display: block; font-size: 11px; color: var(--erp-text-muted); margin-bottom: 5px;">Opening Balance</span>
+                            <strong id="openingBalance" style="font-size: 20px; color: var(--erp-text-main);">0</strong>
+                        </div>
+                        <div class="erp-card" style="padding: 15px; text-align: center; background: #fff; border-color: var(--erp-border);">
+                            <span style="display: block; font-size: 11px; color: var(--erp-text-muted); margin-bottom: 5px;">Total Received</span>
+                            <strong id="totalIn" style="font-size: 20px; color: var(--status-green-text);">0</strong>
+                        </div>
+                        <div class="erp-card" style="padding: 15px; text-align: center; background: #fff; border-color: var(--erp-border);">
+                            <span style="display: block; font-size: 11px; color: var(--erp-text-muted); margin-bottom: 5px;">Total Issued</span>
+                            <strong id="totalOut" style="font-size: 20px; color: var(--status-red-text);">0</strong>
+                        </div>
+                        <div class="erp-card" style="padding: 15px; text-align: center; background: #fff; border-color: var(--erp-border);">
+                            <span style="display: block; font-size: 11px; color: var(--erp-text-muted); margin-bottom: 5px;">Current Stock</span>
+                            <strong id="currentBalance" style="font-size: 20px; color: var(--erp-primary);">0</strong>
+                        </div>
+                    </div>
+
+                    <div class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">#</th>
+                                    <th>Date</th>
+                                    <th>Voucher No.</th>
+                                    <th>Activity</th>
+                                    <th>Warehouse / Location</th>
+                                    <th style="text-align: right;">In</th>
+                                    <th style="text-align: right;">Out</th>
+                                    <th style="text-align: right;">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledgerRows">
+                                <!-- Injected by stock-ledger.js -->
+                            </tbody>
+                        </table>
+                        <div id="ledgerEmptyState" hidden style="text-align: center; padding: 24px; color: var(--erp-text-muted);">
+                            No stock movements found for this item in the selected date range.
+                        </div>
+                    </div>
+                    <p style="margin-top: 20px; font-size: 11px; color: var(--erp-text-muted); font-style: italic;">
+                        IN is derived from Material Receipt Notes. OUT is derived from approved Material Issue Vouchers.
+                    </p>
+                </div>
+            </section>
+            </div>
+
+            <section id="warehouseStockView" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <div>
+                        <h2 style="margin: 0;">Warehouse Stock by Department</h2>
+                        <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 12px;">Item balances grouped by warehouse and the department/category saved in Item Master.</p>
+                    </div>
+                    <button id="downloadWarehouseStockCsv" class="btn-secondary" type="button">
+                        <i class="fa-solid fa-file-csv" aria-hidden="true"></i> Download CSV
+                    </button>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-form-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); align-items: end;">
+                        <div class="erp-field">
+                            <label for="warehouseStockWarehouse">Warehouse</label>
+                            <select id="warehouseStockWarehouse">
+                                <option value="">All warehouses</option>
+                            </select>
+                        </div>
+                        <div class="erp-field">
+                            <label for="warehouseStockDepartment">Department</label>
+                            <select id="warehouseStockDepartment">
+                                <option value="">All departments</option>
+                            </select>
+                        </div>
+                        <div class="erp-field">
+                            <label>Displayed stock</label>
+                            <strong id="warehouseStockSummary">0 stock rows</strong>
+                        </div>
+                    </div>
+                    <p id="warehouseStockMessage" role="status" aria-live="polite" style="margin: 12px 0; color: var(--erp-text-muted); font-size: 12px;">
+                        Warehouse balances use received quantities minus approved issues. Opening balances without a warehouse are shown as Unassigned warehouse.
+                    </p>
+                    <div class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>Warehouse</th>
+                                    <th>Department</th>
+                                    <th>Item Name</th>
+                                    <th>Item Code</th>
+                                    <th>Unit</th>
+                                    <th style="text-align: right;">Stock Quantity</th>
+                                    <th>Opening Stock Assignment</th>
+                                </tr>
+                            </thead>
+                            <tbody id="warehouseStockRows"></tbody>
+                        </table>
+                    </div>
+                    <p id="warehouseAssignmentStatus" role="status" aria-live="polite" style="margin: 12px 0 0; color: var(--erp-text-muted); font-size: 12px;"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../js/data-store.js?v=20261113-storage-timeout"></script>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js?v=github-pages-local-only"></script>
+    <script src="../js/warehouse-stock-report.js?v=20261103-warehouse-stock"></script>
+    <script src="../js/stock-ledger.js?v=20261103-warehouse-stock"></script>
+</body>
+</html>

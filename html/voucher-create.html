@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Material Issue Voucher | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261103-glass-ui" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet" href="../css/theme-brown-beige.css?v=20261113-brown-beige-11" />
+</head>
+<body class="erp-page">
+    <aside class="erp-sidebar">
+        <a class="erp-brand" href="dashboard.html">
+            <div class="erp-brand-mark"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <span><strong>Soft Manager</strong><small style="display:block; font-size: 10px; color: #a7bad4;">Warehouse & Purchase</small></span>
+        </a>
+        <nav class="erp-nav">
+            <a class="erp-nav-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            
+            <div class="erp-nav-heading">Purchase Process</div>
+            <a class="erp-nav-link" href="purchase-indent.html"><i class="fa-solid fa-file-circle-plus"></i><span>Purchase Indent</span></a>
+            <a class="erp-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
+            <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
+            <a class="erp-nav-link" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
+            
+            <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link active" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue Slip</span></a>
+            <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
+            
+            <div class="erp-nav-heading">Inventory & Stock</div>
+            <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html#warehouse-stock"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            
+            <div class="erp-nav-heading">Reports</div>
+            <a class="erp-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Purchase Reports</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Reports</span></a>
+        </nav>
+    </aside>
+
+    <div class="erp-main">
+        <header class="erp-topbar">
+            <div class="erp-search">
+                <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                <input id="searchBox" type="search" placeholder="Global Search..." />
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 28, 2026</span></div>
+                <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="erp-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <div>
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Material Issue Slip</h1>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Create a voucher to issue materials from inventory.</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button id="newVoucherBtn" class="btn-primary" type="button"><i class="fa-solid fa-plus"></i> New Issue Slip</button>
+                    <a href="material-issue-list.html" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-list"></i> View Vouchers
+                    </a>
+                </div>
+            </div>
+
+            <section class="erp-card">
+                <div class="erp-card-header">
+                    <h2 style="font-size: 16px;">Issue Voucher Details</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="saveVoucherBtn" class="btn-primary" type="button">Save Issue Voucher</button>
+                    </div>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-form-grid">
+                        <div class="erp-field">
+                            <label for="docNo">Document No.</label>
+                            <input id="docNo" type="text" readonly />
+                        </div>
+                        <div class="erp-field">
+                            <label for="voucherDate">Date</label>
+                            <input id="voucherDate" type="date" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="warehouse">Warehouse</label>
+                            <select id="warehouse"></select>
+                        </div>
+                        <div class="erp-field">
+                            <label for="department">Department</label>
+                            <select id="department">
+                                <option>MEP</option>
+                                <option>Civil</option>
+                                <option>Housekeeping</option>
+                            </select>
+                        </div>
+                        <div class="erp-field">
+                            <label for="location">Location</label>
+                            <select id="location">
+                                <option>Umbrella Facility Management Services Pvt Ltd</option>
+                                <option>Site A</option>
+                                <option>Site B</option>
+                            </select>
+                        </div>
+                        <div class="erp-field">
+                            <label for="requestedBy">Requested By</label>
+                            <select id="requestedBy"></select>
+                        </div>
+                        <div class="erp-field" style="grid-column: span 2;">
+                            <label for="narration">Narration / Purpose</label>
+                            <textarea id="narration" rows="2" placeholder="Enter purpose of request..."></textarea>
+                        </div>
+                        <div class="erp-field">
+                            <label for="requestType">Request Type</label>
+                            <select id="requestType">
+                                <option>MEP Items</option>
+                                <option>Civil Items</option>
+                                <option>Stationery</option>
+                                <option>Housekeeping</option>
+                                <option>Security</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="erp-card" style="background: #fcfdfe; border-style: dashed; margin-top: 24px;">
+                        <div class="erp-card-header">
+                            <h2 style="font-size: 14px;"><i class="fa-solid fa-list"></i> Requested Items</h2>
+                        </div>
+                        <div class="erp-table-container">
+                            <table class="erp-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th>Brand</th>
+                                        <th>Item</th>
+                                        <th>Description</th>
+                                        <th>Unit</th>
+                                        <th>Quantity</th>
+                                        <th>Current Stock</th>
+                                        <th style="width: 50px;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="voucherItemsBody">
+                                    <!-- Injected by voucher-create.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; padding: 15px; gap: 10px;">
+                            <button id="addItemBtn" class="btn-secondary" style="font-size: 12px; padding: 6px 12px;"><i class="fa-solid fa-plus"></i> Add Item</button>
+                            <button id="deleteItemBtn" class="btn-secondary" style="font-size: 12px; padding: 6px 12px;"><i class="fa-solid fa-trash"></i> Delete</button>
+                        </div>
+                    </div>
+                    <p id="voucherStatus" style="margin-top: 15px; font-size: 12px; color: var(--erp-text-muted);"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../js/data-store.js?v=20261113-storage-timeout"></script>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js?v=github-pages-local-only"></script>
+    <script src="../js/voucher-create.js?v=20261102-saved-voucher-sequence"></script>
+    <script src="../js/voucher-toolbar.js?v=20261102-filter-fields"></script>
+</body>
+</html>

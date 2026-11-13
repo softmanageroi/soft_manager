@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A simple, local-first warehouse stock register.">
+  <title>Warehouse Stock | IMS</title>
+  <style>
+    :root{--ink:#172033;--muted:#667085;--line:#e5e7eb;--panel:#fff;--bg:#f7f8fc;--brand:#2563eb;--brand-dark:#1d4ed8;--good:#047857;--low:#b45309;--out:#b42318;--radius:14px}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{max-width:1280px;margin:auto;padding:28px 20px 48px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:18px}.logo{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;background:var(--brand);color:#fff;font-size:18px}.eyebrow{margin:0;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.topbar h1{font-size:24px;margin:2px 0 0}.actions,.filters{display:flex;gap:10px;flex-wrap:wrap}button,.button,input,select{font:inherit}button,.button{border:0;border-radius:9px;padding:10px 14px;cursor:pointer;font-weight:650;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}.primary{background:var(--brand);color:#fff}.primary:hover{background:var(--brand-dark)}.secondary{background:#edf2ff;color:#2446a8}.danger{background:#fff1f1;color:var(--out)}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}.stat,.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 1px 2px #1018280a}.stat{padding:18px}.stat span{display:block;color:var(--muted);font-size:13px}.stat strong{display:block;margin-top:8px;font-size:25px}.layout{display:grid;grid-template-columns:1fr;gap:18px}.card-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 18px 14px;border-bottom:1px solid var(--line)}.card-head h2{font-size:16px;margin:0}.filters{padding:16px 18px;background:#fbfcff;border-bottom:1px solid var(--line)}input,select{min-height:39px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;padding:8px 10px;color:var(--ink)}input:focus,select:focus{outline:3px solid #bfdbfe;border-color:var(--brand)}#search{min-width:245px;flex:1}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th,td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em;background:#fcfcfd}tbody tr:hover{background:#f8faff}.item-name{font-weight:700}.item-code{display:block;margin-top:2px;color:var(--muted);font-size:12px}.badge{display:inline-flex;border-radius:999px;padding:3px 9px;font-weight:700;font-size:12px}.in{color:var(--good);background:#ecfdf3}.low{color:var(--low);background:#fffaeb}.out{color:var(--out);background:#fef3f2}.row-actions{display:flex;gap:6px}.icon-btn{padding:6px 8px;background:#f2f4f7;color:#344054}.empty{padding:46px 20px;text-align:center;color:var(--muted)}dialog{border:0;border-radius:16px;padding:0;box-shadow:0 20px 40px #1018283d;width:min(560px,calc(100% - 32px)}dialog::backdrop{background:#10182880}.modal-head{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid var(--line)}.modal-head h2{margin:0;font-size:18px}.modal-body{padding:20px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:6px}.field label{font-weight:650;font-size:13px}.full{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.notice{min-height:20px;color:var(--out);margin:0 0 10px}.footer{display:flex;justify-content:space-between;gap:16px;padding:14px 18px;color:var(--muted);font-size:13px}@media(max-width:760px){.shell{padding:18px 12px}.topbar{align-items:flex-start;flex-direction:column}.summary{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.topbar .actions{width:100%}.topbar .actions>*{flex:1}th,td{padding:12px}.filters{padding:12px}.filters>*{width:100%}#search{min-width:0}.footer{flex-direction:column}.hide-mobile{display:none}}@media(max-width:400px){.summary{grid-template-columns:1fr}}
+  </style>
+  <link rel="stylesheet" href="../css/theme-brown-beige.css?v=20261113-brown-beige-11">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><div class="logo" aria-hidden="true">▦</div><div><p class="eyebrow">Inventory Management System</p><h1>Warehouse stock</h1></div></div>
+      <div class="actions"><a class="button secondary" href="data-backup.html">Backup data</a><button class="primary" id="addStockButton" type="button">+ Add stock</button></div>
+    </header>
+    <section class="summary" aria-label="Stock summary"><article class="stat"><span>Products</span><strong id="productCount">0</strong></article><article class="stat"><span>Total units</span><strong id="unitCount">0</strong></article><article class="stat"><span>Low stock items</span><strong id="lowCount">0</strong></article><article class="stat"><span>Inventory value</span><strong id="valueCount">₹0</strong></article></section>
+    <section class="card" aria-labelledby="inventoryTitle"><div class="card-head"><h2 id="inventoryTitle">Current inventory</h2><span id="resultCount" class="eyebrow"></span></div><div class="filters"><input id="search" type="search" placeholder="Search item, SKU or location" aria-label="Search inventory"><select id="statusFilter" aria-label="Filter by stock status"><option value="all">All stock levels</option><option value="in">In stock</option><option value="low">Low stock</option><option value="out">Out of stock</option></select><button id="clearFilters" class="secondary" type="button">Clear filters</button></div><div class="table-wrap"><table><thead><tr><th>Item</th><th>Location</th><th>Available</th><th class="hide-mobile">Reorder at</th><th class="hide-mobile">Unit value</th><th>Status</th><th><span class="sr-only">Actions</span></th></tr></thead><tbody id="stockRows"></tbody></table><div id="emptyState" class="empty" hidden>No stock items match the current filters.</div></div><div class="footer"><span>Changes are saved on this device.</span><span id="updatedAt"></span></div></section>
+  </main>
+  <dialog id="stockDialog" aria-labelledby="dialogTitle"><form id="stockForm" method="dialog"><div class="modal-head"><h2 id="dialogTitle">Add stock item</h2><button class="icon-btn" id="closeDialog" type="button" aria-label="Close dialog">×</button></div><div class="modal-body"><p id="formNotice" class="notice" role="alert"></p><input id="itemId" type="hidden"><div class="form-grid"><div class="field full"><label for="itemName">Item name</label><input id="itemName" required maxlength="80" autocomplete="off"></div><div class="field"><label for="sku">SKU</label><input id="sku" required maxlength="30" autocomplete="off"></div><div class="field"><label for="location">Location</label><input id="location" required maxlength="50" autocomplete="off"></div><div class="field"><label for="quantity">Available units</label><input id="quantity" required type="number" min="0" step="1"></div><div class="field"><label for="reorderLevel">Reorder level</label><input id="reorderLevel" required type="number" min="0" step="1"></div><div class="field full"><label for="unitValue">Unit value (₹)</label><input id="unitValue" required type="number" min="0" step="0.01"></div></div><div class="modal-actions"><button id="deleteItem" class="danger" type="button" hidden>Delete</button><button class="secondary" id="cancelDialog" type="button">Cancel</button><button class="primary" type="submit">Save item</button></div></div></form></dialog>
+  <script src="../js/data-store.js?v=20261113-storage-timeout"></script>
+  <script>
+    (() => {
+      'use strict';
+      const STORAGE_KEY = 'ims.warehouse-stock.v1';
+      const defaults = [
+        {id:'1',name:'A4 Copier Paper',sku:'PAP-A4-80',location:'Aisle A-01',quantity:148,reorderLevel:50,unitValue:315},
+        {id:'2',name:'Safety Gloves',sku:'PPE-GLV-M',location:'Aisle C-04',quantity:18,reorderLevel:25,unitValue:89.5},
+        {id:'3',name:'Packing Tape',sku:'PKG-TAPE-48',location:'Aisle B-02',quantity:0,reorderLevel:20,unitValue:42}
+      ];
+      const $ = (id) => document.getElementById(id);
+      const currency = new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0});
+      const number = new Intl.NumberFormat('en-IN');
+      let stock = loadStock();
+      function loadStock(){try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)); return Array.isArray(saved) ? saved : defaults; } catch { return defaults; }}
+      function persist(){localStorage.setItem(STORAGE_KEY, JSON.stringify(stock));}
+      function level(item){return item.quantity === 0 ? 'out' : item.quantity <= item.reorderLevel ? 'low' : 'in';}
+      function levelLabel(status){return status === 'in' ? 'In stock' : status === 'low' ? 'Low stock' : 'Out of stock';}
+      function makeCell(content, className = '') {
+        const cell = document.createElement('td');
+        cell.className = className;
+        if (content instanceof Node) cell.append(content);
+        else cell.textContent = content;
+        return cell;
+      }
+      function render() {
+        const query = $('search').value.trim().toLowerCase();
+        const filter = $('statusFilter').value;
+        const view = stock.filter((item) => {
+          const matches = [item.name, item.sku, item.location].some((value) => value.toLowerCase().includes(query));
+          return matches && (filter === 'all' || level(item) === filter);
+        });
+        const rows = $('stockRows');
+        rows.replaceChildren();
+        view.forEach((item) => {
+          const status = level(item);
+          const itemCell = document.createElement('td');
+          const name = document.createElement('span'); name.className = 'item-name'; name.textContent = item.name;
+          const sku = document.createElement('span'); sku.className = 'item-code'; sku.textContent = item.sku;
+          itemCell.append(name, sku);
+          const badge = document.createElement('span'); badge.className = `badge ${status}`; badge.textContent = levelLabel(status);
+          const editButton = document.createElement('button'); editButton.className = 'icon-btn'; editButton.type = 'button'; editButton.textContent = 'Edit'; editButton.setAttribute('aria-label', `Edit ${item.name}`); editButton.addEventListener('click', () => openEditor(item));
+          const actions = document.createElement('div'); actions.className = 'row-actions'; actions.append(editButton);
+          const row = document.createElement('tr');
+          row.append(itemCell, makeCell(item.location), makeCell(number.format(item.quantity)), makeCell(number.format(item.reorderLevel), 'hide-mobile'), makeCell(currency.format(item.unitValue), 'hide-mobile'), makeCell(badge), makeCell(actions));
+          rows.append(row);
+        });
+        $('emptyState').hidden = view.length !== 0;
+        $('resultCount').textContent = `${view.length} of ${stock.length} items`;
+        $('productCount').textContent = number.format(stock.length);
+        $('unitCount').textContent = number.format(stock.reduce((sum, item) => sum + item.quantity, 0));
+        $('lowCount').textContent = number.format(stock.filter((item) => level(item) !== 'in').length);
+        $('valueCount').textContent = currency.format(stock.reduce((sum, item) => sum + item.quantity * item.unitValue, 0));
+        $('updatedAt').textContent = `Updated ${new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}`;
+      }
+      function openEditor(item){$('stockForm').reset();$('formNotice').textContent='';$('dialogTitle').textContent=item?'Edit stock item':'Add stock item';$('itemId').value=item?.id||'';['itemName','sku','location','quantity','reorderLevel','unitValue'].forEach(key=>{$(key).value=item?.[key]??'';});$('deleteItem').hidden=!item;$('stockDialog').showModal();$('itemName').focus();}
+      $('addStockButton').addEventListener('click',()=>openEditor());$('closeDialog').addEventListener('click',()=>$('stockDialog').close());$('cancelDialog').addEventListener('click',()=>$('stockDialog').close());$('search').addEventListener('input',render);$('statusFilter').addEventListener('change',render);$('clearFilters').addEventListener('click',()=>{$('search').value='';$('statusFilter').value='all';render();});
+      $('stockForm').addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget;if(!form.reportValidity())return;const item={id:$('itemId').value||crypto.randomUUID(),name:$('itemName').value.trim(),sku:$('sku').value.trim().toUpperCase(),location:$('location').value.trim(),quantity:Number($('quantity').value),reorderLevel:Number($('reorderLevel').value),unitValue:Number($('unitValue').value)};if(stock.some(entry=>entry.sku===item.sku&&entry.id!==item.id)){$('formNotice').textContent='SKU must be unique.';return;}const index=stock.findIndex(entry=>entry.id===item.id);if(index>=0)stock[index]=item;else stock.push(item);persist();$('stockDialog').close();render();});
+      $('deleteItem').addEventListener('click',()=>{const id=$('itemId').value;if(id&&confirm('Delete this stock item?')){stock=stock.filter(item=>item.id!==id);persist();$('stockDialog').close();render();}});render();
+    })();
+  </script>
+</body>
+</html>

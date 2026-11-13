@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Request For Quotation | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261103-glass-ui" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet" href="../css/theme-brown-beige.css?v=20261113-brown-beige-11" />
+</head>
+<body class="erp-page">
+    <aside class="erp-sidebar">
+        <a class="erp-brand" href="dashboard.html">
+            <div class="erp-brand-mark"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <span><strong>Soft Manager</strong><small style="display:block; font-size: 10px; color: #a7bad4;">Warehouse & Purchase</small></span>
+        </a>
+        <nav class="erp-nav">
+            <a class="erp-nav-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            
+            <div class="erp-nav-heading">Purchase Process</div>
+            <a class="erp-nav-link" href="purchase-indent.html"><i class="fa-solid fa-file-circle-plus"></i><span>Purchase Indent</span></a>
+            <a class="erp-nav-link active" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
+            <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
+            <a class="erp-nav-link" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
+            
+            <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue Slip</span></a>
+            <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
+            
+            <div class="erp-nav-heading">Inventory & Stock</div>
+            <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html#warehouse-stock"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            
+            <div class="erp-nav-heading">Reports</div>
+            <a class="erp-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Purchase Reports</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Reports</span></a>
+        </nav>
+    </aside>
+
+    <div class="erp-main">
+        <header class="erp-topbar">
+            <div class="erp-search">
+                <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                <input id="searchBox" type="search" placeholder="Global Search..." />
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 28, 2026</span></div>
+                <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="erp-content">
+            <div class="workflow-page-heading">
+                <div class="workflow-heading-copy">
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Request For Quotation</h1>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Convert approved Purchase Indents into RFQs for vendor bidding.</p>
+                    <div class="po-tabs-ribbon" style="display: flex; gap: 8px;">
+                        <button id="tabAllRfq" class="status-badge status-neutral active" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">All Vouchers</button>
+                        <button id="tabPendingPI" class="status-badge status-pending" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">Pending Purchase Indents</button>
+                    </div>
+                </div>
+                <aside class="workflow-overview-panel" data-workflow-overview="rfq" aria-label="RFQ overview">
+                    <div class="po-overview-title">
+                        <span class="po-overview-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+                        <span><strong>Procurement overview</strong><small>RFQ activity</small></span>
+                    </div>
+                    <div class="po-overview-stats">
+                        <div><strong data-overview-primary>0</strong><span>RFQs</span></div>
+                        <div><strong data-overview-secondary>0</strong><span>Open indents</span></div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- List View -->
+            <section id="rfqAllView" class="erp-card">
+                <div class="erp-card-header">
+                    <h2 style="font-size: 14px;">All RFQs (<span id="rfqCount">0</span>)</h2>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>RFQ No</th>
+                                    <th>PI No</th>
+                                    <th>Items</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rfqAllBody">
+                                <!-- Injected by rfq.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pending PI View -->
+            <section id="rfqPendingView" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <h2 style="font-size: 14px;">Pending Purchase Indents</h2>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>PI No</th>
+                                    <th>Items</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingPiBody">
+                                <!-- Injected by rfq.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Form View -->
+            <section id="rfqFormView" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <h2 style="font-size: 16px;">Create Request For Quotation</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="rfqCancelBtn" class="btn-secondary" type="button">Cancel</button>
+                        <button id="rfqSaveBtn" class="btn-primary" type="button">Send RFQ</button>
+                    </div>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-form-grid">
+                        <div class="erp-field">
+                            <label for="rfqVoucherNo">RFQ Number</label>
+                            <input id="rfqVoucherNo" readonly />
+                        </div>
+                        <div class="erp-field">
+                            <label for="rfqDate">Date</label>
+                            <input id="rfqDate" type="date" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="rfqPiNo">Reference PI Number</label>
+                            <input id="rfqPiNo" readonly />
+                        </div>
+                    </div>
+
+                    <div class="erp-card" style="background: #fcfdfe; border-style: dashed;">
+                        <div class="erp-card-header">
+                            <h2 style="font-size: 14px;"><i class="fa-solid fa-list"></i> RFQ Item Details</h2>
+                        </div>
+                        <div class="erp-table-container">
+                            <table class="erp-table">
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Brand</th>
+                                        <th>Item</th>
+                                        <th>Description</th>
+                                        <th>Unit</th>
+                                        <th>Stock In Hand</th>
+                                        <th>PI Balance</th>
+                                        <th>RFQ Qty</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rfqLinesBody">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <p id="rfqMessage" style="margin-top: 15px; font-size: 12px; color: var(--erp-text-muted);"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="../js/data-store.js?v=20261113-storage-timeout"></script>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js?v=github-pages-local-only"></script>
+    <script src="../js/rfq.js"></script>
+    <script src="../js/workflow-overview.js?v=20261101-overview-cards"></script>
+    <script src="../js/voucher-toolbar.js?v=20261101-list-actions"></script>
+</body>
+</html>

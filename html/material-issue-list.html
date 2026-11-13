@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Material Issue Slip | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261103-glass-ui" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet" href="../css/theme-brown-beige.css?v=20261113-brown-beige-11" />
+</head>
+<body class="erp-page">
+    <aside class="erp-sidebar">
+        <a class="erp-brand" href="dashboard.html">
+            <div class="erp-brand-mark"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <span><strong>Soft Manager</strong><small style="display:block; font-size: 10px; color: #a7bad4;">Warehouse & Purchase</small></span>
+        </a>
+        <nav class="erp-nav">
+            <a class="erp-nav-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            
+            <div class="erp-nav-heading">Purchase Process</div>
+            <a class="erp-nav-link" href="purchase-indent.html"><i class="fa-solid fa-file-circle-plus"></i><span>Purchase Indent</span></a>
+            <a class="erp-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
+            <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
+            <a class="erp-nav-link" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
+            <a class="erp-nav-link" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
+            
+            <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link active" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue Slip</span></a>
+            <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
+            
+            <div class="erp-nav-heading">Inventory & Stock</div>
+            <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html#warehouse-stock"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            
+            <div class="erp-nav-heading">Reports</div>
+            <a class="erp-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Purchase Reports</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Reports</span></a>
+        </nav>
+    </aside>
+
+    <div class="erp-main">
+        <header class="erp-topbar">
+            <div class="erp-search">
+                <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                <input id="searchBox" type="search" placeholder="Global Search..." />
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 29, 2026</span></div>
+                <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="erp-content">
+            <div class="workflow-page-heading">
+                <div class="workflow-heading-copy">
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Material Issue Slips</h1>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Create and track material issue vouchers.</p>
+                    <div class="workflow-heading-actions">
+                        <a class="btn-primary" href="voucher-create.html?mode=issue" style="text-decoration: none;">
+                            <i class="fa-solid fa-plus"></i> New Material Issue Slip
+                        </a>
+                    </div>
+                </div>
+                <aside class="workflow-overview-panel" data-workflow-overview="material-issue" aria-label="Material issue overview">
+                    <div class="po-overview-title">
+                        <span class="po-overview-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+                        <span><strong>Material overview</strong><small>Issue voucher activity</small></span>
+                    </div>
+                    <div class="po-overview-stats">
+                        <div><strong data-overview-primary>0</strong><span>Issue vouchers</span></div>
+                        <div><strong data-overview-secondary>0</strong><span>Pending authorization</span></div>
+                    </div>
+                </aside>
+            </div>
+
+            <section class="erp-card">
+                <div class="erp-card-header">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <h2 style="margin: 0;">Voucher Register (<span id="issueCount">0</span>)</h2>
+                        <div class="ims-tabs" style="display: flex; gap: 8px;">
+                            <button id="tabAllIssue" class="status-badge status-neutral active" style="cursor:pointer; border:none; padding: 6px 12px;">All Vouchers</button>
+                            <button id="tabPendingIssue" class="status-badge status-pending" style="cursor:pointer; border:none; padding: 6px 12px;">Pending Vouchers</button>
+                        </div>
+                    </div>
+                    <div class="erp-search" style="width: 200px;">
+                        <input type="text" id="issueListSearch" placeholder="Filter vouchers..." />
+                    </div>
+                </div>
+                <div class="erp-card-body">
+                    <!-- All Issues List -->
+                    <div id="issueAllView" class="erp-table-container">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 60px;">#</th>
+                                    <th>Voucher No.</th>
+                                    <th>Date</th>
+                                    <th>Department</th>
+                                    <th>Requested By</th>
+                                    <th>Status</th>
+                                    <th style="width: 100px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="issueAllBody">
+                                <!-- Data injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pending Issues List -->
+                    <div id="issuePendingView" class="erp-table-container" hidden>
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 60px;">#</th>
+                                    <th>Draft/Req No.</th>
+                                    <th>Date</th>
+                                    <th>Department</th>
+                                    <th>Requested By</th>
+                                    <th style="width: 120px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="issuePendingBody">
+                                <!-- Data injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <p id="issueListMessage" style="margin-top: 15px; font-size: 12px; color: var(--erp-text-muted);"></p>
+        </main>
+    </div>
+    <script src="../js/data-store.js?v=20261113-storage-timeout"></script>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js?v=github-pages-local-only"></script>
+    <script src="../js/material-issue-list.js?v=20261102-show-all-vouchers"></script>
+    <script src="../js/workflow-overview.js?v=20261101-overview-cards"></script>
+    <script src="../js/voucher-toolbar.js?v=20261102-filter-fields"></script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Material Receipt Note | Soft Manager</title>
+    <link rel="stylesheet" href="../css/common-erp.css?v=20261103-glass-ui" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet" href="../css/theme-brown-beige.css?v=20261113-brown-beige-11" />
+</head>
+<body class="erp-page">
+    <aside class="erp-sidebar">
+        <a class="erp-brand" href="dashboard.html">
+            <div class="erp-brand-mark"><i class="fa-solid fa-cubes-stacked"></i></div>
+            <span><strong>Soft Manager</strong><small style="display:block; font-size: 10px; color: #a7bad4;">Warehouse & Purchase</small></span>
+        </a>
+        <nav class="erp-nav">
+            <a class="erp-nav-link" href="dashboard.html"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
+            
+            <div class="erp-nav-heading">Purchase Process</div>
+            <a class="erp-nav-link" href="purchase-indent.html"><i class="fa-solid fa-file-circle-plus"></i><span>Purchase Indent</span></a>
+            <a class="erp-nav-link" href="request-for-quotation.html"><i class="fa-solid fa-file-signature"></i><span>RFQ</span></a>
+            <a class="erp-nav-link" href="quotation-receive.html"><i class="fa-solid fa-file-circle-check"></i><span>Quotation Receive</span></a>
+            <a class="erp-nav-link" href="purchase-order-creation.html"><i class="fa-solid fa-cart-shopping"></i><span>Purchase Orders</span></a>
+            <a class="erp-nav-link active" href="material-receipt-note.html"><i class="fa-solid fa-boxes-packing"></i><span>MRN</span></a>
+            
+            <div class="erp-nav-heading">Material Management</div>
+            <a class="erp-nav-link" href="material-issue-list.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Material Issue Slip</span></a>
+            <a class="erp-nav-link" href="material-authorize.html"><i class="fa-solid fa-circle-check"></i><span>Material Authorization</span></a>
+            
+            <div class="erp-nav-heading">Inventory & Stock</div>
+            <a class="erp-nav-link" href="item-master.html"><i class="fa-solid fa-cubes"></i><span>Item Master</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-chart-column"></i><span>Stock Ledger</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html#warehouse-stock"><i class="fa-solid fa-warehouse"></i><span>Warehouse Stock</span></a>
+            
+            <div class="erp-nav-heading">Reports</div>
+            <a class="erp-nav-link" href="registers.html"><i class="fa-solid fa-chart-line"></i><span>Purchase Reports</span></a>
+            <a class="erp-nav-link" href="stock-ledger.html"><i class="fa-solid fa-boxes-stacked"></i><span>Inventory Reports</span></a>
+        </nav>
+    </aside>
+
+    <div class="erp-main">
+        <header class="erp-topbar">
+            <div class="erp-search">
+                <i class="fa-solid fa-magnifying-glass" style="color: #8a9ab1; font-size: 12px;"></i>
+                <input id="searchBox" type="search" placeholder="Global Search..." />
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="erp-date" style="font-size: 12px; color: #52647e;"><i class="fa-regular fa-calendar"></i> <span id="topDate">Oct 28, 2026</span></div>
+                <a class="btn-secondary" href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 12px;">
+                    <i class="fa-solid fa-user"></i> <span id="topUserLabel">User</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="erp-content">
+            <div class="workflow-page-heading">
+                <div class="workflow-heading-copy">
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 700; color: var(--erp-text-main);">Material Receipt Note (MRN)</h1>
+                    <p style="margin: 4px 0 0; color: var(--erp-text-muted); font-size: 13px;">Verify and record physical receipt of materials against Purchase Orders.</p>
+                </div>
+                <aside class="workflow-overview-panel" data-workflow-overview="mrn" aria-label="Material receipt overview">
+                    <div class="po-overview-title">
+                        <span class="po-overview-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+                        <span><strong>Procurement overview</strong><small>Material receipt activity</small></span>
+                    </div>
+                    <div class="po-overview-stats">
+                        <div><strong data-overview-primary>0</strong><span>Receipts</span></div>
+                        <div><strong data-overview-secondary>0</strong><span>Pending receipts</span></div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- List View -->
+            <div id="mrnListView">
+                <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                    <button id="tabAllMrn" class="status-badge status-neutral active" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">All Vouchers</button>
+                    <button id="tabPendingPo" class="status-badge status-pending" style="cursor:pointer; border:none; padding: 8px 16px; font-size: 13px;">Pending Purchase Orders</button>
+                </div>
+                
+                <section id="mrnAllView" class="erp-card">
+                    <div class="erp-card-header">
+                        <h2 style="font-size: 14px;">All Receipts (<span id="mrnCount">0</span>)</h2>
+                    </div>
+                    <div class="erp-card-body">
+                        <div class="erp-table-container">
+                            <table class="erp-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>MRN No.</th>
+                                        <th>MRN Date</th>
+                                        <th>PO No.</th>
+                                        <th>Supplier</th>
+                                        <th>Warehouse</th>
+                                        <th>Received Qty</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mrnAllBody">
+                                    <!-- Injected by material-receipt-note.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="mrnPendingPoView" class="erp-card" hidden>
+                    <div class="erp-card-header">
+                        <h2 style="font-size: 14px;">Pending Purchase Orders</h2>
+                    </div>
+                    <div class="erp-card-body">
+                        <div class="erp-table-container">
+                            <table class="erp-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>PO No.</th>
+                                        <th>PO Date</th>
+                                        <th>Supplier</th>
+                                        <th>Warehouse</th>
+                                        <th>Balance Qty</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mrnPendingPoBody">
+                                    <!-- Injected by material-receipt-note.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- PO Authorization View -->
+            <section id="mrnAuthorizeView" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <h2 style="font-size: 16px;">Authorize Purchase Order</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="cancelPoAuthorizationBtn" class="btn-secondary" type="button">Cancel</button>
+                        <button id="savePoAuthorizationBtn" class="btn-primary" type="button">Save & Authorize</button>
+                    </div>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-form-grid">
+                        <div class="erp-field">
+                            <label for="authorizePoNo">Purchase Order No.</label>
+                            <input id="authorizePoNo" readonly />
+                        </div>
+                        <div class="erp-field">
+                            <label for="authorizePoDate">Purchase Order Date</label>
+                            <input id="authorizePoDate" readonly />
+                        </div>
+                        <div class="erp-field">
+                            <label for="supplierBillNo">Bill Number</label>
+                            <input id="supplierBillNo" type="text" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="supplierBillDate">Bill Date</label>
+                            <input id="supplierBillDate" type="date" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="authorizeWarehouse">Warehouse</label>
+                            <select id="authorizeWarehouse">
+                                <option value="">Select warehouse</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="erp-card" style="background: #fcfdfe; border-style: dashed;">
+                        <div class="erp-card-header">
+                            <h2 style="font-size: 14px;"><i class="fa-solid fa-list"></i> Order Items for Verification</h2>
+                        </div>
+                        <div class="erp-table-container">
+                            <table class="erp-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th>Brand</th>
+                                        <th>Item Code</th>
+                                        <th>Description</th>
+                                        <th>Qty</th>
+                                        <th>UOM</th>
+                                        <th>Rate</th>
+                                        <th>Taxable</th>
+                                        <th>GST %</th>
+                                        <th>Net Amt</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="authorizePoItemsBody">
+                                    <!-- Injected by material-receipt-note.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                        <div style="text-align: right;">
+                            <label style="font-size: 14px; font-weight: 600; margin-right: 10px;">Order Total (Inc. GST):</label>
+                            <span style="font-size: 18px; font-weight: 700;">&#8377; <span id="authorizePoItemsTotal">0.00</span></span>
+                        </div>
+                    </div>
+                    <p id="mrnAuthorizeMessage" style="margin-top: 15px; font-size: 12px; color: var(--erp-text-muted);"></p>
+                </div>
+            </section>
+
+            <!-- MRN Form View -->
+            <section id="mrnFormView" class="erp-card" hidden>
+                <div class="erp-card-header">
+                    <h2 style="font-size: 16px;" id="mrnFormTitle">Create Material Receipt Note</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="cancelMrnBtn" class="btn-secondary" type="button">Cancel</button>
+                        <button id="saveMrnBtn" class="btn-primary" type="button">Save MRN</button>
+                    </div>
+                </div>
+                <div class="erp-card-body">
+                    <div class="erp-form-grid">
+                        <div class="erp-field">
+                            <label for="mrnNo">MRN Number</label>
+                            <input id="mrnNo" readonly />
+                        </div>
+                        <div class="field-group" style="display: flex; flex-direction: column; gap: 6px;">
+                            <label for="mrnDate">Receipt Date</label>
+                            <input id="mrnDate" type="date" />
+                        </div>
+                        <div class="erp-field">
+                            <label for="mrnPoNo">Reference PO No.</label>
+                            <input id="mrnPoNo" readonly />
+                        </div>
+                        <div class="erp-field">
+                            <label for="mrnPoDate">Purchase Order Date</label>
+                            <input id="mrnPoDate" readonly />
+                        </div>
+                        <div class="erp-field">
+                            <label for="mrnBillNo">Bill Number</label>
+                            <input id="mrnBillNo" readonly />
+                        </div>
+                        <div class="erp-field">
+                            <label for="mrnBillDate">Bill Date</label>H
+                            <input id="mrnBillDate" readonly />
+                        </div>
+                        <div class="erp-field">
+                            <label for="mrnSupplier">Supplier</label>
+                            <input id="mrnSupplier" readonly />
+                        </div>
+                        <div class="erp-field">
+                            <label for="mrnWarehouse">Warehouse</label>
+                            <input id="mrnWarehouse" readonly />
+                        </div>
+                    </div>
+
+                    <div class="erp-card" style="background: #fcfdfe; border-style: dashed;">
+                        <div class="erp-card-header">
+                            <h2 style="font-size: 14px;"><i class="fa-solid fa-list"></i> Receiving Items</h2>
+                        </div>
+                        <div class="erp-table-container">
+                            <table class="erp-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">#</th>
+                                        <th>Item / Code</th>
+                                        <th>PO Qty</th>
+                                        <th>Received Earlier</th>
+                                        <th>Balance</th>
+                                        <th>Receiving Now</th>
+                                        <th>UOM</th>
+                                        <th>Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mrnLinesBody">
+                                    <!-- Injected by material-receipt-note.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <p id="mrnMessage" style="margin-top: 15px; font-size: 12px; color: var(--erp-text-muted);"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <div id="mrnItemContextMenu" class="mrn-context-menu" role="menu" hidden>
+        <button id="removeMrnItemBtn" type="button" role="menuitem"><i class="fa-solid fa-trash" aria-hidden="true"></i> Remove item from this MRN</button>
+    </div>
+    <script src="../js/data-store.js?v=20261113-storage-timeout"></script>
+    <script src="../js/ims-store.js"></script>
+    <script src="../js/searchText.js"></script>
+    <script src="../js/header-user.js?v=github-pages-local-only"></script>
+    <script src="../js/material-receipt-note.js"></script>
+    <script src="../js/workflow-overview.js?v=20261101-overview-cards"></script>
+    <script src="../js/voucher-toolbar.js?v=20261102-filter-fields"></script>
+</body>
+</html>
